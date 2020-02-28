@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from school.views import RegisterView
-from timetable.views import CalendarView
+from timetable.views import TimetableView, valid_scode
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RegisterView.as_view()),
-    path('calendar/', CalendarView.as_view(), name='calendar')
+    path('comroom/', valid_scode),
+    path('comroom/<int:pk>', TimetableView.as_view()),
 ]
