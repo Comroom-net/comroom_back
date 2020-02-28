@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from school.views import RegisterView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', RegisterView.as_view()),
 ]
