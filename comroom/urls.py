@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RegisterView.as_view()),
     path('comroom/', valid_scode),
-    path('comroom/<int:pk>', TimetableView.as_view()),
+    path('comroom/<int:pk>/', TimetableView.as_view(), name='timetable'),
 ]
