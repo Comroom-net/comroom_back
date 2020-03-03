@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block header %}
+
+{% endblock header %}
+{% block contents %}
+<div class="row mt-5">
+  <div class="col-12 text-center">
+    <h3>신청일자: 2020/03/23</h1>
+    <h3>컴퓨터2실 </h1>
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-12">
+    {{ error }}
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-12">
+    <form method="POST" action=".">
+      {% csrf_token %} 
+      {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% ifequal field.label '교육청' %} 
+        {{ field }} 
+        {% else %}
+        <input
+          type="{{ field.field.widget.input_type }}"
+          class="form-control"
+          id="{{ field.id_for_label }}"
+          placeholder="{{ field.label }}"
+          name="{{ field.name }}"
+        />
+        {% endifequal %}
+      </div>
+      {% if field.errors %}
+      <span style="color: red;">{{ field.errors }}</span>
+      {% endif %} {% endfor %}
+      <button type="submit" class="btn btn-primary">등록</button>
+    </form>
+  </div>
+</div>
+{% endblock contents %}

@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, FormView
 from .models import Timetable
-from .utils import Calendar, TimetableCreate, TestCalendar
+from .utils import TimetableCreate
 from .decorators import method_dectect
 from school.models import School
 
@@ -21,6 +21,8 @@ class TimetableView(DetailView):
         # context = super().get_context_data(**kwargs)
         context = {}
         school = School.objects.get(pk=kwargs['pk'])
+        print(self.request.session['school'])
+        print(self.request.session['s_code'])
 
         # Instantiate calendar class with today's year and date
         cal = TimetableCreate(school=school.name,
@@ -48,6 +50,8 @@ def valid_scode(request):
 
     school_obj = School.objects.get(name__startswith=school, s_code=s_code)
 
+    request.session['school'] = school_obj.name
+    request.session['s_code'] = school_obj.s_code
     # if request.method == 'POST':
     #     return render(request, "timetable.html")
 

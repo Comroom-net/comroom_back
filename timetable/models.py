@@ -18,7 +18,15 @@ class Timetable(models.Model):
                                 ))
     classNo = models.IntegerField(verbose_name='반')
     date = models.DateField(verbose_name='신청일')
-    time = models.IntegerField(verbose_name='예약시간')
+    time = models.IntegerField(verbose_name='예약시간',
+                               choices=(
+                                   (1, 1),
+                                   (2, 2),
+                                   (3, 3),
+                                   (4, 4),
+                                   (5, 5),
+                                   (6, 6)
+                               ))
     roomNo = models.IntegerField(verbose_name='컴퓨터실번호')
     teacher = models.CharField(max_length=16, verbose_name='선생님')
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='예약등록시간')
