@@ -45,11 +45,12 @@ class Calendar(HTMLCalendar):
 
 
 class TimetableCreate(HTMLCalendar):
-    def __init__(self, school=None, s_code=None):
+    def __init__(self, school=None, s_code=None, roomNo=None):
         self.year = datetime.now().year
         self.month = datetime.now().month
         self.school = School.objects.get(
             name__startswith=school, s_code=s_code)
+        self.roomNo = roomNo
         super(TimetableCreate, self).__init__()
 
     # formats a day as a td
@@ -59,7 +60,7 @@ class TimetableCreate(HTMLCalendar):
 
         d = ''
         for time in range(1, 7):
-            d += f'<div class="col"><a href="#" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
+            d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.roomNo}/{self.year}/{self.month}/{day}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
 
         if day != 0:
             return f"<td><span class='date'>{day}</span><div class='row row-cols-3 no-gutter'> {d} </div></td>"
@@ -79,7 +80,7 @@ class TimetableCreate(HTMLCalendar):
 
         cal = f'<div class="row mt-5">\
             <div class="col-12 text-center">\
-                <h1>{self.school.name} 컴2실</h1></div></div>\n'
+                <h1>{self.school.name} 컴{self.roomNo}실</h1></div></div>\n'
         cal += f'<table class="table table-bordered">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'

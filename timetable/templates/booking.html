@@ -3,10 +3,16 @@
 
 {% endblock header %}
 {% block contents %}
+<div class="fieldWrapper">
+    {{ form.subject.errors }}
+    {{ form.subject.label_tag }}
+    {{ form.subject }}
+</div>
 <div class="row mt-5">
   <div class="col-12 text-center">
-    <h3>신청일자: 2020/03/23</h1>
-    <h3>컴퓨터2실 </h1>
+    <h3>신청일시<br></h3> 
+    <h5>{{year}}/{{month}}/{{day}}<br>{{time}}교시</h5>
+    <h3>컴퓨터{{roomNo}}실 </h3>
   </div>
 </div>
 <div class="row mt-5">
@@ -18,20 +24,12 @@
   <div class="col-12">
     <form method="POST" action=".">
       {% csrf_token %} 
-      {% for field in form %}
+      {% for field in form.visible_fields %}
       <div class="form-group">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {% ifequal field.label '교육청' %} 
-        {{ field }} 
-        {% else %}
-        <input
-          type="{{ field.field.widget.input_type }}"
-          class="form-control"
-          id="{{ field.id_for_label }}"
-          placeholder="{{ field.label }}"
-          name="{{ field.name }}"
-        />
-        {% endifequal %}
+        
+        {{ field }}
+        
       </div>
       {% if field.errors %}
       <span style="color: red;">{{ field.errors }}</span>

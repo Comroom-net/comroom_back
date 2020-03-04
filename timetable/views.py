@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, FormView
 from .models import Timetable
+from .forms import BookingForm
 from .utils import TimetableCreate
 from .decorators import method_dectect
 from school.models import School
@@ -21,12 +22,14 @@ class TimetableView(DetailView):
         # context = super().get_context_data(**kwargs)
         context = {}
         school = School.objects.get(pk=kwargs['pk'])
+        roomNo = kwargs['roomNo']
         print(self.request.session['school'])
         print(self.request.session['s_code'])
 
         # Instantiate calendar class with today's year and date
         cal = TimetableCreate(school=school.name,
-                              s_code=school.s_code)
+                              s_code=school.s_code,
+                              roomNo=roomNo)
 
         # Call the formatmonth method, which returns calendar as a table
         html_cal = cal.formatmonth(withyear=True)
@@ -66,5 +69,21 @@ def valid_scode(request):
     return redirect('/comroom/1')
 
 
-class valid_school(FormView):
-    pass
+class BookingView(FormView):
+    template_name = 'booking.html'
+    form_class = BookingForm
+    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        year = kwargs['year']
+        month = kwargs['month']
+        day = kwargs['day']
+        roomNo = kwargs['roomNo']
+        time = kwargs['time']
+        return render(request, self.template_name, {'form': form, 'year': year,
+                                                    'month': month, 'day': day,
+                                                    'roomNo': roomNo, 'time': time})
+
+    def get_context_data(self, **kwargs):
+        year = kwargs['year']

@@ -11,7 +11,7 @@
     {{ timetable }}
     <!-- school id가 있을때만 실행 -->
     {% if school_id %}
-    <form id="myform" method="post" action="{% url 'timetable' school_id %}">
+    <form id="myform" method="post" action="{% url 'timetable' school_id 1 %}">
       {% csrf_token %}
       <input type="hidden" name="flag" value="{{ school_id }}" />
 
