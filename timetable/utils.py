@@ -46,11 +46,11 @@ class Calendar(HTMLCalendar):
 
 
 class TimetableCreate(HTMLCalendar):
-    def __init__(self, school=None, s_code=None, roomNo=None):
-        self.year = datetime.now().year
-        self.month = datetime.now().month
+    def __init__(self, school_id=None, roomNo=None, year=None, month=None):
+        self.year = year
+        self.month = month
         self.school = School.objects.get(
-            name__startswith=school, s_code=s_code)
+            id=school_id)
         self.roomNo = roomNo
         super(TimetableCreate, self).__init__()
 
@@ -89,10 +89,7 @@ class TimetableCreate(HTMLCalendar):
     # filter events by year and month
     def formatmonth(self, withyear=True):
 
-        cal = f'<div class="row mt-5">\
-            <div class="col-12 text-center">\
-                <h1>{self.school.name} 컴{self.roomNo}실</h1></div></div>\n'
-        cal += f'<table class="table table-bordered">\n'
+        cal = f'<table class="table table-bordered">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'
         for week in self.monthdays2calendar(self.year, self.month):

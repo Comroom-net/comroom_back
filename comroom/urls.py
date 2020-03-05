@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RegisterView.as_view()),
     path('comroom/', valid_scode),
-    path('comroom/<int:pk>/<int:roomNo>/',
+    path('comroom/<int:roomNo>/<date>/',
          TimetableView.as_view(), name='timetable'),
     path('comroom/<int:pk>/<int:roomNo>/<date>/<int:time>/',
          reserving)

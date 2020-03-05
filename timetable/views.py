@@ -21,23 +21,60 @@ class TimetableView(DetailView):
     def post(self, request, *args, **kwargs):
         # context = super().get_context_data(**kwargs)
         context = {}
-        school = School.objects.get(pk=kwargs['pk'])
+        school_id = self.request.session['school']
+        school = School.objects.get(pk=school_id)
         roomNo = kwargs['roomNo']
-        print(self.request.session['school'])
-        print(self.request.session['s_code'])
+        date = kwargs['date'].split('-')
+        year = int(date[0])
+        month = int(date[1])
+        print(year, '-', month)
+        print('school id:', self.request.session['school'])
+        print('s_code:', self.request.session['s_code'])
 
         # Instantiate calendar class with today's year and date
-        cal = TimetableCreate(school=school.name,
-                              s_code=school.s_code,
-                              roomNo=roomNo)
+        cal = TimetableCreate(school_id=school.id,
+                              roomNo=roomNo,
+                              year=year,
+                              month=month)
 
         # Call the formatmonth method, which returns calendar as a table
         html_cal = cal.formatmonth(withyear=True)
         context['timetable'] = mark_safe(html_cal)
+        context['school'] = school.name
+        context['roomNo'] = roomNo
+        context['year'] = year
+        context['month'] = month
         # print(context['timetable'])
         return render(request, "timetable.html", context=context)
 
     def get(self, request, *args, **kwargs):
+        context = {}
+        school_id = self.request.session['school']
+        if school_id:
+            school = School.objects.get(pk=school_id)
+            roomNo = kwargs['roomNo']
+            date = kwargs['date'].split('-')
+            year = int(date[0])
+            month = int(date[1])
+            print(year, '-', month)
+            print('school id:', self.request.session['school'])
+            print('s_code:', self.request.session['s_code'])
+
+            # Instantiate calendar class with today's year and date
+            cal = TimetableCreate(school_id=school.id,
+                                  roomNo=roomNo,
+                                  year=year,
+                                  month=month)
+
+            # Call the formatmonth method, which returns calendar as a table
+            html_cal = cal.formatmonth(withyear=True)
+            context['timetable'] = mark_safe(html_cal)
+            context['school'] = school.name
+            context['roomNo'] = roomNo
+            context['year'] = year
+            context['month'] = month
+            # print(context['timetable'])
+            return render(request, "timetable.html", context=context)
         return redirect('/')
 
 # def get_date(req_day):
@@ -53,15 +90,19 @@ def valid_scode(request):
 
     school_obj = School.objects.get(name__startswith=school, s_code=s_code)
 
-    # if request.method == 'POST':
-    #     return render(request, "timetable.html")
+    date = datetime.now().strftime("%Y-%m")
+
+    context = {}
 
     if school_obj:
         print('correct')
-        request.session['school'] = school_obj.name
+        request.session['school'] = school_obj.id
         request.session['s_code'] = school_obj.s_code
-        return render(request, "timetable.html", {'school_id': school_obj.id})
-        # return redirect('/comroom/'+str(school_obj.id))
+        context['school_id'] = school_obj.id
+        context['date'] = date
+        context['roomNo'] = 1
+        return render(request, "timetable.html", context=context)
+
     else:
         print('incorrect')
 
