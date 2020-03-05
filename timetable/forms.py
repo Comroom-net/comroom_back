@@ -30,6 +30,8 @@ class BookingForm(forms.Form):
                               widget=forms.HiddenInput())
     roomNo = forms.IntegerField(label='컴퓨터실',
                                 widget=forms.HiddenInput())
+    school = forms.CharField(label='학교', max_length=128,
+    widget=forms.HiddenInput())
     teacher = forms.CharField(
         error_messages={
             'required': '선생님 성함을 입력해주세요'

@@ -24,6 +24,9 @@
   <div class="col-12">
     <form method="POST" action=".">
       {% csrf_token %} 
+      {% for field in form.hidden_fields%}
+      {{ field }}
+      {% endfor %}
       {% for field in form.visible_fields %}
       <div class="form-group">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -38,4 +41,18 @@
     </form>
   </div>
 </div>
+<script>
+  var date = document.getElementById('{{ form.date.id_for_label}}')
+  var time = document.getElementById('{{ form.time.id_for_label}}')
+  var roomNo = document.getElementById('{{ form.roomNo.id_for_label}}')
+  var school = document.getElementById('{{ form.school.id_for_label}}')
+  date.value = '{{year}}-{{month}}-{{day}}'
+  time.value = {{time}}
+  roomNo.value = {{roomNo}}
+  
+  console.log(school)
+  console.log(date.value)
+  console.log(time.value)
+  console.log(roomNo.value)
+</script>
 {% endblock contents %}
