@@ -119,17 +119,16 @@ def reserving(request, **kwargs):
     if request.method == 'POST':
 
         form = BookingForm(request.POST)
-        date = [str(kwargs['year']), str(kwargs['month']), str(kwargs['day'])]
-        date = '-'.join(date)
+
         school = School.objects.get(pk=kwargs['pk'])
         print('start save')
         booking = Timetable(
             school=school,
             grade=form.data.get('grade'),
             classNo=form.data.get('classNo'),
-            date=date,
-            time=kwargs['time'],
-            roomNo=kwargs['roomNo'],
+            date=form.data.get('date'),
+            time=form.data.get('time'),
+            roomNo=form.data.get('roomNo'),
             teacher=form.data.get('teacher'),
         )
         booking.save()
