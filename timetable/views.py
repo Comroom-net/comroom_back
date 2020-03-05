@@ -137,9 +137,7 @@ def reserving(request, **kwargs):
     if request.method == "GET":
         context = {}
         context['form'] = BookingForm()
-        context['year'] = kwargs['year']
-        context['month'] = kwargs['month']
-        context['day'] = kwargs['day']
+        context['date'] = kwargs['date']
         context['roomNo'] = kwargs['roomNo']
         context['time'] = kwargs['time']
         context['school'] = School.objects.get(pk=kwargs['pk']).id

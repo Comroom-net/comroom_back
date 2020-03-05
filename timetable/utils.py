@@ -1,3 +1,4 @@
+from django.utils.dateparse import parse_date
 from datetime import datetime, timedelta
 from calendar import HTMLCalendar
 from .models import Timetable
@@ -59,10 +60,20 @@ class TimetableCreate(HTMLCalendar):
     def formatday(self, day):
 
         d = ''
-        for time in range(1, 7):
-            d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.roomNo}/{self.year}/{self.month}/{day}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
-
         if day != 0:
+            date = f'{self.year}-{self.month}-{day}'
+            date = parse_date(date)
+            for time in range(1, 7):
+                if Timetable.objects.filter(
+                    school=self.school,
+                    roomNo=self.roomNo,
+                    date=date,
+                    time=time
+                ):
+                    d += f'<div class="col"><a href="#" role="button" class="btn btn-primary btn-sm disabled">{time}</a></div>'
+                else:
+                    d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
+
             return f"<td><span class='date'>{day}</span><div class='row row-cols-3 no-gutter'> {d} </div></td>"
         return '<td></td>'
 

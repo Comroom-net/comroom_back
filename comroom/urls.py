@@ -24,6 +24,6 @@ urlpatterns = [
     path('comroom/', valid_scode),
     path('comroom/<int:pk>/<int:roomNo>/',
          TimetableView.as_view(), name='timetable'),
-    path('comroom/<int:pk>/<int:roomNo>/<int:year>/<int:month>/<int:day>/<int:time>/',
+    path('comroom/<int:pk>/<int:roomNo>/<date>/<int:time>/',
          reserving)
 ]

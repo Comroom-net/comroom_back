@@ -11,7 +11,7 @@
 <div class="row mt-5">
   <div class="col-12 text-center">
     <h3>신청일시<br></h3> 
-    <h5>{{year}}/{{month}}/{{day}}<br>{{time}}교시</h5>
+    <h5>{{date}}<br>{{time}}교시</h5>
     <h3>컴퓨터{{roomNo}}실 </h3>
   </div>
 </div>
@@ -46,7 +46,7 @@
   var time = document.getElementById('{{ form.time.id_for_label}}')
   var roomNo = document.getElementById('{{ form.roomNo.id_for_label}}')
   var school = document.getElementById('{{ form.school.id_for_label}}')
-  date.value = '{{year}}-{{month}}-{{day}}'
+  date.value = '{{date}}'
   time.value = {{time}}
   roomNo.value = {{roomNo}}
   
