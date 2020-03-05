@@ -29,9 +29,19 @@
       {% endfor %}
       {% for field in form.visible_fields %}
       <div class="form-group">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         
-        {{ field }}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% ifequal field.label '학년' %} 
+        {{ field }} 
+        {% else %}
+        <input
+          type="{{ field.field.widget.input_type }}"
+          class="form-control"
+          id="{{ field.id_for_label }}"
+          placeholder="{{ field.label }}"
+          name="{{ field.name }}"
+        />
+        {% endifequal %}
         
       </div>
       {% if field.errors %}

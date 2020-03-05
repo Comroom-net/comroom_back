@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from school.views import RegisterView
+from school.views import RegisterView, index, LoginView
 from timetable.views import TimetableView, valid_scode, reserving
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RegisterView.as_view()),
+    path('', index),
+    path('login/', LoginView.as_view()),
+    path('register/', RegisterView.as_view()),
     path('comroom/', valid_scode),
     path('comroom/<int:roomNo>/<date>/',
          TimetableView.as_view(), name='timetable'),

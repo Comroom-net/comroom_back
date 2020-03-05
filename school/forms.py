@@ -82,3 +82,33 @@ class RegisterForm(forms.Form):
             if password != re_password:
                 self.add_error('password', '비밀번호가 서로 다릅니다.')
                 self.add_error('re_password', '비밀번호가 서로 다릅니다.')
+
+
+class LoginForm(forms.Form):
+    user = forms.CharField(
+        error_messages={
+            'required': '아이디를 입력해주세요.'
+        },
+        max_length=64, label='아이디'
+    )
+    password = forms.CharField(
+        error_messages={
+            'required': '비밀번호를 입력해주세요.'
+        },
+        widget=forms.PasswordInput, label='비밀번호'
+    )
+
+    def clean(self):  # 검증하는 함수
+        cleaned_data = super().clean()
+        user = cleaned_data.get('user')
+        password = cleaned_data.get('password')
+
+        if user and password:
+            try:
+                admin_user = AdminUser.objects.get(user=user)
+            except AdminUser.DoesNotExist:
+                self.add_error('user', '아이디가 없습니다.')
+                return
+
+            if not check_password(password, admin_user.password):
+                self.add_error('password', '비밀번호가 틀렸습니다.')
