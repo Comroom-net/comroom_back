@@ -33,7 +33,7 @@ class RegisterForm(forms.Form):
         error_messages={
             'required': '학교명을 입력해주세요.'
         },
-        max_length=64, label='학교명'
+        max_length=64, label='학교명  ex)단밤초등학교'
     )
     ea = forms.IntegerField(
         error_messages={
@@ -77,11 +77,32 @@ class RegisterForm(forms.Form):
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
         re_password = cleaned_data.get('re_password')
+        user = cleaned_data.get('user')
+        province = cleaned_data.get('province')
+        school = cleaned_data.get('name')
 
         if password and re_password:
             if password != re_password:
                 self.add_error('password', '비밀번호가 서로 다릅니다.')
                 self.add_error('re_password', '비밀번호가 서로 다릅니다.')
+
+        if user:
+            try:
+                AdminUser.objects.get(user=user)
+                self.add_error('user', '이미 존재하는 아이디입니다.')
+            except:
+                pass
+        if school:
+            if not '학교'in school:
+                self.add_error('name', '전체 이름을 입력해주세요.(\'OO초등학교\')')
+            try:
+                school_exist = School.objects.get(
+                    name=school, province=province)
+                admin = AdminUser.objects.get(school=school_exist)
+                self.add_error(
+                    'name', f'이미 등록된 학교입니다. {admin.realname} 선생님({admin.email})께 문의하세요.')
+            except:
+                pass
 
 
 class LoginForm(forms.Form):

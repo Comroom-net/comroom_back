@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+nwsuq2+uid6ss@@cuc=0xt2y!ot(kal(l(a_6av1oprzj1(@t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -120,3 +121,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+with open('/Users/ssamko/Documents/주요/kakao.json', mode='rt', encoding='utf-8') as file:
+    data = json.load(file)
+    password = data['kakao']
+
+
+# Email Backend
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+EMAIL_HOST = 'smtp.kakao.com'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'ssamko@kakao.com'
+EMAIL_HOST_PASSWORD = password
+EMAIL_USE_TLS = True

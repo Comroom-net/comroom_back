@@ -1,9 +1,34 @@
 {% extends "base.html" %} {% block contents %}
 <div class="row mt-5">
   <div class="col-12">
-    <h2>Hello {{user|default:"Stranger"}}</h2>
-    <h3>http://127.0.0.1:8000/comroom?school=삼양초&s_code=3625</h3>
+    <h2>Hello {{username|default:"Stranger"}}</h2>
+    {% if username %}
+    <p>{{thisurl}}/comroom?school={{school}}&s_code={{s_code}}</p>
+    <a
+      href="{{thisurl}}/comroom?school={{school}}&s_code={{s_code}}"
+      class="btn btn-primary"
+      role="button"
+      >시간표</a
+    >
+    <button class="copy btn btn-primary">링크 복사</button>
+    <a href="logout/" class="btn btn-secondary" role="button">로그아웃</a>
+    {% else %}
+    <a href="login/" class="btn btn-primary" role="button">로그인</a>
+    <a href="register/" class="btn btn-primary" role="button">관리자등록</a>
+
+    {% endif %}
   </div>
 </div>
+<script>
+  document.querySelector(".copy").addEventListener("click", function() {
+    var tempElem = document.createElement("textarea");
+    tempElem.value =
+      "http://127.0.0.1:8000/comroom?school={{school}}&s_code={{s_code}}";
+    document.body.appendChild(tempElem);
 
+    tempElem.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempElem);
+  });
+</script>
 {% endblock contents %}
