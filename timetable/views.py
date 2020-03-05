@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from datetime import datetime, date
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
@@ -53,7 +53,6 @@ def valid_scode(request):
 
     school_obj = School.objects.get(name__startswith=school, s_code=s_code)
 
-    
     # if request.method == 'POST':
     #     return render(request, "timetable.html")
 
@@ -69,62 +68,63 @@ def valid_scode(request):
     return redirect('/comroom/1')
 
 
-class BookingView(FormView):
-    template_name = 'booking.html'
-    form_class = BookingForm
-    success_url = '/'
+# class BookingView(FormView):
+#     template_name = 'booking.html'
+#     form_class = BookingForm
+#     success_url = '/'
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        year = kwargs['year']
-        month = kwargs['month']
-        day = kwargs['day']
-        roomNo = kwargs['roomNo']
-        time = kwargs['time']
-        school = School.objects.get(pk=kwargs['pk']).id
-        return render(request, self.template_name, {'form': form, 'year': year,
-                                                    'month': month, 'day': day,
-                                                    'roomNo': roomNo, 'time': time,
-                                                    'school':school})
+#     def get(self, request, *args, **kwargs):
+#         form = self.form_class(initial=self.initial)
+#         year = kwargs['year']
+#         month = kwargs['month']
+#         day = kwargs['day']
+#         roomNo = kwargs['roomNo']
+#         time = kwargs['time']
+#         school = School.objects.get(pk=kwargs['pk']).id
+#         return render(request, self.template_name, {'form': form, 'year': year,
+#                                                     'month': month, 'day': day,
+#                                                     'roomNo': roomNo, 'time': time,
+#                                                     'school':school})
 
-    # def get_context_data(self, **kwargs):
-    #     year = kwargs['year']
-    
-    # def post(self, request, *args, **kwargs):
-    #     self.form_valid()
+#     # def get_context_data(self, **kwargs):
+#     #     year = kwargs['year']
 
-    def form_valid(self, form):
-        id = form.data.get('school')
-        print('start save')
-        booking = Timetable(
-            school=School.objects.get(pk=id),
-            grade=form.data.get('grade'),
-            classNo=form.data.get('classNo'),
-            date=form.data.get('date'),
-            time=form.data.get('time'),
-            roomNo=form.data.get('roomNo'),
-            teacher=form.data.get('teacher'),
-        )
-        booking.save()
-        print('save')
-        
+#     # def post(self, request, *args, **kwargs):
+#     #     self.form_valid()
 
-        return super().form_valid(form)
+#     def form_valid(self, form):
+#         id = form.data.get('school')
+#         print('start save')
+#         booking = Timetable(
+#             school=School.objects.get(pk=id),
+#             grade=form.data.get('grade'),
+#             classNo=form.data.get('classNo'),
+#             date=form.data.get('date'),
+#             time=form.data.get('time'),
+#             roomNo=form.data.get('roomNo'),
+#             teacher=form.data.get('teacher'),
+#         )
+#         booking.save()
+#         print('save')
 
-    def form_invalid(self, form):
-        return redirect('/')
+
+#         return super().form_valid(form)
+
+#     def form_invalid(self, form):
+#         return redirect('/')
 
 def reserving(request, **kwargs):
     template_name = 'booking.html'
 
     if request.method == 'POST':
-        
+
         form = BookingForm(request.POST)
-        date = [str(kwargs['year']),str(kwargs['month']),str(kwargs['day'])]
+        date = [str(kwargs['year']), str(kwargs['month']), str(kwargs['day'])]
         date = '-'.join(date)
+        school = School.objects.get(pk=kwargs['pk'])
         print('start save')
         booking = Timetable(
-            school=School.objects.get(pk=kwargs['pk']),
+            school=school,
             grade=form.data.get('grade'),
             classNo=form.data.get('classNo'),
             date=date,
@@ -134,8 +134,8 @@ def reserving(request, **kwargs):
         )
         booking.save()
         print('save')
-        return redirect('/')
-    if request.method =="GET":
+        return redirect('/comroom/?school='+school.name+'&s_code='+str(school.s_code))
+    if request.method == "GET":
         context = {}
         context['form'] = BookingForm()
         context['year'] = kwargs['year']
@@ -144,24 +144,22 @@ def reserving(request, **kwargs):
         context['roomNo'] = kwargs['roomNo']
         context['time'] = kwargs['time']
         context['school'] = School.objects.get(pk=kwargs['pk']).id
-        
+
         return render(request, template_name, context)
 
 
+# class ReservingView(DetailView):
+#     template_name = 'booking.html'
+#     queryset = School.objects.all()
+#     context_object = 'reserve'
 
-class ReservingView(DetailView):
-    template_name = 'booking.html'
-    queryset = School.objects.all()
-    context_object = 'reserve'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['year'] = kwargs['year']
-        context['month'] = kwargs['month']
-        context['day'] = kwargs['day']
-        context['roomNo'] = kwargs['roomNo']
-        context['time'] = kwargs['time']
-        context['school'] = School.objects.get(pk=kwargs['pk']).id
-        context["form"] = BookingForm(self.request)
-        return context
-    
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['year'] = kwargs['year']
+#         context['month'] = kwargs['month']
+#         context['day'] = kwargs['day']
+#         context['roomNo'] = kwargs['roomNo']
+#         context['time'] = kwargs['time']
+#         context['school'] = School.objects.get(pk=kwargs['pk']).id
+#         context["form"] = BookingForm(self.request)
+#         return context

@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from school.views import RegisterView
-from timetable.views import TimetableView, valid_scode, BookingView, ReservingView, reserving
+from timetable.views import TimetableView, valid_scode, reserving
 
 urlpatterns = [
     path('admin/', admin.site.urls),
