@@ -122,6 +122,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 with open('/Users/ssamko/Documents/주요/kakao.json', mode='rt', encoding='utf-8') as file:
     data = json.load(file)
     password = data['kakao']
