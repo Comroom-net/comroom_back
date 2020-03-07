@@ -1,11 +1,11 @@
-{% extends "base.html" %} {% block header %}
+{% extends "base.html" %} {% block header %} {% if school_id %}
 <script>
   window.onload = function() {
     var button = document.getElementById("clickButton");
     button.form.submit();
   };
 </script>
-{% endblock header %} {% block contents %}
+{% endif %} {% endblock header %} {% block contents %}
 <div class="row mt-5">
   <div class="col-12 text-center">
     <h1>{{school}} 컴{{roomNo}}실</h1>
