@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 from django.db import transaction
 from django.contrib.auth.hashers import make_password
 from .forms import RegisterForm, LoginForm
@@ -75,3 +75,7 @@ def index(request):
         context['thisurl'] = 'http://127.0.0.1:8000'
         #context['thisurl'] = 'http://comroom.net:8000'
     return render(request, 'index.html', context)
+
+
+class AboutView(TemplateView):
+    template_name = "about.html"

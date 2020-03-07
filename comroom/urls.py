@@ -15,15 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from school.views import RegisterView, index, LoginView, logout
+from school.views import RegisterView, index, LoginView, logout, AboutView
 from timetable.views import TimetableView, valid_scode, reserving
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('login/', LoginView.as_view()),
-    path('logout/', logout),
+    path('logout/', logout, name='logout'),
     path('register/', RegisterView.as_view()),
+    path('ssam_ko/', AboutView.as_view(), name='about'),
     path('comroom/', valid_scode),
     path('comroom/<int:roomNo>/<date>/',
          TimetableView.as_view(), name='timetable'),

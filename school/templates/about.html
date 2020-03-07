@@ -1,0 +1,34 @@
+{% extends "base.html" %} {% load static %} {% block contents %}
+<div class="row mt-5">
+  <div class="col-lg-4 mx-auto text-center">
+    <img
+      src="{% static 'jiujitsu.jpg' %}"
+      alt="SSAMKO"
+      class="rounded-circle"
+      height="240px"
+      width="240px"
+    />
+
+    <div class="row mt-5">
+      <p class="mx-auto">
+        <a href="http://instagram.com/ssam_ko">
+          <img
+            src="{% static 'insta_logo.png' %}"
+            height="35px"
+            alt="Instagram"
+          />
+          @ssam_ko </a
+        ><br /><br />
+        <a href="http://youtube.com/c/schoolswat">
+          <img
+            src="{% static 'youtube_logo.png' %}"
+            height="35px"
+            alt="Youtube"
+          />
+          섭섭미디어
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock contents %}
