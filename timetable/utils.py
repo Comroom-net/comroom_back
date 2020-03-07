@@ -50,8 +50,11 @@ class TimetableCreate(HTMLCalendar):
 
     month_name = calendar._localized_month('%m')
 
-    cssclasses = ["월", "tue", "wed", "thu", "fri", "sat", "sun"]
+    cssclasses = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
     cssclasses_weekday_head = cssclasses
+
+    calendar.day_abbr = ["월", "화", "수", "목", "금"]
+    day_name = ["월", "화", "수", "목", "금"]
 
     def __init__(self, school_id=None, roomNo=None, year=None, month=None):
         self.year = year
@@ -66,6 +69,8 @@ class TimetableCreate(HTMLCalendar):
 
     def formatday(self, day):
 
+        today = datetime.now().strftime("%-d")
+
         d = ''
         if day != 0:
             date = f'{self.year}-{self.month}-{day}'
@@ -78,6 +83,8 @@ class TimetableCreate(HTMLCalendar):
                     time=time
                 ):
                     d += f'<div class="col"><a href="#" role="button" class="btn btn-primary btn-sm disabled">{time}</a></div>'
+                elif day < int(today):
+                    d += f'<div class="col"><a href="#" role="button" class="btn btn-secondary btn-sm disabled">{time}</a></div>'
                 else:
                     d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
 
