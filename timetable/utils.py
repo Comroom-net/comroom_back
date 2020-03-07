@@ -44,7 +44,7 @@ class TimetableCreate(HTMLCalendar):
                     time=time
                 ):
                     d += f'<div class="col"><a href="#" role="button" class="btn btn-primary btn-sm disabled">{time}</a></div>'
-                elif (day < today or self.month < thismonth):
+                elif self.month < thismonth or (day < today and self.month == thismonth):
                     d += f'<div class="col"><a href="#" role="button" class="btn btn-secondary btn-sm disabled">{time}</a></div>'
                 else:
                     d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
