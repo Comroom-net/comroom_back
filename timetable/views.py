@@ -27,7 +27,7 @@ class TimetableView(DetailView):
 
         school = School.objects.get(pk=school_id)
         roomNo = roomNo
-        date = date
+        date = date.split('-')
         year = int(date[0])
         month = int(date[1])
 
@@ -48,14 +48,10 @@ class TimetableView(DetailView):
         return render(request, "timetable.html", context=context)
 
     def post(self, request, *args, **kwargs):
-        roomNo = kwargs['roomNo']
-        date = kwargs['date'].split('-')
-        return self.iniTable(request, roomNo=roomNo, date=date)
+        return self.iniTable(request, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        roomNo = kwargs['roomNo']
-        date = kwargs['date'].split('-')
-        return self.iniTable(request, roomNo=roomNo, date=date)
+        return self.iniTable(request, **kwargs)
 
 # def get_date(req_day):
 #     if req_day:
