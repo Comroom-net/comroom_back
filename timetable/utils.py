@@ -12,6 +12,7 @@ class TimetableCreate(HTMLCalendar):
 
     cssclasses = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
     cssclasses_weekday_head = cssclasses
+    cssclass_month_head = "month"
 
     calendar.day_abbr = ["월", "화", "수", "목", "금"]
     day_name = ["월", "화", "수", "목", "금"]
