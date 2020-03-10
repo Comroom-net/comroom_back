@@ -1,4 +1,9 @@
-{% extends "base.html" %} {% load static %} {% block contents %}
+{% extends "base.html" %} {% load static %} 
+{% block title %}
+사이트 제작자 - {{ block.super }}
+{% endblock title %}
+
+{% block contents %}
 <div class="row mt-5">
   <div class="col-lg-4 mx-auto text-center">
     <img
@@ -27,6 +32,8 @@
           />
           섭섭미디어
         </a>
+        <br /><br />
+        <span class="h4">삼양초등학교(충북)</span>
       </p>
     </div>
   </div>

@@ -1,18 +1,16 @@
-{% extends "base.html" %}
-{% block header %}
-
-{% endblock header %}
+{% extends "base.html" %} 
+{% block title %} {{school}} - {{ block.super }} 
+{% endblock title %} 
+{% block header %} {% endblock header %} 
 {% block contents %}
 <div class="fieldWrapper">
-    {{ form.subject.errors }}
-    {{ form.subject.label_tag }}
-    {{ form.subject }}
+  {{ form.subject.errors }} {{ form.subject.label_tag }} {{ form.subject }}
 </div>
 <div class="row mt-5">
   <div class="col-12 text-center">
-    <h3>신청일시<br></h3> 
-    <h5>{{date}}<br>{{time}}교시</h5>
-    <h3>컴퓨터{{roomNo}}실 </h3>
+    <h3>신청일시<br /></h3>
+    <h5>{{date}}<br />{{time}}교시</h5>
+    <h3>컴퓨터{{roomNo}}실</h3>
   </div>
 </div>
 <div class="row mt-5">
@@ -23,17 +21,11 @@
 <div class="row mt-5">
   <div class="col-12">
     <form method="POST" action=".">
-      {% csrf_token %} 
-      {% for field in form.hidden_fields%}
-      {{ field }}
-      {% endfor %}
-      {% for field in form.visible_fields %}
+      {% csrf_token %} {% for field in form.hidden_fields%} {{ field }} {%
+      endfor %} {% for field in form.visible_fields %}
       <div class="form-group">
-        
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {% ifequal field.label '학년' %} 
-        {{ field }} 
-        {% else %}
+        {% ifequal field.label '학년' %} {{ field }} {% else %}
         <input
           type="{{ field.field.widget.input_type }}"
           class="form-control"
@@ -42,7 +34,6 @@
           name="{{ field.name }}"
         />
         {% endifequal %}
-        
       </div>
       {% if field.errors %}
       <span style="color: red;">{{ field.errors }}</span>
@@ -59,7 +50,7 @@
   date.value = '{{date}}'
   time.value = {{time}}
   roomNo.value = {{roomNo}}
-  
+
   console.log(school)
   console.log(date.value)
   console.log(time.value)

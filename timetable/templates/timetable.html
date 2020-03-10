@@ -1,4 +1,8 @@
-{% extends "base.html" %} {% block header %} {% if school_id %}
+{% extends "base.html" %} 
+{% block title %}
+{{school}} - {{ block.super }}
+{% endblock title %}
+{% block header %} {% if school_id %}
 <script>
   window.onload = function() {
     var button = document.getElementById("clickButton");
