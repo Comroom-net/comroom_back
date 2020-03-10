@@ -4,11 +4,11 @@ from .models import School, AdminUser
 
 
 class SchoolAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'province', 'ea', 'reg_date')
 
 
 class AdminUserAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('school', 'realname', 'email', 'reg_date')
 
 
 admin.site.register(School, SchoolAdmin)

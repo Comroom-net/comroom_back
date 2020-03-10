@@ -26,6 +26,7 @@ class TimetableView(DetailView):
             return redirect('/')
 
         school = School.objects.get(pk=school_id)
+        ea = school.ea
         roomNo = roomNo
         date = date.split('-')
         year = int(date[0])
@@ -44,6 +45,7 @@ class TimetableView(DetailView):
         context['roomNo'] = roomNo
         context['year'] = year
         context['month'] = month
+        context['ea'] = range(1, ea+1)
         # print(context['timetable'])
         return render(request, "timetable.html", context=context)
 
