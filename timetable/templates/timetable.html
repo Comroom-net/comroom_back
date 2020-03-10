@@ -12,11 +12,11 @@
 {% endif %} {% endblock header %} {% block contents %}
 <div class="row mt-5">
   <div class="col-12 text-center">
-    <h1>{{school}} 컴{{roomNo}}실</h1>
+    <h1>{{school|slice:":-3"}} 컴{{roomNo}}실</h1>
   </div>
 </div>
 <div class="row">
-  <div class="col-6 text-center">
+  <div class="col-4 text-center">
     <a
       href="/comroom/{{roomNo}}/{{year}}-{{month|add:-1}}"
       class="btn btn-outline-secondary"
@@ -24,7 +24,19 @@
       >이전 달</a
     >
   </div>
-  <div class="col-6 text-center">
+  <div class='col-4 text-center'>
+    <div class="dropdown">
+      <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        컴퓨터실
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="/comroom/1/{{year}}-{{month}}">컴1실</a>
+        <a class="dropdown-item" href="/comroom/2/{{year}}-{{month}}">컴2실</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-4 text-center">
     <a
       href="/comroom/{{roomNo}}/{{year}}-{{month|add:1}}"
       class="btn btn-outline-primary"

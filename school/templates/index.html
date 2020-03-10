@@ -14,10 +14,19 @@
     <button class="copy btn btn-primary">링크 복사</button>
     <a href="logout/" class="btn btn-secondary" role="button">로그아웃</a>
     {% else %}
-    <a href="login/" class="btn btn-primary" role="button">로그인</a>
+    {% if s_code %}
+    <a
+      href="{{thisurl}}/comroom?school={{school}}&s_code={{s_code}}"
+      class="btn btn-primary"
+      role="button"
+      >시간표</a
+    >
+    {% endif %}
+    <a href="login/" class="btn btn-primary" role="button">관리자 로그인</a>
     <a href="register/" class="btn btn-primary" role="button">관리자등록</a>
 
     {% endif %}
+    
   </div>
 </div>
 <div class="row mt-5">

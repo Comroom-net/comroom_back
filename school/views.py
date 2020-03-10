@@ -73,7 +73,10 @@ def index(request):
         context['school'] = school.name
         context['s_code'] = school.s_code
         context['thisurl'] = 'http://127.0.0.1:8000'
-        #context['thisurl'] = 'http://comroom.net:8000'
+        #context['thisurl'] = 'http://comroom.net'
+    elif 's_code' in request.session:
+        context['s_code'] = request.session['s_code']
+
     return render(request, 'index.html', context)
 
 
