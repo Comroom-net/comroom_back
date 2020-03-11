@@ -59,9 +59,14 @@ class AdminUser(models.Model):
 
 class Notice(models.Model):
 
+    title = models.CharField(max_length=128, verbose_name='제목')
+    context = models.TextField(verbose_name='내용')
+    isshow = models.BooleanField(verbose_name='게시여부')
+    reg_date = models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')
+
     class Meta:
         verbose_name = '공지사항'
         verbose_name_plural = '공지사항'
 
     def __str__(self):
-        return str(self.school)+f'_{str(self.realname)}'
+        return self.title

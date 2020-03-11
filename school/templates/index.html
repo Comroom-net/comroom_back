@@ -4,9 +4,9 @@
   <div class="col-12">
     <h2>Hello {{username|default:"Stranger"}}</h2>
     {% if username %}
-    <p>{{thisurl}}/comroom?school={{school}}&s_code={{s_code}}</p>
+    <p>{{request.build_absolute_uri}}comroom?school={{school}}&s_code={{s_code}}</p>
     <a
-      href="{{thisurl}}/comroom?school={{school}}&s_code={{s_code}}"
+      href="{{request.build_absolute_uri}}comroom?school={{school}}&s_code={{s_code}}"
       class="btn btn-primary"
       role="button"
       >시간표</a
@@ -16,7 +16,7 @@
     {% else %}
     {% if s_code %}
     <a
-      href="{{thisurl}}/comroom?school={{school}}&s_code={{s_code}}"
+      href="{{request.build_absolute_uri}}comroom?school={{school}}&s_code={{s_code}}"
       class="btn btn-primary"
       role="button"
       >시간표</a
@@ -50,7 +50,7 @@
 <script>
   document.querySelector(".copy").addEventListener("click", function() {
     var tempElem = document.createElement("textarea");
-    tempElem.value = "{{thisurl}}/comroom?school={{school}}&s_code={{s_code}}";
+    tempElem.value = "{{request.build_absolute_uri}}comroom?school={{school}}&s_code={{s_code}}";
     document.body.appendChild(tempElem);
 
     tempElem.select();
