@@ -34,7 +34,7 @@
   <div class="col-12">
     <ul>
     {% for notice in notices %}
-      <li>{{notice.context}} <small class="text-muted">- {{notice.reg_date|date:"y.n.j"}}</small></li>
+      <li>{{notice.context|safe}} <small class="text-muted">- {{notice.reg_date|date:"y.n.j"}}</small></li>
     {% endfor %}
       
     </ul>

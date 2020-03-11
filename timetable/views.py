@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from datetime import datetime, date
 from django.http import HttpResponse
-from django.utils.safestring import mark_safe
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, FormView
 from .models import Timetable

@@ -1,8 +1,5 @@
 {% extends "base.html" %} {% load static %} 
-{% block title %}
-사이트 제작자 - {{ block.super }}
-{% endblock title %}
-
+{% block title %} 사이트 제작자 - {{ block.super }} {% endblock title %} 
 {% block contents %}
 <div class="row mt-5">
   <div class="col-lg-4 mx-auto text-center">
@@ -31,6 +28,15 @@
             alt="Youtube"
           />
           섭섭미디어
+        </a>
+        <br /><br />
+        <a href="http://qr.kakao.com/talk/koNBb4lY2cSYZ2jkMeAI.ir1KO0-">
+          <img
+            src="{% static 'kakao_logo.png' %}"
+            height="35px"
+            alt="kakaotalk"
+          />
+          ssamko
         </a>
         <br /><br />
         <span class="h4">삼양초등학교(충북)</span>
