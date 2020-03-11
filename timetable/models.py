@@ -11,7 +11,7 @@ class Timetable(models.Model):
         verbose_name_plural = '이용시간표'
 
     def __str__(self):
-        return str(self.school)+f'({str(self.date)} {str(self.time)}교시)'
+        return f'{str(self.date)} {str(self.time)}교시 - '+str(self.school)
 
     school = models.ForeignKey(
         'school.School', on_delete=models.CASCADE, verbose_name='학교')

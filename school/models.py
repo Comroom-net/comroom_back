@@ -55,3 +55,13 @@ class AdminUser(models.Model):
 
     def __str__(self):
         return str(self.school)+f'_{str(self.realname)}'
+
+
+class Notice(models.Model):
+
+    class Meta:
+        verbose_name = '공지사항'
+        verbose_name_plural = '공지사항'
+
+    def __str__(self):
+        return str(self.school)+f'_{str(self.realname)}'
