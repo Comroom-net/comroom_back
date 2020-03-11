@@ -3,7 +3,7 @@ from django.views.generic import FormView, TemplateView
 from django.db import transaction
 from django.contrib.auth.hashers import make_password
 from .forms import RegisterForm, LoginForm
-from .models import School, AdminUser
+from .models import School, AdminUser, Notice
 import random
 # Create your views here.
 
@@ -66,14 +66,17 @@ def index(request):
     username = request.session.get('username')
     user_id = request.session.get('user_id')
 
+    # get notice objects
+    notices = Notice.objects.filter(isshow=True)
+    context['notices'] = notices
+
     if username:
 
         school = AdminUser.objects.get(realname=username, user=user_id).school
         context['username'] = username
         context['school'] = school.name
         context['s_code'] = school.s_code
-        context['thisurl'] = 'http://127.0.0.1:8000'
-        #context['thisurl'] = 'http://comroom.net'
+
     elif 's_code' in request.session:
         context['s_code'] = request.session['s_code']
 
