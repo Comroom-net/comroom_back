@@ -61,7 +61,7 @@ class Notice(models.Model):
 
     title = models.CharField(max_length=128, verbose_name='제목')
     context = models.TextField(verbose_name='내용')
-    isshow = models.BooleanField(verbose_name='게시여부')
+    isshow = models.BooleanField(verbose_name='게시여부', default=True)
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')
 
     class Meta:
