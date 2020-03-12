@@ -150,10 +150,14 @@ def make_room(request):
     schools = School.objects.all()
     for school in schools:
         for room in range(school.ea):
+
             a = Comroom(school=school,
                         name=f'컴{room+1}실',
                         caption='위치, 이용안내 등',
                         roomNo=room+1)
-            a.save()
+            # 이미 존재하는지 검사
+            if not Comroom.objects.filter(school=school,
+                                          roomNo=room+1).exists():
+                a.save()
 
     return redirect('/')
