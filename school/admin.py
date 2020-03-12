@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import School, AdminUser, Notice
+from .models import School, AdminUser, Notice, Comroom
 # Register your models here.
 
 
@@ -9,7 +9,9 @@ class SchoolAdmin(admin.ModelAdmin):
         return obj.reg_date.strftime("%Y-%m-%d")
     date_kor.admin_order_field = 'reg_date'
     date_kor.short_description = '등록일'
-    list_display = ('name', 'province', 'ea', 'date_kor')
+    list_display = ('id', 'name', 'province', 'ea', 'date_kor')
+    list_filter = ('name', 'province', )
+    search_fields = ['school__name']
 
 
 class AdminUserAdmin(admin.ModelAdmin):
@@ -28,6 +30,11 @@ class NoticeAdmin(admin.ModelAdmin):
     list_display = ('title', 'isshow', 'date_kor')
 
 
+class ComroomAdmin(admin.ModelAdmin):
+    list_display = ('school', 'roomNo')
+
+
 admin.site.register(School, SchoolAdmin)
 admin.site.register(AdminUser, AdminUserAdmin)
 admin.site.register(Notice, NoticeAdmin)
+admin.site.register(Comroom, ComroomAdmin)

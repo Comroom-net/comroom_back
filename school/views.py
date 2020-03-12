@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic import FormView, TemplateView
+from django.views import View
 from django.db import transaction
 from django.contrib.auth.hashers import make_password
-from .forms import RegisterForm, LoginForm
-from .models import School, AdminUser, Notice
+from django.forms import formset_factory
+from .forms import RegisterForm, LoginForm, ComroomAdminForm
+from .models import School, AdminUser, Notice, Comroom
 import random
 # Create your views here.
 
@@ -33,6 +35,13 @@ class RegisterView(FormView):
             self.request.session['username'] = adminUser.realname
             self.request.session['user_id'] = adminUser.user
             adminUser.save()
+            for i in range(int(form.data.get('ea'))):
+                comroom = Comroom(
+                    school=school,
+                    roomNo=i+1,
+                    name=f"컴{i+1}실"
+                )
+                comroom.save()
 
         return super().form_valid(form)
 
@@ -76,6 +85,7 @@ def index(request):
         context['username'] = username
         context['school'] = school.name
         context['s_code'] = school.s_code
+        request.session['school_info'] = school.id
 
     elif 's_code' in request.session:
         context['s_code'] = request.session['s_code']
@@ -85,3 +95,63 @@ def index(request):
 
 class AboutView(TemplateView):
     template_name = "about.html"
+
+
+class ComroomAdminView(View):
+    template_name = 'comroom_admin.html'
+    success_url = '/'
+    context = {}
+
+    def get(self, request, *args, **kwargs):
+        context = self.context
+        forms = []
+        try:
+            school = School.objects.get(id=request.session['school_info'])
+        except:
+            redirect('/')
+
+        for i in range(school.comroom_set.count()):
+            room = school.comroom_set.get(roomNo=i+1)
+            # initial form by getting data from DB
+            comform = ComroomAdminForm(initial={'room_name': room.name,
+                                                'room_caption': room.caption,
+                                                })
+            #form_name = 'form'+str(i+1)
+
+            forms.append(comform)
+
+        context['forms'] = forms
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        context = self.context
+        forms = []
+
+        school = School.objects.get(id=request.session['school_info'])
+
+        for i in range(school.comroom_set.count()):
+
+            # bind form with instance
+            form = school.comroom_set.get(roomNo=i+1)
+            print(form)
+            print(request.POST)
+            form.name = request.POST['room_name'+str(i+1)]
+            form.caption = request.POST['room_caption'+str(i+1)]
+            form.save()
+
+        return redirect('/')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+
+def ComAdmin(request):
+    school = School.objects.get(id=request.session['school_info'])
+
+    if request.method == 'GET':
+        for i in range(school.comroom_set.count()):
+            room = school.comroom_set.get(roomNo=i+1)
+            print(room.name)
+
+    return redirect('/')

@@ -46,6 +46,8 @@ class TimetableView(DetailView):
         context['year'] = year
         context['month'] = month
         context['ea'] = range(1, ea+1)
+        context['comroom'] = school.comroom_set.get(roomNo=roomNo)
+        context['roomset'] = school.comroom_set.all()
         # print(context['timetable'])
         return render(request, "timetable.html", context=context)
 

@@ -40,6 +40,17 @@ class School(models.Model):
         return str(self.name)+f'({str(self.province)})'
 
 
+class Comroom(models.Model):
+    school = models.ForeignKey('School', on_delete=models.CASCADE,
+                               verbose_name='학교')
+    name = models.CharField(max_length=64, verbose_name='교실명', default='컴퓨터')
+    caption = models.TextField(verbose_name='교실설명', null=True)
+    roomNo = models.IntegerField(verbose_name='교실번호')
+
+    class Meta:
+        verbose_name_plural = '컴퓨터실 정보'
+
+
 class AdminUser(models.Model):
     school = models.ForeignKey(
         'School', on_delete=models.CASCADE, verbose_name='학교')

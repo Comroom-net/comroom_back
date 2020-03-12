@@ -95,14 +95,14 @@ class RegisterForm(forms.Form):
         if school:
             if not '학교'in school:
                 self.add_error('name', '전체 이름을 입력해주세요.(\'OO초등학교\')')
-            try:
-                school_exist = School.objects.get(
-                    name=school, province=province)
-                admin = AdminUser.objects.get(school=school_exist)
-                self.add_error(
-                    'name', f'이미 등록된 학교입니다. {admin.realname} 선생님({admin.email})께 문의하세요.')
-            except:
-                pass
+            # try:
+            #     school_exist = School.objects.get(
+            #         name=school, province=province)
+            #     admin = AdminUser.objects.get(school=school_exist)
+            #     self.add_error(
+            #         'name', f'이미 등록된 학교입니다. {admin.realname} 선생님({admin.email})께 문의하세요.')
+            # except:
+            #     pass
 
 
 class LoginForm(forms.Form):
@@ -133,3 +133,17 @@ class LoginForm(forms.Form):
 
             if not check_password(password, admin_user.password):
                 self.add_error('password', '비밀번호가 틀렸습니다.')
+
+
+class ComroomAdminForm(forms.Form):
+    room_name = forms.CharField(
+        error_messages={
+            'required': '교실명을 입력하세요.'
+        },
+        max_length=64, label='교실명'
+    )
+    room_caption = forms.CharField(
+        label='교실설명',
+        initial="위치, 이용안내, 유의사항 등을 입력하세요.",
+        widget=forms.Textarea
+    )

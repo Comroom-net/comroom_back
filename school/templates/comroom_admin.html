@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block header %} {% endblock header %} 
+{% block contents %}
+<div>
+  <form method="POST" action="#">
+    {% csrf_token %}
+    <fieldset>
+    <div class="row mt-4">
+        <div class="col-12">
+            <legend>컴퓨터실 정보</legend>  
+        </div>
+    </div>
+      
+        {% for form in forms %}
+            {% for field in form %}
+
+                <div class="form-group">
+                {% ifequal field.name 'room_name' %}
+                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                    <input type="{{ field.field.widget.input_type }}" 
+                    class = "form-control" id="{{field.id_for_label}}"
+                    name="{{field.name}}{{forloop.parentloop.counter}}"
+                    value="{{field.value}}"
+                    >
+                {% else %}
+                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                    <textarea class = "form-control" id="{{field.id_for_label}}"                     
+                    name="{{field.name}}{{forloop.parentloop.counter}}"
+                    >{{field.value}}</textarea>
+                {% endifequal %}
+                </div>
+                {% if field.errors %}
+                    <span style="color: red;">{{ field.errors }}</span>
+                {% endif %}
+            {% endfor %}
+
+        {% endfor %}
+      <button type="submit" class="btn btn-primary">등록</button>
+    </fieldset>
+  </form>
+</div>
+{% endblock contents %}

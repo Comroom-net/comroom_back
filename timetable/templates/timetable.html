@@ -1,6 +1,5 @@
-{% extends "base.html" %} 
-{% block title %} {{school}} - {{ block.super }} 
-{% endblock title %} {% block header %}
+{% extends "base.html" %} {% block title %} {{school}} - {{ block.super }}
+ {% endblock title %} {% block header %}
 
 <script>
   $(function() {
@@ -8,10 +7,10 @@
   });
 </script>
 <style>
-.btn.booked {
-  opacity: .65;
-  color: #fff;
-}
+  .btn.booked {
+    opacity: 0.65;
+    color: #fff;
+  }
 </style>
 {% if school_id %}
 <script>
@@ -23,8 +22,16 @@
 {% endif %} {% endblock header %} {% block contents %}
 <div class="row mt-5">
   <div class="col-12 text-center">
-    <h1>{{school|slice:":-3"}} 컴{{roomNo}}실</h1>
+    <h1>{{school|slice:":-3"}} <small>{{comroom.name}}</small></h1>
   </div>
+</div>
+<div class="row">
+  <div class='col-12 text-center'>
+    <p class="text-muted">
+      {{comroom.caption|default:""}}
+    </p>
+  </div>
+  
 </div>
 <div class="row">
   <div class="col-4 text-center">
@@ -48,9 +55,9 @@
         컴퓨터실
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {% for i in ea %}
-        <a class="dropdown-item" href="/comroom/{{i}}/{{year}}-{{month}}"
-          >컴{{i}}실</a
+        {% for room in roomset %}
+        <a class="dropdown-item" href="/comroom/{{forloop.counter}}/{{year}}-{{month}}"
+          >{{room.name}}</a
         >
         {% endfor %}
       </div>
@@ -80,5 +87,4 @@
   </div>
 </div>
 
-{% endblock contents %} {% block footer %} {{ block.super }} 
-{% endblock footer %}
+{% endblock contents %}
