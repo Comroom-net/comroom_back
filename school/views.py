@@ -146,12 +146,14 @@ class ComroomAdminView(View):
         return super().form_valid(form)
 
 
-def ComAdmin(request):
-    school = School.objects.get(id=request.session['school_info'])
-
-    if request.method == 'GET':
-        for i in range(school.comroom_set.count()):
-            room = school.comroom_set.get(roomNo=i+1)
-            print(room.name)
+def make_room(request):
+    schools = School.objects.all()
+    for school in schools:
+        for room in range(school.ea):
+            a = Comroom(school=school,
+                        name=f'컴{room+1}실',
+                        caption='위치, 이용안내 등',
+                        roomNo=room+1)
+            a.save()
 
     return redirect('/')
