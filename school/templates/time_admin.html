@@ -18,6 +18,7 @@
     <table class="table">
       <thead>
         <th scope="col">#</th>
+        <th scope="col">교실</th>
         <th scope="col">예약일</th>
         <th scope="col">시간</th>
         <th scope="col">학년</th>
@@ -30,6 +31,7 @@
         {% for time in times %}
         <tr>
           <th scope="row">{{forloop.counter}}</th>
+          <td>{{time.roomNo}}</td>
           <td>{{time.date|date:"y/m/d"}}</td>
           <td>{{time.time}}교시</td>
           <td>{{time.grade}}</td>

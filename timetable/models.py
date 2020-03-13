@@ -1,4 +1,5 @@
 from django.db import models
+from school.models import Comroom
 
 
 # Create your models here.
@@ -36,5 +37,11 @@ class Timetable(models.Model):
                                    (6, 6)
                                ))
     roomNo = models.IntegerField(verbose_name='컴퓨터실번호')
+    room = models.ForeignKey('school.Comroom',
+                             on_delete=models.CASCADE, verbose_name='교실', null=True)
     teacher = models.CharField(max_length=16, verbose_name='선생님')
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='예약등록시간')
+
+
+def room_default():
+    return {}

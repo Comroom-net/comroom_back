@@ -50,6 +50,9 @@ class Comroom(models.Model):
     class Meta:
         verbose_name_plural = '컴퓨터실 정보'
 
+    def __str__(self):
+        return self.name+' - '+str(self.school)
+
 
 class AdminUser(models.Model):
     school = models.ForeignKey(
