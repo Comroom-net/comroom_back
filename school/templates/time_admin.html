@@ -31,7 +31,7 @@
         {% for time in times %}
         <tr>
           <th scope="row">{{forloop.counter}}</th>
-          <td>{{time.roomNo}}</td>
+          <td>{{time.room.name}}</td>
           <td>{{time.date|date:"y/m/d"}}</td>
           <td>{{time.time}}교시</td>
           <td>{{time.grade}}</td>
