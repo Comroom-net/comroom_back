@@ -11,7 +11,7 @@ class TimetableAdmin(admin.ModelAdmin):
     date_kor.admin_order_field = 'reg_date'
     date_kor.short_description = '등록일시'
 
-    list_display = ('__str__', 'roomNo', 'teacher', 'date_kor')
+    list_display = ('id', '__str__', 'roomNo', 'teacher', 'date_kor')
     list_filter = ('school',)
     search_fields = ['school__name']
 

@@ -5,7 +5,7 @@
     {% csrf_token %}
     <fieldset>
     <div class="row mt-4">
-        <div class="col-12">
+        <div class="col-12 text-center">
             <legend>컴퓨터실 정보</legend>  
         </div>
     </div>
@@ -14,13 +14,19 @@
             {% for field in form %}
 
                 <div class="form-group">
+                
                 {% ifequal field.name 'room_name' %}
-                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                
+                    <label for="{{field.id_for_label}}">{{field.label}}</label>
+                
+                
                     <input type="{{ field.field.widget.input_type }}" 
                     class = "form-control" id="{{field.id_for_label}}"
                     name="{{field.name}}{{forloop.parentloop.counter}}"
                     value="{{field.value}}"
                     >
+                
+                
                 {% else %}
                 <label for="{{field.id_for_label}}">{{field.label}}</label>
                     <textarea class = "form-control" id="{{field.id_for_label}}"                     
@@ -31,8 +37,9 @@
                 {% if field.errors %}
                     <span style="color: red;">{{ field.errors }}</span>
                 {% endif %}
+                
             {% endfor %}
-
+            <hr>
         {% endfor %}
       <button type="submit" class="btn btn-primary">등록</button>
     </fieldset>

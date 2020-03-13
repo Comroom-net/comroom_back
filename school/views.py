@@ -39,7 +39,8 @@ class RegisterView(FormView):
                 comroom = Comroom(
                     school=school,
                     roomNo=i+1,
-                    name=f"컴{i+1}실"
+                    name=f"컴{i+1}실",
+                    caption='위치, 교실 이용방법, 이용시 주의사항 등'
                 )
                 comroom.save()
 
@@ -145,6 +146,8 @@ class ComroomAdminView(View):
     def form_valid(self, form):
         return super().form_valid(form)
 
+# 새로 생긴 컴퓨터룸 table에 학교별 데이터 생성하기 위한 함수
+
 
 def make_room(request):
     schools = School.objects.all()
@@ -161,3 +164,29 @@ def make_room(request):
                 a.save()
 
     return redirect('/')
+
+
+def time_admin(request):
+    template_name = "time_admin.html"
+    context = {}
+    times = []
+
+    school = School.objects.get(id=request.session['school_info'])
+    timetables = school.timetable_set.all()
+
+    for i in range(timetables.count()):
+        times.append(timetables[i])
+
+    context['times'] = times
+
+    return render(request, template_name, context)
+    # return redirect('/')
+
+
+def del_time(request, **kwargs):
+
+    school = School.objects.get(id=request.session['school_info'])
+    timetables = school.timetable_set.all()
+    timetables[kwargs['i']].delete()
+
+    return redirect('/time_admin/')

@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
-from school.views import RegisterView, index, LoginView, logout, AboutView, ComroomAdminView, make_room
+from school.views import RegisterView, index, LoginView, logout, AboutView, ComroomAdminView, make_room, time_admin, del_time
 from timetable.views import TimetableView, valid_scode, reserving
 
 urlpatterns = [
@@ -27,6 +27,8 @@ urlpatterns = [
     path('register/', RegisterView.as_view()),
     path('make_room/', make_room),
     path('comroom_admin/', ComroomAdminView.as_view()),
+    path('time_admin/', time_admin),
+    path('del_time/<int:i>', del_time),
     path('ssam_ko/', AboutView.as_view(), name='about'),
     path('howto/', TemplateView.as_view(template_name="howto.html")),
     path('whatis/', TemplateView.as_view(template_name="whatis.html")),

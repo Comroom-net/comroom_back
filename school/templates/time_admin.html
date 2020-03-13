@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block contents %}
+
+<div class="row mt-5">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <th scope="col">#</th>
+        <th scope="col">예약일</th>
+        <th scope="col">시간</th>
+        <th scope="col">학년</th>
+        <th scope="col">반</th>
+        <th scope="col">선생님</th>
+        <th scope="col">등록일</th>
+        <th scope="col">삭제</th>
+      </thead>
+      <tbody>
+        {% for time in times %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td>{{time.date|date:"y/m/d"}}</td>
+          <td>{{time.time}}교시</td>
+          <td>{{time.grade}}</td>
+          <td>{{time.classNo}}</td>
+          <td>{{time.teacher}}</td>
+          <td>{{time.reg_date|date:"y/m/d H:i"}}</td>
+          <td>
+            <a
+              href="/del_time/{{forloop.counter|add:-1}}"
+              class="btn-danger btn"
+              >삭제</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock contents %}
