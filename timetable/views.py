@@ -100,17 +100,21 @@ def reserving(request, **kwargs):
             time=form.data.get('time'),
             roomNo=form.data.get('roomNo'),
             teacher=form.data.get('teacher'),
+            room=school.comroom_set.get(roomNo=form.data.get('roomNo'))
         )
         booking.save()
         print('save')
         return redirect('/comroom/?school='+school.name+'&s_code='+str(school.s_code))
     if request.method == "GET":
         context = {}
+        school = School.objects.get(pk=kwargs['pk'])
         context['form'] = BookingForm()
         context['date'] = kwargs['date']
         context['roomNo'] = kwargs['roomNo']
         context['time'] = kwargs['time']
-        context['school'] = School.objects.get(pk=kwargs['pk']).id
+        context['school'] = school.id
+        context['room_name'] = school.comroom_set.get(
+            roomNo=kwargs['roomNo']).name
 
         return render(request, template_name, context)
 
