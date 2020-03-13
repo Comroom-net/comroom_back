@@ -6,6 +6,11 @@
     });
   });
 </script>
+<style>
+  .btn.del {
+    color: #fff;
+  }
+</style>
 {% endblock header %} {% block contents %}
 
 <div class="row mt-5">
@@ -35,7 +40,7 @@
             <a
               tabindex="0"
               role="button"
-              class="btn btn-danger"
+              class="btn btn-danger del"
               data-toggle="popover"
               data-trigger="focus"
               title="삭제확인"
