@@ -172,7 +172,7 @@ def time_admin(request):
     times = []
 
     school = School.objects.get(id=request.session['school_info'])
-    timetables = school.timetable_set.all()
+    timetables = school.timetable_set.all().order_by('-date')
 
     for i in range(timetables.count()):
         times.append(timetables[i])
