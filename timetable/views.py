@@ -57,12 +57,6 @@ class TimetableView(DetailView):
     def get(self, request, *args, **kwargs):
         return self.iniTable(request, **kwargs)
 
-# def get_date(req_day):
-#     if req_day:
-#         year, month = (int(x) for x in req_day.split('-'))
-#         return date(year, month, day=1)
-#     return datetime.today()
-
 
 def valid_scode(request):
     school = request.GET.get('school')
@@ -88,51 +82,6 @@ def valid_scode(request):
 
     return redirect('/comroom/1')
 
-
-# class BookingView(FormView):
-#     template_name = 'booking.html'
-#     form_class = BookingForm
-#     success_url = '/'
-
-#     def get(self, request, *args, **kwargs):
-#         form = self.form_class(initial=self.initial)
-#         year = kwargs['year']
-#         month = kwargs['month']
-#         day = kwargs['day']
-#         roomNo = kwargs['roomNo']
-#         time = kwargs['time']
-#         school = School.objects.get(pk=kwargs['pk']).id
-#         return render(request, self.template_name, {'form': form, 'year': year,
-#                                                     'month': month, 'day': day,
-#                                                     'roomNo': roomNo, 'time': time,
-#                                                     'school':school})
-
-#     # def get_context_data(self, **kwargs):
-#     #     year = kwargs['year']
-
-#     # def post(self, request, *args, **kwargs):
-#     #     self.form_valid()
-
-#     def form_valid(self, form):
-#         id = form.data.get('school')
-#         print('start save')
-#         booking = Timetable(
-#             school=School.objects.get(pk=id),
-#             grade=form.data.get('grade'),
-#             classNo=form.data.get('classNo'),
-#             date=form.data.get('date'),
-#             time=form.data.get('time'),
-#             roomNo=form.data.get('roomNo'),
-#             teacher=form.data.get('teacher'),
-#         )
-#         booking.save()
-#         print('save')
-
-
-#         return super().form_valid(form)
-
-#     def form_invalid(self, form):
-#         return redirect('/')
 
 def reserving(request, **kwargs):
     template_name = 'booking.html'
@@ -165,19 +114,14 @@ def reserving(request, **kwargs):
 
         return render(request, template_name, context)
 
+# Timetable model에 room field추가에 따른 기존 data에 foreign key assign
 
-# class ReservingView(DetailView):
-#     template_name = 'booking.html'
-#     queryset = School.objects.all()
-#     context_object = 'reserve'
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['year'] = kwargs['year']
-#         context['month'] = kwargs['month']
-#         context['day'] = kwargs['day']
-#         context['roomNo'] = kwargs['roomNo']
-#         context['time'] = kwargs['time']
-#         context['school'] = School.objects.get(pk=kwargs['pk']).id
-#         context["form"] = BookingForm(self.request)
-#         return context
+def assign_room(request):
+    timetables = Timetable.objects.all()
+    for timetable in timetables:
+        timetable.room = timetable.school.comroom_set.get(
+            roomNo=timetable.roomNo)
+        timetable.save()
+
+    return redirect('/')
