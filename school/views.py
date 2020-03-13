@@ -186,7 +186,7 @@ def time_admin(request):
 def del_time(request, **kwargs):
 
     school = School.objects.get(id=request.session['school_info'])
-    timetables = school.timetable_set.all()
+    timetables = school.timetable_set.all().order_by('-date')
     timetables[kwargs['i']].delete()
 
     return redirect('/time_admin/')
