@@ -35,12 +35,22 @@
 </div>
 <div class="row">
   <div class="col-4 text-center">
+    {% ifequal month 1 %}
+    <a
+      href="/comroom/{{roomNo}}/{{year|add:-1}}-12"
+      class="btn btn-outline-secondary"
+      role="button"
+      >이전 달</a
+    >
+    {% else %}  
     <a
       href="/comroom/{{roomNo}}/{{year}}-{{month|add:-1}}"
       class="btn btn-outline-secondary"
       role="button"
       >이전 달</a
     >
+    {% endifequal %}
+    
   </div>
   <div class="col-4 text-center">
     <div class="dropdown">
@@ -64,12 +74,23 @@
     </div>
   </div>
   <div class="col-4 text-center">
-    <a
+  {% ifequal month 12 %}
+  <a
+      href="/comroom/{{roomNo}}/{{year|add:1}}-1"
+      class="btn btn-outline-primary"
+      role="button"
+      >다음 달</a
+    >
+  
+  {% else %}
+  <a
       href="/comroom/{{roomNo}}/{{year}}-{{month|add:1}}"
       class="btn btn-outline-primary"
       role="button"
       >다음 달</a
     >
+  {% endifequal %}
+    
   </div>
 </div>
 <div class="row mt-5">
