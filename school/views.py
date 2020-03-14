@@ -20,7 +20,7 @@ class RegisterView(FormView):
 
             school = School(
                 province=form.data.get('province'),
-                name=form.data.get('name'),
+                name=form.data.get('name')+'초등학교',
                 ea=form.data.get('ea'),
                 s_code=random.randint(1000, 9999)
             )
@@ -81,12 +81,15 @@ def index(request):
     context['notices'] = notices
 
     if username:
-
-        school = AdminUser.objects.get(realname=username, user=user_id).school
-        context['username'] = username
-        context['school'] = school.name
-        context['s_code'] = school.s_code
-        request.session['school_info'] = school.id
+        try:
+            school = AdminUser.objects.get(
+                realname=username, user=user_id).school
+            context['username'] = username
+            context['school'] = school.name
+            context['s_code'] = school.s_code
+            request.session['school_info'] = school.id
+        except:
+            redirect('/')
 
     elif 's_code' in request.session:
         context['s_code'] = request.session['s_code']

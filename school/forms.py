@@ -33,7 +33,7 @@ class RegisterForm(forms.Form):
         error_messages={
             'required': '학교명을 입력해주세요.'
         },
-        max_length=64, label='학교명  ex)단밤초등학교'
+        max_length=64, label='학교명'
     )
     ea = forms.IntegerField(
         error_messages={
@@ -92,9 +92,7 @@ class RegisterForm(forms.Form):
                 self.add_error('user', '이미 존재하는 아이디입니다.')
             except:
                 pass
-        if school:
-            if not '학교'in school:
-                self.add_error('name', '전체 이름을 입력해주세요.(\'OO초등학교\')')
+
             # try:
             #     school_exist = School.objects.get(
             #         name=school, province=province)
