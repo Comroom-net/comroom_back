@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}
+FAQ - {{ block.super }}
+{% endblock title %}
+{% block nav-faq %}
+active
+{% endblock nav-faq %}
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12 text-center"><h4>FAQ</h4></div>
+</div>
+<div class="row row-cols-1 row-cols-md-2 mt-5">
+    
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                무료인가요?
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">네, 완전 무료입니다.</h5>
+                <p class="card-text">앞으로도 쭉 무료로 제공될 예정이며, 서버(GCE)운영비용은 후원을 통해 충당할 예정입니다.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                학교 선생님들이 다 가입해야 하나요?
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">학교당 한 분만 가입하시면 됩니다.</h5>
+                <p class="card-text">학교 관리자로 한 분이 가입하시고, 링크만 공유하면 별다른 로그인 절차없이 바로 이용가능합니다.</p>
+                <a href="/howto" class="btn btn-primary">사이트 이용방법</a>
+            </div>
+        </div>
+    </div>
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                다른 학교 시간표도 볼 수 있나요?
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">어렵습니다.</h5>
+                <p class="card-text">학교마다 고유의 학교코드를 발급하고 있어서, 관리자에게 부여 된 주소를 통해서만 해당 학교의 페이지에 접속이 가능합니다.  <br>다른 학교의 학교코드를 알아내지 않는 한 접속할 수 없습니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock contents %}

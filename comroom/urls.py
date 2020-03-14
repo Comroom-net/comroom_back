@@ -33,6 +33,7 @@ urlpatterns = [
     path('ssam_ko/', AboutView.as_view(), name='about'),
     path('howto/', TemplateView.as_view(template_name="howto.html")),
     path('whatis/', TemplateView.as_view(template_name="whatis.html")),
+    path('FAQ/', TemplateView.as_view(template_name="faq.html")),
     path('comroom/', valid_scode),
     path('comroom/<int:roomNo>/<date>/',
          TimetableView.as_view(), name='timetable'),
