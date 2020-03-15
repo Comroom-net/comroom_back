@@ -112,7 +112,7 @@ def reserving(request, **kwargs):
         context['date'] = kwargs['date']
         context['roomNo'] = kwargs['roomNo']
         context['time'] = kwargs['time']
-        context['school'] = school.id
+        context['school'] = school.name
         context['room_name'] = school.comroom_set.get(
             roomNo=kwargs['roomNo']).name
 
