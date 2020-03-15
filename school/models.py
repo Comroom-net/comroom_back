@@ -26,7 +26,7 @@ province_list = [
 class School(models.Model):
     province = models.CharField(max_length=32, verbose_name='교육청',
                                 choices=province_list)
-    name = models.CharField(max_length=64, verbose_name='학교명')
+    name = models.CharField(max_length=32, verbose_name='학교명')
     s_code = models.IntegerField(verbose_name='학교코드')
     ea = models.IntegerField(verbose_name='컴퓨터실 수')
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')

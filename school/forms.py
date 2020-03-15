@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.hashers import check_password
+from django.core.validators import MaxValueValidator
 from .models import School, AdminUser
 
 
@@ -37,9 +38,13 @@ class RegisterForm(forms.Form):
     )
     ea = forms.IntegerField(
         error_messages={
-            'required': '교내 컴퓨터실 수를 입력해주세요.'
+            'required': '교내 컴퓨터실 수를 입력해주세요.',
+            'max_value': '한 학교당 5개까지만 가능합니다. 더 필요하시면 메일주세요.',
         },
-        label='교내 컴퓨터실 수'
+        label='교내 컴퓨터실 수',
+        validators=[
+            MaxValueValidator(5)
+        ]
     )
     user = forms.CharField(
         error_messages={
