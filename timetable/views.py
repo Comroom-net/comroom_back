@@ -85,6 +85,7 @@ def valid_scode(request):
 
 def reserving(request, **kwargs):
     template_name = 'booking.html'
+    context = {}
 
     if request.method == 'POST':
 
@@ -98,7 +99,6 @@ def reserving(request, **kwargs):
             classNo=form.data.get('classNo'),
             date=form.data.get('date'),
             time=form.data.get('time'),
-            roomNo=form.data.get('roomNo'),
             teacher=form.data.get('teacher'),
             room=school.comroom_set.get(roomNo=form.data.get('roomNo'))
         )
@@ -118,9 +118,49 @@ def reserving(request, **kwargs):
 
         return render(request, template_name, context)
 
+    return render(request, template_name, context)
+
+
+class BookTime(FormView):
+    template_name = 'booking.html'
+    form_class = BookingForm
+    url_date = datetime.now().strftime("%Y-%m")
+    success_url = '/comroom/1/'+url_date
+    school_id = 2
+    date = '2020-01-08'
+    time = 1
+    roomNo = 1
+
+    # def get(self, request, *args, **kwargs):
+    #     self.school_id = kwargs['pk']
+    #     self.date = kwargs['date']
+    #     self.time = kwargs['time']
+    #     self.roomNo = kwargs['roomNo']
+    #     return render(request, self.template_name, {'form': BookingForm()})
+
+    def get(self, request, *args, **kwargs):
+        school_id = self.request.session['school']
+        school = School.objects.get(id=school_id)
+        comroom = school.comroom_set.get(roomNo=kwargs['roomNo'])
+        self.room = comroom.name
+        return self.render_to_response(self.get_context_data())
+
+    def form_valid(self, form):
+        school = School.objects.get(pk=self.kwargs['pk'])
+        booking = Timetable(
+            school=school,
+            grade=form.cleaned_data['grade'],
+            classNo=form.cleaned_data['classNo'],
+            teacher=form.cleaned_data['teacher'],
+            date=datetime.strptime(self.kwargs['date'], "%Y-%m-%d"),
+            time=self.kwargs['time'],
+            room=school.comroom_set.get(roomNo=self.kwargs['roomNo'])
+        )
+        booking.save()
+        return super().form_valid(form)
+
+
 # Timetable model에 room field추가에 따른 기존 data에 foreign key assign
-
-
 def assign_room(request):
     timetables = Timetable.objects.all()
     for timetable in timetables:

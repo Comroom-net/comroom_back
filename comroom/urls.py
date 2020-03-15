@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 from school.views import RegisterView, index, LoginView, logout, AboutView, ComroomAdminView, make_room, time_admin, del_time, ex_login
-from timetable.views import TimetableView, valid_scode, reserving, assign_room
+from timetable.views import TimetableView, valid_scode, reserving, assign_room, BookTime
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,5 +39,5 @@ urlpatterns = [
     path('comroom/<int:roomNo>/<date>/',
          TimetableView.as_view(), name='timetable'),
     path('comroom/<int:pk>/<int:roomNo>/<date>/<int:time>/',
-         reserving)
+         BookTime.as_view())
 ]

@@ -14,7 +14,7 @@ class TimetableCreate(HTMLCalendar):
     cssclasses_weekday_head = cssclasses
     cssclass_month_head = "month"
 
-    calendar.day_abbr = ["월", "화", "수", "목", "금"]
+    calendar.day_abbr = ["월", "화", "수", "목", "금", "토", "일"]
     day_name = ["월", "화", "수", "목", "금"]
 
     def __init__(self, school_id=None, roomNo=None, year=None, month=None):
@@ -41,7 +41,7 @@ class TimetableCreate(HTMLCalendar):
                 try:
                     booked = Timetable.objects.get(
                         school=self.school,
-                        roomNo=self.roomNo,
+                        room=self.school.comroom_set.get(roomNo=self.roomNo),
                         date=date,
                         time=time
                     )
