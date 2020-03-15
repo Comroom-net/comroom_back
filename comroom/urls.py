@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
-from school.views import RegisterView, index, LoginView, logout, AboutView, ComroomAdminView, make_room, time_admin, del_time
+from school.views import RegisterView, index, LoginView, logout, AboutView, ComroomAdminView, make_room, time_admin, del_time, ex_login
 from timetable.views import TimetableView, valid_scode, reserving, assign_room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('login/', LoginView.as_view()),
+    path('ex_login/', ex_login),
     path('logout/', logout, name='logout'),
     path('register/', RegisterView.as_view()),
     path('make_room/', make_room),

@@ -62,6 +62,12 @@ class LoginView(FormView):
         return super().form_valid(form)
 
 
+def ex_login(request):
+    request.session['username'] = '박새로이'
+    request.session['user_id'] = 'icic'
+    return redirect('/')
+
+
 def logout(request):
     if 'username' in request.session:
         del(request.session['username'])
