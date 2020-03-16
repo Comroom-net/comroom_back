@@ -58,6 +58,7 @@ class LoginView(FormView):
             user=user)
         self.request.session['username'] = user.realname
         self.request.session['user_id'] = user.user
+        self.request.session['school'] = user.school.id
 
         return super().form_valid(form)
 
@@ -65,6 +66,7 @@ class LoginView(FormView):
 def ex_login(request):
     request.session['username'] = '박새로이'
     request.session['user_id'] = 'icic'
+    request.session['school'] = AdminUser.objects.get(user='icic').school.id
     return redirect('/')
 
 
