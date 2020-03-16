@@ -40,6 +40,10 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Sunflower:300&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       #footer {
@@ -52,6 +56,9 @@
         padding-top: 3rem;
         padding-bottom: 3rem;
       }
+      .navbar-brand {
+        font-family: "Sunflower", sans-serif;
+      }
     </style>
 
     {% block header %} {% endblock %}
@@ -62,7 +69,7 @@
         class="navbar navbar-expand-md navbar-dark fixed-top"
         style="background-color: #36802d"
       >
-        <a class="navbar-brand" href="{% url 'about' %}">@SSAM_KO</a>
+        <a class="navbar-brand" href="/">컴룸닷넷</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -77,10 +84,8 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item {% block nav-home %}{% endblock %} ">
-              <a class="nav-link" href="/"
-                >Home <span class="sr-only">(current)</span></a
-              >
+            <li class="nav-item {% block nav-about %}{% endblock %} ">
+              <a class="nav-link" href="{% url 'about' %}">Made by </a>
             </li>
             <li class="nav-item {% block nav-whatis %}{% endblock %}">
               <a class="nav-link" href="/whatis">What is?</a>
