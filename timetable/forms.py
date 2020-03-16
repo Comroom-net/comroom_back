@@ -1,5 +1,11 @@
+import datetime
+from bootstrap_datepicker_plus import DatePickerInput
 from django import forms
-from .models import Timetable
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
+
+from .models import Timetable, FixedTimetable
+from school.models import Comroom
 
 
 # class BookingForm(forms.Form):
@@ -52,3 +58,31 @@ class BookingForm(forms.ModelForm):
                 'required': "선생님 성함을 입력해주세요."
             },
         }
+
+
+class FixTimeForm(forms.ModelForm):
+    comroom = forms.ModelChoiceField(
+        queryset=Comroom.objects.all(),
+        label='교실',
+        empty_label=None)
+
+    class Meta:
+        model = FixedTimetable
+        exclude = ['reg_date']
+        widgets = {
+            'fixed_from': DatePickerInput(format='%Y-%m-%d').start_of('fixed days'),
+            'fixed_until': DatePickerInput(format='%Y-%m-%d').end_of('fixed days'),
+        }
+
+    def clean_fixed_until(self):
+        data = self.cleaned_data['fixed_until']
+
+        # check if a date is not in the past.
+        if data < datetime.date.today():
+            raise ValidationError(_('날짜 입력 오류 - 과거를 종료일로 정할 수 없습니다.'))
+
+        # check if a date is on next to ifxed_from.
+        if data < self.cleaned_data['fixed_from']:
+            raise ValidationError(_('날짜 입력 오류 - 종료일이 시작일보다 빠릅니다.'))
+
+        return data

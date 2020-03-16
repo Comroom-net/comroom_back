@@ -3,9 +3,9 @@ from datetime import datetime, date
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, FormView
-from .models import Timetable
-from .forms import BookingForm
+from django.views.generic import DetailView, FormView, CreateView
+from .models import Timetable, FixedTimetable
+from .forms import BookingForm, FixTimeForm
 from .utils import TimetableCreate
 from .decorators import method_dectect
 from school.models import School
@@ -169,3 +169,21 @@ def assign_room(request):
         timetable.save()
 
     return redirect('/')
+
+
+class FixCreateView(CreateView):
+    template_name = 'fixTime.html'
+    form_class = FixTimeForm
+    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        school_id = self.request.session['school']
+        school = School.objects.get(id=school_id)
+        comroom = school.comroom_set.filter(school=school)
+        comroom1 = school.comroom_set.get(roomNo=1)
+        form = FixTimeForm()
+        form.fields['comroom'].queryset = comroom
+        print(form)
+        context['form'] = form
+        return render(request, self.template_name, context)

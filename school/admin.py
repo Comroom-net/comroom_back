@@ -16,9 +16,9 @@ class SchoolAdmin(admin.ModelAdmin):
 
 class AdminUserAdmin(admin.ModelAdmin):
     def date_kor(self, obj):
-        return obj.reg_date.strftime("%Y-%m-%d")
+        return obj.reg_date.strftime("%Y-%m-%d %H:%M")
     date_kor.admin_order_field = 'reg_date'
-    date_kor.short_description = '등록일'
+    date_kor.short_description = '등록일시'
     list_display = ('school', 'realname', 'email', 'date_kor')
 
 

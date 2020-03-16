@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'jquery',
+    'bootstrap_datepicker_plus',
+    'bootstrap4',
     'school.apps.SchoolConfig',
     'timetable',
 ]
@@ -140,3 +143,8 @@ EMAIL_PORT = '465'
 EMAIL_HOST_USER = 'ssamko@kakao.com'
 EMAIL_HOST_PASSWORD = password
 EMAIL_USE_TLS = True
+
+# for using bootstrap app
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
