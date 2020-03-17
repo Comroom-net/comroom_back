@@ -2,7 +2,7 @@ from django.utils.dateparse import parse_date
 from datetime import datetime, timedelta
 from calendar import HTMLCalendar
 import calendar
-from .models import Timetable
+from .models import Timetable, FixedTimetable
 from school.models import School
 
 
@@ -22,35 +22,77 @@ class TimetableCreate(HTMLCalendar):
         self.month = month
         self.school = School.objects.get(
             id=school_id)
-        self.roomNo = roomNo
+        self.room = self.school.comroom_set.get(roomNo=roomNo)
+
         super(TimetableCreate, self).__init__()
+
+    # formats times in a day as buttons
+    # filter events by each time
+    def formattime(self, day, time, weekday):
+        today = int(datetime.now().strftime("%-d"))
+        thismonth = int(datetime.now().strftime("%m"))
+        date = f'{self.year}-{self.month}-{day}'
+        date = parse_date(date)
+        d = ''
+        is_added = False
+        try:
+            booked = Timetable.objects.get(
+                school=self.school,
+                room=self.room,
+                date=date,
+                time=time
+            )
+            d += f'<div class="col"><a tabindex="0" role="button" class="btn btn-primary btn-sm booked" data-toggle="popover" data-trigger="focus" title="예약정보" data-content="{booked.grade}-{booked.classNo}. {booked.teacher} 선생님">{time}</a></div>'
+        except:
+            # 컴실, 요일, 시간이 같은 row가 있는지 filter
+            fixedTime = FixedTimetable.objects.filter(
+                comroom=self.room,
+                fixed_day=weekday,
+                fixed_time=time)
+            if fixedTime:
+                # 있다면 for loop
+                for fix in fixedTime:
+
+                    # 현재 row가 해당 기간에 속하는 지 검사
+                    if fix.fixed_from <= date and date <= fix.fixed_until:
+                        # 속하면 핑크
+                        d += f'<div class="col"><a tabindex="0" role="button" class="btn btn-primary btn-sm fixed" data-toggle="popover" data-trigger="focus" title="예약정보" data-content="{fix.fixed_name}">{time}</a></div>'
+                        is_added = True
+                        break
+                    # 속하지 않고, 지난 날이면 회색
+
+                if not is_added:
+                    if self.month < thismonth or (day < today and self.month == thismonth):
+                        d += f'<div class="col"><a href="#" role="button" class="btn btn-secondary btn-sm disabled">{time}</a></div>'
+                    # 둘 다 아니면 파란색
+                    else:
+                        d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.room.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
+
+            else:
+                # 없다면 지난 날인지 검사
+                if self.month < thismonth or (day < today and self.month == thismonth):
+                    d += f'<div class="col"><a href="#" role="button" class="btn btn-secondary btn-sm disabled">{time}</a></div>'
+                else:
+                    d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.room.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
+
+                # else:
+                #     if self.month < thismonth or (day < today and self.month == thismonth):
+                #         d += f'<div class="col"><a href="#" role="button" class="btn btn-secondary btn-sm disabled">{time}</a></div>'
+                #     else:
+                #         d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.room.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
+
+        return d
 
     # formats a day as a td
     # filter events by day
-
-    def formatday(self, day):
-
-        today = int(datetime.now().strftime("%-d"))
-        thismonth = int(datetime.now().strftime("%m"))
+    def formatday(self, day, weekday):
 
         d = ''
         if day != 0:
             date = f'{self.year}-{self.month}-{day}'
             date = parse_date(date)
             for time in range(1, 7):
-                try:
-                    booked = Timetable.objects.get(
-                        school=self.school,
-                        room=self.school.comroom_set.get(roomNo=self.roomNo),
-                        date=date,
-                        time=time
-                    )
-                    d += f'<div class="col"><a tabindex="0" role="button" class="btn btn-primary btn-sm booked" data-toggle="popover" data-trigger="focus" title="예약정보" data-content="{booked.grade}-{booked.classNo}. {booked.teacher} 선생님">{time}</a></div>'
-                except:
-                    if self.month < thismonth or (day < today and self.month == thismonth):
-                        d += f'<div class="col"><a href="#" role="button" class="btn btn-secondary btn-sm disabled">{time}</a></div>'
-                    else:
-                        d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
+                d += self.formattime(day, time, weekday)
 
             return f"<td><span class='date'>{day}</span><div class='row row-cols-3 no-gutter'> {d} </div></td>"
         return '<td></td>'
@@ -60,7 +102,7 @@ class TimetableCreate(HTMLCalendar):
         week = ''
         for d, weekday in theweek:
             if not (weekday == 5 or weekday == 6):  # 토, 일 출력x
-                week += self.formatday(d)
+                week += self.formatday(d, weekday)
 
         return f'<tr> {week} </tr>'
 

@@ -76,13 +76,35 @@ class FixTimeForm(forms.ModelForm):
 
     def clean_fixed_until(self):
         data = self.cleaned_data['fixed_until']
+        chk_forms = FixedTimetable.objects.filter(
+            fixed_day=self.cleaned_data['fixed_day'],
+            fixed_time=self.cleaned_data['fixed_time'],
+            comroom=self.cleaned_data['comroom'],
+        )
 
         # check if a date is not in the past.
         if data < datetime.date.today():
             raise ValidationError(_('날짜 입력 오류 - 과거를 종료일로 정할 수 없습니다.'))
 
-        # check if a date is on next to ifxed_from.
-        if data < self.cleaned_data['fixed_from']:
-            raise ValidationError(_('날짜 입력 오류 - 종료일이 시작일보다 빠릅니다.'))
+        if chk_forms:
+            for chk in chk_forms:
+                if chk.fixed_from >= self.cleaned_data['fixed_until']:
+                    raise ValidationError(
+                        _(f'이미 설정된 고정시간과 기간이 겹칩니다. {chk.fixed_name}  {chk.fixed_from}'))
+
+        return data
+
+    def clean_fixed_from(self):
+        data = self.cleaned_data['fixed_from']
+        chk_forms = FixedTimetable.objects.filter(
+            fixed_day=self.cleaned_data['fixed_day'],
+            fixed_time=self.cleaned_data['fixed_time'],
+            comroom=self.cleaned_data['comroom'],
+        )
+        if chk_forms:
+            for chk in chk_forms:
+                if chk.fixed_until >= self.cleaned_data['fixed_from']:
+                    raise ValidationError(
+                        _(f'이미 설정된 고정시간과 기간이 겹칩니다. {chk.fixed_name}  {chk.fixed_until}'))
 
         return data

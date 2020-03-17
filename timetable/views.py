@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect, reverse
 from datetime import datetime, date
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.utils.decorators import method_decorator
@@ -181,9 +181,7 @@ class FixCreateView(CreateView):
         school_id = self.request.session['school']
         school = School.objects.get(id=school_id)
         comroom = school.comroom_set.filter(school=school)
-        comroom1 = school.comroom_set.get(roomNo=1)
         form = FixTimeForm()
         form.fields['comroom'].queryset = comroom
-        print(form)
         context['form'] = form
         return render(request, self.template_name, context)
