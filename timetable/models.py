@@ -63,6 +63,7 @@ class FixedTimetable(models.Model):
     comroom = models.ForeignKey(
         Comroom, on_delete=models.CASCADE,
         verbose_name='교실',
+        default=1
 
     )
     fixed_day = models.IntegerField(

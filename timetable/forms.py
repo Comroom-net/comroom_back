@@ -61,10 +61,10 @@ class BookingForm(forms.ModelForm):
 
 
 class FixTimeForm(forms.ModelForm):
-    comroom = forms.ModelChoiceField(
-        queryset=Comroom.objects.all(),
-        label='교실',
-        empty_label=None)
+
+    # comroom.widget.attrs.update({'class': 'form-control'})
+    # fixed_day.widget.attrs.update({'class': 'form-control'})
+    # fixed_time.widget.attrs.update({'class': 'form-control'})
 
     class Meta:
         model = FixedTimetable
@@ -72,6 +72,14 @@ class FixTimeForm(forms.ModelForm):
         widgets = {
             'fixed_from': DatePickerInput(format='%Y-%m-%d').start_of('fixed days'),
             'fixed_until': DatePickerInput(format='%Y-%m-%d').end_of('fixed days'),
+            'comroom': forms.Select(attrs={'class': 'form-control'}),
+            'fixed_day': forms.Select(attrs={'class': 'form-control'}),
+            'fixed_time': forms.Select(attrs={'class': 'form-control'}),
+        }
+        error_messages = {
+            'fixed_name': {
+                'required': '내용을 입력해주세요'
+            }
         }
 
     def clean_fixed_until(self):
@@ -90,7 +98,7 @@ class FixTimeForm(forms.ModelForm):
             for chk in chk_forms:
                 if chk.fixed_from >= self.cleaned_data['fixed_until']:
                     raise ValidationError(
-                        _(f'이미 설정된 고정시간과 기간이 겹칩니다. {chk.fixed_name}  {chk.fixed_from}'))
+                        _(f'이미 설정된 고정시간과 기간이 겹칩니다. ({chk.fixed_name}의 시작일: {chk.fixed_from})'))
 
         return data
 
@@ -105,6 +113,6 @@ class FixTimeForm(forms.ModelForm):
             for chk in chk_forms:
                 if chk.fixed_until >= self.cleaned_data['fixed_from']:
                     raise ValidationError(
-                        _(f'이미 설정된 고정시간과 기간이 겹칩니다. {chk.fixed_name}  {chk.fixed_until}'))
+                        _(f'이미 설정된 고정시간과 기간이 겹칩니다. ({chk.fixed_name}의 종료일:  {chk.fixed_until})'))
 
         return data

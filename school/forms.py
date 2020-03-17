@@ -25,7 +25,8 @@ class RegisterForm(forms.Form):
                                        ('경상북도교육청', '경북'),
                                        ('경상남도교육청', '경남'),
                                        ('제주특별자치도교육청', '제주'),
-                                   ]
+                                   ],
+                                   attrs={'class': 'form-control'}
                                ),
                                error_messages={
                                    'required': '교육청을 선택해주세요.'
