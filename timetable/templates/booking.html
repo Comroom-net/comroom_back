@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %} {{school}} - {{ block.super }}
+{% extends "base.html" %} {% block title %} {{view.school.name|slice:':-3'}} - {{ block.super }}
  {% endblock title %} {% block header %} {% endblock header %} {% block contents %}
 <div class="fieldWrapper">
   {{ form.subject.errors }} {{ form.subject.label_tag }} {{ form.subject }}

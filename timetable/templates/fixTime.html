@@ -40,12 +40,7 @@
       <div class="form-group">
         
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {% if field.label == '교실' or field.label == '요일' or field.label == '시간' %} 
-        {{ field }} 
-        
-        {% elif field.label == '시작일' or field.label == '종료일' %}
-        {{ field }}
-        {% else %}
+        {% if field.label == '내용' %}
         
         <input
           type="{{ field.field.widget.input_type }}"
@@ -54,6 +49,8 @@
           placeholder="{{ field.label }}"
           name="{{ field.name }}"
         />
+        {% else %}
+        {{ field }}
         
         {% endif %}
       </div>

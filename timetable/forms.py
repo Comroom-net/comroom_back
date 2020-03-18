@@ -68,13 +68,15 @@ class FixTimeForm(forms.ModelForm):
 
     class Meta:
         model = FixedTimetable
-        exclude = ['reg_date']
+        exclude = ['reg_date',
+                   'school']
         widgets = {
             'fixed_from': DatePickerInput(format='%Y-%m-%d').start_of('fixed days'),
             'fixed_until': DatePickerInput(format='%Y-%m-%d').end_of('fixed days'),
             'comroom': forms.Select(attrs={'class': 'form-control'}),
             'fixed_day': forms.Select(attrs={'class': 'form-control'}),
             'fixed_time': forms.Select(attrs={'class': 'form-control'}),
+            # 'school': forms.HiddenInput(),
         }
         error_messages = {
             'fixed_name': {
@@ -111,6 +113,7 @@ class FixTimeForm(forms.ModelForm):
         )
         if chk_forms:
             for chk in chk_forms:
+
                 if chk.fixed_until >= self.cleaned_data['fixed_from']:
                     raise ValidationError(
                         _(f'이미 설정된 고정시간과 기간이 겹칩니다. ({chk.fixed_name}의 종료일:  {chk.fixed_until})'))

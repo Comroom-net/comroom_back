@@ -141,6 +141,7 @@ class BookTime(FormView):
     def get(self, request, *args, **kwargs):
         school_id = self.request.session['school']
         school = School.objects.get(id=school_id)
+        self.school = school
         comroom = school.comroom_set.get(roomNo=kwargs['roomNo'])
         self.room = comroom.name
         return self.render_to_response(self.get_context_data())
@@ -182,6 +183,16 @@ class FixCreateView(CreateView):
         school = School.objects.get(id=school_id)
         comroom = school.comroom_set.filter(school=school)
         form = FixTimeForm()
+        # form.fields['school'] = school
         form.fields['comroom'].queryset = comroom
+
         context['form'] = form
         return render(request, self.template_name, context)
+
+    def form_valid(self, form):
+        school = School.objects.get(id=self.request.session['school'])
+        obj = form.save(commit=False)
+        obj.school = school
+        obj.save()
+        return redirect('/')
+        # return super().form_valid(form)

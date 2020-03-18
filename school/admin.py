@@ -31,7 +31,8 @@ class NoticeAdmin(admin.ModelAdmin):
 
 
 class ComroomAdmin(admin.ModelAdmin):
-    list_display = ('school', 'roomNo')
+    list_display = ('name', 'school', 'roomNo')
+    list_filter = ('school',)
 
 
 admin.site.register(School, SchoolAdmin)

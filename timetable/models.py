@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import MaxValueValidator
 from django.utils.timezone import now
 
-from school.models import Comroom
+from school.models import Comroom, School
 
 
 # Create your models here.
@@ -66,6 +66,13 @@ class FixedTimetable(models.Model):
         default=1
 
     )
+    school = models.ForeignKey(
+        School, on_delete=models.CASCADE,
+        verbose_name='학교',
+        null=True,
+
+    )
+
     fixed_day = models.IntegerField(
         verbose_name='요일',
         choices=(
