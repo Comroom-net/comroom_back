@@ -58,6 +58,9 @@ class BookingForm(forms.ModelForm):
                 'required': "선생님 성함을 입력해주세요."
             },
         }
+        widgets = {
+            'grade': forms.Select(attrs={'class': 'form-control'})
+        }
 
 
 class FixTimeForm(forms.ModelForm):
