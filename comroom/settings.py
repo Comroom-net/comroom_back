@@ -12,21 +12,37 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import json
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Secret File Control
+secret_file = os.path.join(BASE_DIR, 'production.json')
+
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
+
+
+def get_secret(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        erro_msg = f"Set the {setting} environment variable"
+        raise ImproperlyConfigured(erro_msg)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+nwsuq2+uid6ss@@cuc=0xt2y!ot(kal(l(a_6av1oprzj1(@t'
+SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_secret("DEBUG_VALUE")
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [get_secret("ALLOWED_HOSTS_VALUE")]
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -129,19 +145,15 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'staticfiles'),
 )
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-with open('/Users/ssamko/Documents/주요/kakao.json', mode='rt', encoding='utf-8') as file:
-    data = json.load(file)
-    password = data['kakao']
+STATIC_ROOT = 'ssamko/staticfiles'
 
 
 # Email Backend
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 EMAIL_HOST = 'smtp.kakao.com'
 EMAIL_PORT = '465'
-EMAIL_HOST_USER = 'ssamko@kakao.com'
-EMAIL_HOST_PASSWORD = password
+EMAIL_HOST_USER = get_secret("KAKAO_USER")
+EMAIL_HOST_PASSWORD = get_secret("KAKAO_PASSWORD")
 EMAIL_USE_TLS = True
 
 # for using bootstrap app
