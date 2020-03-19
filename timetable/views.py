@@ -9,6 +9,7 @@ from .forms import BookingForm, FixTimeForm
 from .utils import TimetableCreate
 from .decorators import method_dectect
 from school.models import School
+# from school.views import ip_getter
 
 
 # Create your views here.
@@ -19,13 +20,17 @@ class TimetableView(DetailView):
     template_name = "timetable.html"
 
     def iniTable(self, request, roomNo=1, date=None):
+        # ip_getter(request)
         context = {}
         try:
             school_id = self.request.session['school']
         except:
             return redirect('/')
 
-        school = School.objects.get(pk=school_id)
+        try:
+            school = School.objects.get(pk=school_id)
+        except:
+            return redirect('/db_reset')
         ea = school.ea
         roomNo = roomNo
         date = date.split('-')
@@ -62,25 +67,28 @@ def valid_scode(request):
     school = request.GET.get('school')
     s_code = request.GET.get('s_code')
 
-    school_obj = School.objects.get(name__startswith=school, s_code=s_code)
-
-    date = datetime.now().strftime("%Y-%m")
-
-    context = {}
-
-    if school_obj:
-        print('correct')
-        request.session['school'] = school_obj.id
-        request.session['s_code'] = school_obj.s_code
-        context['school_id'] = school_obj.id
-        context['date'] = date
-        context['roomNo'] = 1
-        return render(request, "timetable.html", context=context)
-
+    try:
+        school_obj = School.objects.get(name__startswith=school, s_code=s_code)
+    except:
+        redirect('/db_reset')
     else:
-        print('incorrect')
+        date = datetime.now().strftime("%Y-%m")
 
-    return redirect('/comroom/1')
+        context = {}
+
+        if school_obj:
+            print('correct')
+            request.session['school'] = school_obj.id
+            request.session['s_code'] = school_obj.s_code
+            context['school_id'] = school_obj.id
+            context['date'] = date
+            context['roomNo'] = 1
+            return render(request, "timetable.html", context=context)
+
+        else:
+            print('incorrect')
+
+    return redirect('/db_reset')
 
 
 def reserving(request, **kwargs):
