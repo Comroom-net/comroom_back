@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 from school.views import RegisterView, index, LoginView, logout, AboutView, ComroomAdminView, make_room, time_admin, del_time, ex_login, user_active
-from timetable.views import TimetableView, valid_scode, reserving, assign_room, BookTime, FixCreateView
+from timetable.views import TimetableView, valid_scode, assign_room, BookTime, FixCreateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),

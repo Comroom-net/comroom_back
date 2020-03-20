@@ -91,44 +91,6 @@ def valid_scode(request):
     return redirect('/db_reset')
 
 
-def reserving(request, **kwargs):
-    template_name = 'booking.html'
-    context = {}
-
-    if request.method == 'POST':
-
-        form = BookingForm(request.POST)
-
-        school = School.objects.get(pk=kwargs['pk'])
-        print('start save')
-        booking = Timetable(
-            school=school,
-            grade=form.data.get('grade'),
-            classNo=form.data.get('classNo'),
-            date=form.data.get('date'),
-            time=form.data.get('time'),
-            teacher=form.data.get('teacher'),
-            room=school.comroom_set.get(roomNo=form.data.get('roomNo'))
-        )
-        booking.save()
-        print('save')
-        return redirect('/comroom/?school='+school.name+'&s_code='+str(school.s_code))
-    if request.method == "GET":
-        context = {}
-        school = School.objects.get(pk=kwargs['pk'])
-        context['form'] = BookingForm()
-        context['date'] = kwargs['date']
-        context['roomNo'] = kwargs['roomNo']
-        context['time'] = kwargs['time']
-        context['school'] = school.name
-        context['room_name'] = school.comroom_set.get(
-            roomNo=kwargs['roomNo']).name
-
-        return render(request, template_name, context)
-
-    return render(request, template_name, context)
-
-
 class BookTime(FormView):
     template_name = 'booking.html'
     form_class = BookingForm
