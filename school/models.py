@@ -51,7 +51,7 @@ class Comroom(models.Model):
         verbose_name_plural = '컴퓨터실 정보'
 
     def __str__(self):
-        return self.name+' - '+str(self.school)
+        return self.name
 
 
 class AdminUser(models.Model):
@@ -60,8 +60,12 @@ class AdminUser(models.Model):
     user = models.CharField(max_length=64, verbose_name='아이디')
     password = models.CharField(max_length=128, verbose_name='비밀번호')
     realname = models.CharField(max_length=64, verbose_name='이름')
-    email = models.EmailField(verbose_name='이메일')
+    email = models.EmailField(verbose_name='이메일', unique=True)
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')
+    is_active = models.BooleanField(verbose_name='인증여부',
+                                    default=True)
+    auth_key = models.CharField(max_length=64,
+                                verbose_name='인증키')
 
     class Meta:
         verbose_name = '학교관리자'
@@ -77,6 +81,8 @@ class Notice(models.Model):
     context = models.TextField(verbose_name='내용')
     isshow = models.BooleanField(verbose_name='게시여부', default=True)
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name='등록날짜')
+    last_update = models.DateTimeField(auto_now=True, verbose_name='수정날짜',
+                                       null=True)
 
     class Meta:
         verbose_name = '공지사항'
@@ -84,3 +90,26 @@ class Notice(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class IPs(models.Model):
+    ip = models.CharField(verbose_name='IP',
+                          max_length=16,
+                          unique=True
+                          )
+    ip_first_date = models.DateTimeField(auto_now_add=True,
+                                         verbose_name='첫 접속')
+    ip_recent_date = models.DateTimeField(auto_now=True,
+                                          verbose_name='최근 접속')
+    school = models.ForeignKey(
+        School, on_delete=models.CASCADE,
+        verbose_name='학교',
+        null=True,
+        blank=True,
+    )
+    ip_count = models.IntegerField(verbose_name="페이지 뷰",
+                                   default=1)
+
+    class Meta:
+        verbose_name = 'IPs'
+        verbose_name_plural = 'IP'

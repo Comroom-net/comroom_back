@@ -1,12 +1,15 @@
-from django.shortcuts import render, redirect
+import datetime
+import random
+from django.shortcuts import render, redirect, resolve_url, get_object_or_404
 from django.views.generic import FormView, TemplateView
 from django.views import View
 from django.db import transaction
 from django.contrib.auth.hashers import make_password
+from django.core.mail import EmailMessage, send_mail
 from django.forms import formset_factory
+from django.template.loader import render_to_string
 from .forms import RegisterForm, LoginForm, ComroomAdminForm
-from .models import School, AdminUser, Notice, Comroom
-import random
+from .models import School, AdminUser, Notice, Comroom, IPs
 # Create your views here.
 
 
@@ -31,6 +34,8 @@ class RegisterView(FormView):
                 password=make_password(form.data.get('password')),
                 realname=form.data.get('realname'),
                 email=form.data.get('email'),
+                auth_key=randstr(50),
+                is_active=False
             )
             self.request.session['username'] = adminUser.realname
             self.request.session['user_id'] = adminUser.user
@@ -43,8 +48,17 @@ class RegisterView(FormView):
                     caption='위치, 교실 이용방법, 이용시 주의사항 등'
                 )
                 comroom.save()
-
-        return super().form_valid(form)
+            mail_title = "컴룸닷컴 가입 인증메일"
+            mail_args = {'name': adminUser.realname,
+                         'mail_link': adminUser.auth_key}
+            mail_context = "컴룸닷컴 가입 인증메일"
+            mail_html = render_to_string('mail_template.html', mail_args)
+            send_mail(mail_title, mail_context, 'ssamko@kakao.com',
+                      [adminUser.email], html_message=mail_html)
+            message = f"{adminUser.realname} 선생님께서 입력하신 메일({adminUser.email})로 인증 링크를 발송했습니다. \
+                <a href='/FAQ/' role='button' class='btn btn-info'>이메일 인증을 하는 이유</a>"
+        return render(self.request, 'notice.html', {'message': message})
+        # return super().form_valid(form)
 
 
 class LoginView(FormView):
@@ -78,7 +92,29 @@ def logout(request):
     return redirect('/')
 
 
+def ip_getter(request):
+    try:
+        ip_addr = request.META['REMOTE_ADDR']
+    except:
+        print('localhost')
+    else:
+
+        try:
+            this_ip = IPs.objects.get(ip=ip_addr)
+        except:
+            new_ip = IPs(ip=ip_addr, )
+            if request.session['school']:
+                new_ip.school = School.objects.get(
+                    id=request.session['school'])
+            new_ip.save()
+        else:
+
+            this_ip.ip_count += 1
+            this_ip.save()
+
+
 def index(request):
+    # ip_getter(request)
     context = {}
 
     username = request.session.get('username')
@@ -90,11 +126,13 @@ def index(request):
 
     if username:
         try:
-            school = AdminUser.objects.get(
-                realname=username, user=user_id).school
+            adminUser = AdminUser.objects.get(
+                realname=username, user=user_id)
+            school = adminUser.school
             context['username'] = username
             context['school'] = school.name
             context['s_code'] = school.s_code
+            context['is_active'] = adminUser.is_active
             request.session['school_info'] = school.id
         except:
             redirect('/')
@@ -201,3 +239,25 @@ def del_time(request, **kwargs):
     timetables[kwargs['i']].delete()
 
     return redirect('/time_admin/')
+
+
+def randstr(length):
+    rstr = "0123456789abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLNMOPQRSTUVWXYZ"
+    rstr_len = len(rstr) - 1
+    result = ""
+    for i in range(length):
+        result += rstr[random.randint(0, rstr_len)]
+    return result
+
+
+def user_active(request, token):
+    adminUser = get_object_or_404(AdminUser, auth_key=token)
+    if adminUser.reg_date < datetime.datetime.now() - datetime.timedelta(hours=3):
+        adminUser.school.delete()
+        message = "만료된 링크입니다. 다시 가입을 신청하세요"
+    else:
+        adminUser.is_active = True
+        adminUser.auth_key = ''
+        adminUser.save()
+        message = "인증되었습니다. 불편한 사항은 언제든 말씀해주세요 ^^"
+    return render(request, 'notice.html', {'message': message})

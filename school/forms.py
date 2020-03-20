@@ -93,20 +93,14 @@ class RegisterForm(forms.Form):
                 self.add_error('re_password', '비밀번호가 서로 다릅니다.')
 
         if user:
-            try:
-                AdminUser.objects.get(user=user)
-                self.add_error('user', '이미 존재하는 아이디입니다.')
-            except:
-                pass
+            if AdminUser.objects.filter(user=user).exists():
 
-            # try:
-            #     school_exist = School.objects.get(
-            #         name=school, province=province)
-            #     admin = AdminUser.objects.get(school=school_exist)
-            #     self.add_error(
-            #         'name', f'이미 등록된 학교입니다. {admin.realname} 선생님({admin.email})께 문의하세요.')
-            # except:
-            #     pass
+                self.add_error('user', '이미 존재하는 아이디입니다.')
+
+        if email:
+            if AdminUser.objects.filter(email=email).exists():
+                self.add_error(
+                    'email', '이미 등록된 이메일입니다. 비밀번호 분실시 사이트 관리자에게 문의하세요.')
 
 
 class LoginForm(forms.Form):

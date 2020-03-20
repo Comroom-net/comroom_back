@@ -8,7 +8,8 @@
   <div class="col-12">
     <h2>Hello {{username|default:"Stranger"}}</h2>
     {% if username %}
-    <p>
+    {% if is_active %}
+      <p>
       {{request.build_absolute_uri}}comroom?school={{school}}&s_code={{s_code}}
     </p>
     <a
@@ -36,6 +37,13 @@
       </div>
     </div>
     <a href="logout/" class="btn btn-secondary" role="button">로그아웃</a>
+    {% else %}
+      <p>이메일 인증을 완료해주세요.</p>
+      <a href="login/" class="btn btn-primary" role="button">관리자 로그인</a>
+      <a href="register/" class="btn btn-primary" role="button">관리자 등록</a>
+      <a href="ex_login/" class="btn btn-info" role="button">샘플계정 로그인</a>
+    {% endif %}
+    
 
     {% else %} {% if s_code %}
     <a
@@ -59,7 +67,7 @@
       {% for notice in notices %}
       <li>
         {{notice.context|safe}}
-        <small class="text-muted">- {{notice.reg_date|date:"y.n.j"}}</small>
+        <small class="text-muted">- {{notice.last_update|date:"y.n.j"}}</small>
       </li>
       {% endfor %}
     </ul>
