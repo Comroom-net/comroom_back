@@ -18,12 +18,17 @@ def privacy_agree(request):
     template_name = 'privacy.html'
 
     file_path = finders.find('com_privacy.txt')
+    searched_location = finders.searched_locations
     f = open(file_path, 'r')
     data = f.read()
     f.close()
-    request.session['privacy'] = True
 
     return render(request, template_name, {'privacy': data})
+
+
+def agree_pirv(request):
+    request.session['privacy'] = True
+    return redirect('/register')
 
 
 class RegisterView(FormView):
@@ -34,10 +39,13 @@ class RegisterView(FormView):
     def get(self, request, *args, **kwargs):
         # 정상적인 방법(개인정보동의)으로 접근했는지 판단
         try:
-            request.session['privacy']
+            privacy = request.session['privacy']
         except:
             print("No privacy session")
             return redirect('/')
+        else:
+            if not privacy:
+                return redirect('/')
         return super().get(self, request, args, kwargs)
 
     def form_valid(self, form):
