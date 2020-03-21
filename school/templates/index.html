@@ -10,10 +10,10 @@
     {% if username %}
     {% if is_active %}
       <p>
-      {{request.build_absolute_uri}}comroom?school={{school}}&s_code={{s_code}}
+      {{request.build_absolute_uri}}comroom?school={{school|urlencode}}&s_code={{s_code}}
     </p>
     <a
-      href="{{request.build_absolute_uri}}comroom?school={{school}}&s_code={{s_code}}"
+      href="{{request.build_absolute_uri}}comroom?school={{school|urlencode}}&s_code={{s_code}}"
       class="btn btn-primary"
       role="button"
       >시간표</a
@@ -47,14 +47,14 @@
 
     {% else %} {% if s_code %}
     <a
-      href="{{request.build_absolute_uri}}comroom?school={{school}}&s_code={{s_code}}"
+      href="{{request.build_absolute_uri}}comroom?school={{school|urlencode}}&s_code={{s_code}}"
       class="btn btn-primary"
       role="button"
       >시간표</a
     >
     {% endif %}
     <a href="login/" class="btn btn-primary" role="button">관리자 로그인</a>
-    <a href="register/" class="btn btn-primary" role="button">관리자 등록</a>
+    <a href="privacy_agreement/" class="btn btn-primary" role="button">관리자 등록</a>
     <a href="ex_login/" class="btn btn-info" role="button">샘플계정 로그인</a>
 
     {% endif %}
@@ -77,7 +77,7 @@
   document.querySelector(".copy").addEventListener("click", function() {
     var tempElem = document.createElement("textarea");
     tempElem.value =
-      "{{request.build_absolute_uri}}comroom?school={{school}}&s_code={{s_code}}";
+      "{{request.build_absolute_uri}}comroom?school={{school|urlencode}}&s_code={{s_code}}";
     document.body.appendChild(tempElem);
 
     tempElem.select();

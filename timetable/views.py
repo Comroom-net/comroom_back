@@ -65,6 +65,12 @@ class TimetableView(DetailView):
 
 def valid_scode(request):
     school = request.GET.get('school')
+    if not '학교' in school:
+        # school = school.encode('EUC-KR')
+        print(school)
+        school = school.encode('UTF-8')
+        print(school)
+
     s_code = request.GET.get('s_code')
 
     try:

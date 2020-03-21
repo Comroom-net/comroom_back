@@ -5,6 +5,7 @@ from django.views.generic import FormView, TemplateView
 from django.views import View
 from django.db import transaction
 from django.contrib.auth.hashers import make_password
+from django.contrib.staticfiles import finders
 from django.core.mail import EmailMessage, send_mail
 from django.forms import formset_factory
 from django.template.loader import render_to_string
@@ -13,10 +14,31 @@ from .models import School, AdminUser, Notice, Comroom, IPs
 # Create your views here.
 
 
+def privacy_agree(request):
+    template_name = 'privacy.html'
+
+    file_path = finders.find('com_privacy.txt')
+    f = open(file_path, 'r')
+    data = f.read()
+    f.close()
+    request.session['privacy'] = True
+
+    return render(request, template_name, {'privacy': data})
+
+
 class RegisterView(FormView):
     template_name = 'register.html'
     form_class = RegisterForm
     success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        # 정상적인 방법(개인정보동의)으로 접근했는지 판단
+        try:
+            request.session['privacy']
+        except:
+            print("No privacy session")
+            return redirect('/')
+        return super().get(self, request, args, kwargs)
 
     def form_valid(self, form):
         with transaction.atomic():
@@ -57,6 +79,9 @@ class RegisterView(FormView):
                       [adminUser.email], html_message=mail_html)
             message = f"{adminUser.realname} 선생님께서 입력하신 메일({adminUser.email})로 인증 링크를 발송했습니다. \
                 <a href='/FAQ/' role='button' class='btn btn-info'>이메일 인증을 하는 이유</a>"
+
+        # privacy 세션 초기화
+        self.request.session['privacy'] = False
         return render(self.request, 'notice.html', {'message': message})
         # return super().form_valid(form)
 
