@@ -6,8 +6,8 @@
 {% block header %}
 
 {% endblock header %}
-{% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
-{% bootstrap_css %}         {# Embed Bootstrap CSS #}
+{% load bootstrap4 %}       
+{% bootstrap_css %}         
 {% bootstrap_javascript jquery='full' %} 
 {% block contents %}
 
@@ -36,8 +36,18 @@
   <div class="col-12">
     <form method="POST" action=".">
     {{form.media}}
-      {% csrf_token %} {% for field in form %}
-      <div class="form-group">
+        {% csrf_token %} {% for field in form %}
+        {% if field.label in '교실시작일' %}
+            <div class='row'>
+        {% endif %}
+        {% if field.label in "교실요일시간" %}
+            <div class="form-group col-4">
+        {% elif field.label in "시작일종료일" %}
+            <div class="form-group col-6">
+        {% else %}
+            <div class="form-group">
+        {% endif %}
+
         
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         {% if field.label == '내용' %}
@@ -56,7 +66,11 @@
       </div>
       {% if field.errors %}
       <span style="color: red;">{{ field.errors }}</span>
-      {% endif %} {% endfor %}
+      {% endif %} 
+      {% if field.label in '시간종료일' %}
+      </div>
+      {% endif %}
+      {% endfor %}
       <button type="submit" class="btn btn-primary">등록</button>
     </form>
   </div>
