@@ -10,10 +10,10 @@
     {% if username %}
     {% if is_active %}
       <p>
-      {{request.build_absolute_uri}}comroom?school={{school|urlencode}}&s_code={{s_code}}
+      {{request.build_absolute_uri}}timetable?school={{school|urlencode}}&s_code={{s_code}}
     </p>
     <a
-      href="{{request.build_absolute_uri}}comroom?school={{school|urlencode}}&s_code={{s_code}}"
+      href="{{request.build_absolute_uri}}timetable?school={{school|urlencode}}&s_code={{s_code}}"
       class="btn btn-primary"
       role="button"
       >시간표</a
@@ -32,8 +32,8 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" href="comroom_admin/">컴퓨터실 정보 수정</a>
-        <a class="dropdown-item" href="time_admin/">시간표 수정</a>
-        <a class="dropdown-item" href="fix_time/">고정시간 등록</a>
+        <a class="dropdown-item" href="timetable/time_admin/">시간표 수정</a>
+        <a class="dropdown-item" href="timetable/fix_time/">고정시간 등록</a>
       </div>
     </div>
     <a href="school/logout/" class="btn btn-secondary" role="button">로그아웃</a>

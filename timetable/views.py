@@ -1,9 +1,9 @@
 from datetime import datetime, date
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, FormView, CreateView
+from django.views.generic import DetailView, FormView, CreateView, View
 from .models import Timetable, FixedTimetable
 from .forms import BookingForm, FixTimeForm
 from .utils import TimetableCreate
@@ -101,7 +101,7 @@ class BookTime(FormView):
     template_name = 'booking.html'
     form_class = BookingForm
     url_date = datetime.now().strftime("%Y-%m")
-    success_url = '/comroom/1/'+url_date
+    success_url = '/timetable/1/'+url_date
     school_id = 2
     date = '2020-01-08'
     time = 1
@@ -172,3 +172,48 @@ class FixCreateView(CreateView):
         obj.save()
         return redirect('/')
         # return super().form_valid(form)
+
+
+class FixTimeView(View):
+    template_name = 'fixTime_lab.html'
+    form_class = FixTimeForm
+    success_url = '/'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        school_id = self.request.session['school']
+        school = get_object_or_404(School, {'pk': school_id})
+        fix_list = FixedTimetable.objects.filter(school=school)
+        context['fix_list'] = fix_list
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        return redirect('/')
+
+    def form_valid(self, form):
+        return redirect('/')
+
+
+def time_admin(request):
+    template_name = "time_admin.html"
+    context = {}
+    times = []
+
+    school = School.objects.get(id=request.session['school_info'])
+    timetables = school.timetable_set.all().order_by('-date')
+
+    for i in range(timetables.count()):
+        times.append(timetables[i])
+
+    context['times'] = times
+
+    return render(request, template_name, context)
+
+
+def del_time(request, **kwargs):
+
+    school = School.objects.get(id=request.session['school_info'])
+    timetables = school.timetable_set.all().order_by('-date')
+    timetables[kwargs['i']].delete()
+
+    return redirect('/timetable/time_admin/')

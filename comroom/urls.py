@@ -16,8 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
-from school.views import index, AboutView, ComroomAdminView, make_room, time_admin, del_time
-from timetable.views import TimetableView, valid_scode, assign_room, BookTime, FixCreateView
+from school.views import index, AboutView, ComroomAdminView, make_room
+from timetable.views import assign_room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,17 +26,11 @@ urlpatterns = [
     path('make_room/', make_room),
     path('assign_room/', assign_room),
     path('comroom_admin/', ComroomAdminView.as_view()),
-    path('time_admin/', time_admin),
-    path('fix_time/', FixCreateView.as_view()),
-    path('del_time/<int:i>', del_time),
     path('ssam_ko/', AboutView.as_view(), name='about'),
     path('howto/', TemplateView.as_view(template_name="howto.html")),
     path('whatis/', TemplateView.as_view(template_name="whatis.html")),
     path('FAQ/', TemplateView.as_view(template_name="faq.html")),
     path('db_reset/', TemplateView.as_view(template_name="dbreset.html")),
-    path('comroom/', valid_scode),
-    path('comroom/<int:roomNo>/<date>/',
-         TimetableView.as_view(), name='timetable'),
-    path('comroom/<int:pk>/<int:roomNo>/<date>/<int:time>/',
-         BookTime.as_view())
+    path('timetable/', include('timetable.urls', namespace='timetable')),
+
 ]

@@ -43,14 +43,14 @@
   <div class="col-4 text-center">
     {% ifequal month 1 %}
     <a
-      href="/comroom/{{roomNo}}/{{year|add:-1}}-12"
+      href="/timetable/{{roomNo}}/{{year|add:-1}}-12"
       class="btn btn-outline-secondary"
       role="button"
       >이전 달</a
     >
     {% else %}  
     <a
-      href="/comroom/{{roomNo}}/{{year}}-{{month|add:-1}}"
+      href="/timetable/{{roomNo}}/{{year}}-{{month|add:-1}}"
       class="btn btn-outline-secondary"
       role="button"
       >이전 달</a
@@ -72,7 +72,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% for room in roomset %}
-        <a class="dropdown-item" href="/comroom/{{forloop.counter}}/{{year}}-{{month}}"
+        <a class="dropdown-item" href="/timetable/{{forloop.counter}}/{{year}}-{{month}}"
           >{{room.name}}</a
         >
         {% endfor %}
@@ -82,7 +82,7 @@
   <div class="col-4 text-center">
   {% ifequal month 12 %}
   <a
-      href="/comroom/{{roomNo}}/{{year|add:1}}-1"
+      href="/timetable/{{roomNo}}/{{year|add:1}}-1"
       class="btn btn-outline-primary"
       role="button"
       >다음 달</a
@@ -90,7 +90,7 @@
   
   {% else %}
   <a
-      href="/comroom/{{roomNo}}/{{year}}-{{month|add:1}}"
+      href="/timetable/{{roomNo}}/{{year}}-{{month|add:1}}"
       class="btn btn-outline-primary"
       role="button"
       >다음 달</a
@@ -104,7 +104,8 @@
     {{ timetable }}
     <!-- school id가 있을때만 실행 -->
     {% if school_id %}
-    <form id="myform" method="post" action="{% url 'timetable' roomNo date %}">
+    
+    <form id="myform" method="post" action="{% url 'timetable:timetableView' roomNo date %}">
       {% csrf_token %}
       <input type="hidden" name="flag" value="{{ school_id }}" />
 

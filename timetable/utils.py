@@ -66,14 +66,14 @@ class TimetableCreate(HTMLCalendar):
                         d += f'<div class="col"><a href="#" role="button" class="btn btn-secondary btn-sm disabled">{time}</a></div>'
                     # 둘 다 아니면 파란색
                     else:
-                        d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.room.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
+                        d += f'<div class="col"><a href="/timetable/{self.school.id}/{self.room.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
 
             else:
                 # 없다면 지난 날인지 검사
                 if self.month < thismonth or (day < today and self.month == thismonth):
                     d += f'<div class="col"><a href="#" role="button" class="btn btn-secondary btn-sm disabled">{time}</a></div>'
                 else:
-                    d += f'<div class="col"><a href="/comroom/{self.school.id}/{self.room.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
+                    d += f'<div class="col"><a href="/timetable/{self.school.id}/{self.room.roomNo}/{date}/{time}" role="button" class="btn btn-primary btn-sm">{time}</a></div>'
 
                 # else:
                 #     if self.month < thismonth or (day < today and self.month == thismonth):
