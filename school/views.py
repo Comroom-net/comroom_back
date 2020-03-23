@@ -28,7 +28,7 @@ def privacy_agree(request):
 
 def agree_pirv(request):
     request.session['privacy'] = True
-    return redirect('/register')
+    return redirect('/school/register')
 
 
 class RegisterView(FormView):
