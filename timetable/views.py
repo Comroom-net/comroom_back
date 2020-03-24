@@ -149,7 +149,7 @@ def assign_room(request):
 
 
 class FixCreateView(CreateView):
-    template_name = 'fixTime.html'
+    template_name = 'fixTime_lab.html'
     form_class = FixTimeForm
     success_url = '/'
 
@@ -159,10 +159,11 @@ class FixCreateView(CreateView):
         school = School.objects.get(id=school_id)
         comroom = school.comroom_set.filter(school=school)
         form = FixTimeForm()
-        # form.fields['school'] = school
         form.fields['comroom'].queryset = comroom
-
         context['form'] = form
+        fix_list = FixedTimetable.objects.filter(
+            school=school).order_by('comroom')
+        context['fix_list'] = fix_list
         return render(request, self.template_name, context)
 
     def form_valid(self, form):
@@ -170,28 +171,8 @@ class FixCreateView(CreateView):
         obj = form.save(commit=False)
         obj.school = school
         obj.save()
-        return redirect('/')
+        return redirect('/timetable/fix_time')
         # return super().form_valid(form)
-
-
-class FixTimeView(View):
-    template_name = 'fixTime_lab.html'
-    form_class = FixTimeForm
-    success_url = '/'
-
-    def get(self, request, *args, **kwargs):
-        context = {}
-        school_id = self.request.session['school']
-        school = get_object_or_404(School, {'pk': school_id})
-        fix_list = FixedTimetable.objects.filter(school=school)
-        context['fix_list'] = fix_list
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        return redirect('/')
-
-    def form_valid(self, form):
-        return redirect('/')
 
 
 def time_admin(request):
@@ -217,3 +198,11 @@ def del_time(request, **kwargs):
     timetables[kwargs['i']].delete()
 
     return redirect('/timetable/time_admin/')
+
+
+def del_fixed_time(request, **kwargs):
+    school = School.objects.get(id=request.session['school_info'])
+    Fixedtimetables = school.fixedtimetable_set.all().order_by('comroom')
+    Fixedtimetables[kwargs['i']].delete()
+
+    return redirect('/timetable/fix_time/')
