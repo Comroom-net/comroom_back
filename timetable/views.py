@@ -149,7 +149,7 @@ def assign_room(request):
 
 
 class FixCreateView(CreateView):
-    template_name = 'fixTime_lab.html'
+    template_name = 'fixTime.html'
     form_class = FixTimeForm
     success_url = '/'
 

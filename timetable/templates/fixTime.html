@@ -4,7 +4,18 @@
   고정/반복 시간 관리 | {{ block.super }}
 {% endblock title %}
 {% block header %}
-
+<script>
+  $(function() {
+    $('[data-toggle="popover"]').popover({
+      html: true
+    });
+  });
+</script>
+<style>
+  .btn.mod {
+    color: #fff;
+  }
+</style>
 {% endblock header %}
 {% load bootstrap4 %}       
 {% bootstrap_css %}         
@@ -16,7 +27,58 @@
   
 <div class="row mt-5">
   <div class="col-12 text-center">
-    <h1>고정시간 등록</h1>
+    <h1>고정시간 관리</h1>
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="table-responsive">
+    <h6>등록된 고정시간</h6>
+    <table class="table">
+      <thead>
+        <th>#</th>
+        <th>교실</th>
+        <th>요일</th>
+        <th>시간</th>
+        <th>내용</th>
+        <th>시작</th>
+        <th>종료</th>
+        <th>수정</th>
+      </thead>
+      <tbody>
+        {% for fixed_item in fix_list %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ fixed_item.comroom }}</td>
+          <td>{{ fixed_item.get_fixed_day_display }}</td>
+          <td>{{ fixed_item.fixed_time}}교시</td>
+          <td>{{ fixed_item.fixed_name }}</td>
+          <td>{{ fixed_item.fixed_from|date:"Y.m.d" }}</td>
+          <td>{{ fixed_item.fixed_until|date:"Y.m.d" }}</td>
+          <td><a
+            tabindex="0"
+            role="button"
+            class="btn btn-success mod"
+            data-toggle="popover"
+            data-trigger="focus"
+            title="수정"
+            data-content="정말 삭제할까요? <br> <a
+              href='/timetable/del_fixed_time/{{forloop.counter|add:-1}}'
+              class='btn-danger btn'
+              >삭제</a
+            >"
+            >수정</a>
+          </td>
+        </tr>
+        <div id="item_{{ forloops.counter }}" class="hide">
+          <form action="." method="post">
+
+          </form>
+        </div>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+
   </div>
 </div>
 <div class="row mt-5">
