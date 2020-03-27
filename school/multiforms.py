@@ -1,6 +1,6 @@
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 from django.views.generic.edit import ProcessFormView
-# from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden
 
 
 class MultiFormMixin(ContextMixin):

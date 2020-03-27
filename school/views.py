@@ -354,6 +354,9 @@ def reset_password(request, token):
                 reset_form.cleaned_data.get('password'))
             adminUser.auth_key = ''
             adminUser.save()
+            request.session['user_id'] = adminUser.user
+            request.session['username'] = adminUser.realname
+            request.session['school'] = adminUser.school.id
             return redirect('/')
 
     return render(request, "reset_password.html", {'teacher_name': adminUser.realname})
