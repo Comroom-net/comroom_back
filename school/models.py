@@ -65,7 +65,9 @@ class AdminUser(models.Model):
     is_active = models.BooleanField(verbose_name='인증여부',
                                     default=True)
     auth_key = models.CharField(max_length=64,
-                                verbose_name='인증키')
+                                verbose_name='인증키',
+                                null=True,
+                                blank=True)
 
     class Meta:
         verbose_name = '학교관리자'

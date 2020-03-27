@@ -1,4 +1,20 @@
-{% extends "base.html" %} {% block contents %}
+{% extends "base.html" %} 
+{% block title %}
+로그인 | {{ block.super }}
+{% endblock title %}
+{% block header %}
+<style>
+#reset_btn {
+  cursor: pointer;
+  
+}
+#reset_btn:hover {
+  color: blue;
+}
+</style>
+{% endblock header %}
+
+{% block contents %}
 <div class="row mt-5">
   <div class="col-12 text-center">
     <h1>학교관리자 로그인</h1>
@@ -12,7 +28,10 @@
 <div class="row mt-5">
   <div class="col-12">
     <form method="POST" action=".">
-      {% csrf_token %} {% for field in form %}
+      {% csrf_token %} {% for field in forms.login %}
+      {% if field.name == 'action' %}
+        {{ field }}
+      {% else %}
       <div class="form-group">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         <input
@@ -23,11 +42,55 @@
           name="{{ field.name }}"
         />
       </div>
+      {% endif %}
       {% if field.errors %}
       <span style="color: red;">{{ field.errors }}</span>
       {% endif %} {% endfor %}
       <button type="submit" class="btn btn-primary">로그인</button>
     </form>
+    <a id="reset_btn" role="button" data-toggle="modal" data-target="#resetModal">
+      <small><u>비밀번호가 기억나지 않아요</u></small>
+    </a> 
   </div>
 </div>
+
+<div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">비밀번호 분실</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="." method="POST">
+          {% csrf_token %}
+            
+              <div class="form-group">
+              {{ forms.get_admin }}
+              </div>
+          
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+        <button type="submit" class="btn btn-primary">확인</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+$('#resetModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var recipient = button.data('whatever') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  {% comment %} modal.find('.modal-title').text('New message to ' + recipient) {% endcomment %}
+  {% comment %} modal.find('.modal-body input').val(recipient) {% endcomment %}
+})
+</script>
 {% endblock contents %}

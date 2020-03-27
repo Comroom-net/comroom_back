@@ -16,15 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
-from school.views import index, AboutView, ComroomAdminView, make_room
+from school.views import index, AboutView, ComroomAdminView, make_room, reset_password, \
+    send_password_mail
 from timetable.views import assign_room
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index),
+    path('', index, name='index'),
     path('school/', include('school.urls')),
-    path('make_room/', make_room),
-    path('assign_room/', assign_room),
+    # path('make_room/', make_room),
+    # path('assign_room/', assign_room),
+    path('send_password_mail/', send_password_mail, name='send_password_mail'),
+    path('reset_password/<str:token>/', reset_password),
     path('comroom_admin/', ComroomAdminView.as_view()),
     path('ssam_ko/', AboutView.as_view(), name='about'),
     path('howto/', TemplateView.as_view(template_name="howto.html")),

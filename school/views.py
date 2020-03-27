@@ -1,6 +1,9 @@
 import datetime
 import random
+
 from django.shortcuts import render, redirect, resolve_url, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, TemplateView
 from django.views import View
 from django.db import transaction
@@ -9,8 +12,11 @@ from django.contrib.staticfiles import finders
 from django.core.mail import EmailMessage, send_mail
 from django.forms import formset_factory
 from django.template.loader import render_to_string
-from .forms import RegisterForm, LoginForm, ComroomAdminForm
+
+from .forms import RegisterForm, LoginForm, ComroomAdminForm, PasswordResetForm, GetAdminForm, LoginForm_multi
 from .models import School, AdminUser, Notice, Comroom, IPs
+
+from .multiforms import MultiFormsView
 # Create your views here.
 
 
@@ -108,6 +114,42 @@ class LoginView(FormView):
         self.request.session['school'] = user.school.id
 
         return super().form_valid(form)
+
+
+class MultipleFormsLoginView(MultiFormsView):
+    template_name = "login.html"
+    form_classes = {'login': LoginForm_multi,
+                    'get_admin': GetAdminForm,
+                    }
+
+    success_urls = {
+        'login': reverse_lazy('index'),
+        'get_admin': reverse_lazy('send_password_mail'),
+    }
+
+    def login_form_valid(self, form):
+        user = form.cleaned_data.get('user')
+        password = form.cleaned_data.get('password')
+        form_name = form.cleaned_data.get('action')
+        print(user)
+        user = AdminUser.objects.get(
+            user=user)
+        self.request.session['username'] = user.realname
+        self.request.session['user_id'] = user.user
+        self.request.session['school'] = user.school.id
+        return HttpResponseRedirect(self.get_success_url(form_name))
+
+    def get_admin_form_valid(self, form):
+        print('form valid')
+        email = form.cleaned_data.get('email')
+        teacher_name = form.cleaned_data.get('teacher_name')
+        adminUser = AdminUser.objects.get(
+            email=email, realname=teacher_name)
+        form_name = form.cleaned_data.get('action')
+        self.request.session['adminUser_pk'] = adminUser.pk
+        print(adminUser)
+
+        return HttpResponseRedirect(self.get_success_url(form_name))
 
 
 def ex_login(request):
@@ -273,6 +315,8 @@ def del_time(request, **kwargs):
 
     return redirect('/time_admin/')
 
+# token init. method
+
 
 def randstr(length):
     rstr = "0123456789abcdefghijklnmopqrstuvwxyzABCDEFGHIJKLNMOPQRSTUVWXYZ"
@@ -294,3 +338,46 @@ def user_active(request, token):
         adminUser.save()
         message = "인증되었습니다. 불편한 사항은 언제든 말씀해주세요 ^^"
     return render(request, 'notice.html', {'message': message})
+
+
+def reset_password(request, token):
+    adminUser = get_object_or_404(AdminUser, auth_key=token)
+
+    if request.method == 'GET':
+        reset_form = PasswordResetForm()
+        return render(request, "reset_password.html", {'teacher_name': adminUser.realname,
+                                                       'form': reset_form})
+    else:
+        reset_form = PasswordResetForm(request.POST)
+        if reset_form.is_valid():
+            adminUser.password = make_password(
+                reset_form.cleaned_data.get('password'))
+            adminUser.auth_key = ''
+            adminUser.save()
+            return redirect('/')
+
+    return render(request, "reset_password.html", {'teacher_name': adminUser.realname})
+
+
+def send_password_mail(request):
+    adminUser_pk = request.session['adminUser_pk']
+    adminUser = AdminUser.objects.get(pk=adminUser_pk)
+
+    while True:
+        auth_key = randstr(50)
+        if not AdminUser.objects.filter(auth_key=auth_key):
+            break
+
+    adminUser.auth_key = auth_key
+    adminUser.save()
+
+    mail_title = "컴룸닷컴 비밀번호 재설정"
+    mail_args = {'teacher_name': adminUser.realname,
+                 'token': adminUser.auth_key}
+    mail_context = "컴룸닷컴 비밀번호 재설정"
+    mail_html = render_to_string('password_mail.html', mail_args)
+    send_mail(mail_title, mail_context, 'ssamko@kakao.com',
+              [adminUser.email], html_message=mail_html)
+    message = f"{adminUser.realname} 선생님께서 입력하신 메일({adminUser.email})로\
+        비밀번호 재설정 메일을 보내드렸습니다. 8시간 안에 재설정해주세요."
+    return render(request, "notice.html", {'message': message})

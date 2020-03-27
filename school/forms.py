@@ -89,8 +89,8 @@ class RegisterForm(forms.Form):
 
         if password and re_password:
             if password != re_password:
-                self.add_error('password', '비밀번호가 서로 다릅니다.')
-                self.add_error('re_password', '비밀번호가 서로 다릅니다.')
+                self.add_error('password', '비밀번호가 일치하지 않습니다.')
+                self.add_error('re_password', '비밀번호가 일치하지 않습니다.')
 
         if user:
             if AdminUser.objects.filter(user=user).exists():
@@ -133,6 +133,35 @@ class LoginForm(forms.Form):
                 self.add_error('password', '비밀번호가 틀렸습니다.')
 
 
+class PasswordResetForm(forms.Form):
+    password = forms.CharField(
+        error_messages={
+            'required': '비밀번호를 입력해주세요'
+        },
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control'
+        }), label='비밀번호'
+    )
+    re_password = forms.CharField(
+        error_messages={
+            'required': '비밀번호를 다시 입력해주세요'
+        },
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control'
+        }), label='비밀번호 확인'
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        re_password = cleaned_data.get('re_password')
+
+        if password and re_password:
+            if password != re_password:
+                self.add_error('password', '비밀번호가 일치하지 않습니다.')
+                self.add_error('re_password', '비밀번호가 일치하지 않습니다.')
+
+
 class ComroomAdminForm(forms.Form):
     room_name = forms.CharField(
         error_messages={
@@ -145,3 +174,76 @@ class ComroomAdminForm(forms.Form):
         initial="위치, 이용안내, 유의사항 등을 입력하세요.",
         widget=forms.Textarea
     )
+
+# for multiple forms in a view
+# parent view of multiple formss
+
+
+class MultipleForm(forms.Form):
+    action = forms.CharField(max_length=60, widget=forms.HiddenInput())
+
+# newLoginForm on developing.
+
+
+class LoginForm_multi(MultipleForm):
+    user = forms.CharField(
+        error_messages={
+            'required': '아이디를 입력해주세요.'
+        },
+        max_length=64, label='아이디'
+    )
+    password = forms.CharField(
+        error_messages={
+            'required': '비밀번호를 입력해주세요.'
+        },
+        widget=forms.PasswordInput, label='비밀번호'
+    )
+
+    def clean(self):  # 검증하는 함수
+        cleaned_data = super().clean()
+        user = cleaned_data.get('user')
+        password = cleaned_data.get('password')
+
+        if user and password:
+            try:
+                admin_user = AdminUser.objects.get(user=user)
+            except AdminUser.DoesNotExist:
+                self.add_error('user', '아이디가 없습니다.')
+                return
+
+            if not check_password(password, admin_user.password):
+                self.add_error('password', '비밀번호가 틀렸습니다.')
+
+
+class GetAdminForm(MultipleForm):
+    email = forms.EmailField(
+        error_messages={
+            'required': '이메일을 입력해주세요.'
+        },
+        label='이메일',
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
+    )
+    teacher_name = forms.CharField(
+        error_messages={
+            'required': '선생님 성함을 입력해주세요.'
+        },
+        max_length=16,
+        label='선생님',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        print('clean starts')
+        email = cleaned_data.get('email')
+        teacher_name = cleaned_data.get('teacher_name')
+
+        if email and teacher_name:
+            try:
+                admin_user = AdminUser.objects.get(
+                    email=email, realname=teacher_name)
+                print('admin get')
+            except AdminUser.DoesNotExist:
+                self.add_error('email', '일치하는 관리자계정이 없습니다.')
+                self.add_error('teacher_name', '문제가 지속되면 메일로 문의주세요.')
+                return
