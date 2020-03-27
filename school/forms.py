@@ -43,6 +43,7 @@ class RegisterForm(forms.Form):
             'max_value': '한 학교당 5개까지만 가능합니다. 더 필요하시면 메일주세요.',
         },
         label='교내 컴퓨터실 수',
+        help_text='특별실(스마트패드)을 포함한 수. 최대 5개.',
         validators=[
             MaxValueValidator(5)
         ]
@@ -221,14 +222,15 @@ class GetAdminForm(MultipleForm):
             'required': '이메일을 입력해주세요.'
         },
         label='이메일',
-        widget=forms.EmailInput(attrs={'class': 'form-control'})
+        widget=forms.EmailInput(attrs={'class': 'form-control',
+                                       'placeholder': '가입 시 입력한 이메일'})
     )
     teacher_name = forms.CharField(
         error_messages={
             'required': '선생님 성함을 입력해주세요.'
         },
         max_length=16,
-        label='선생님',
+        label='선생님 성함',
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
 
