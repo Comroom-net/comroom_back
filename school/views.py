@@ -58,25 +58,25 @@ class RegisterView(FormView):
         with transaction.atomic():
 
             school = School(
-                province=form.data.get('province'),
-                name=form.data.get('name')+'초등학교',
-                ea=form.data.get('ea'),
+                province=form.cleaned_data.get('province'),
+                name=form.cleaned_data.get('name')+'초등학교',
+                ea=form.cleaned_data.get('ea'),
                 s_code=random.randint(1000, 9999)
             )
             school.save()
             adminUser = AdminUser(
                 school=school,
-                user=form.data.get('user'),
-                password=make_password(form.data.get('password')),
-                realname=form.data.get('realname'),
-                email=form.data.get('email'),
+                user=form.cleaned_data.get('user'),
+                password=make_password(form.cleaned_data.get('password')),
+                realname=form.cleaned_data.get('realname'),
+                email=form.cleaned_data.get('email'),
                 auth_key=randstr(50),
                 is_active=False
             )
             self.request.session['username'] = adminUser.realname
             self.request.session['user_id'] = adminUser.user
             adminUser.save()
-            for i in range(int(form.data.get('ea'))):
+            for i in range(int(form.cleaned_data.get('ea'))):
                 comroom = Comroom(
                     school=school,
                     roomNo=i+1,
