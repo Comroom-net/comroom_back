@@ -5,4 +5,4 @@ School Computer Room Timetable System
 
 개발 일지는 블로그를 통해 업로드 하고 있습니다.
 
-ssamko.tistory.com
+<a href='http://ssamko.tistory.com'>ssamko.tistory.com</a>
