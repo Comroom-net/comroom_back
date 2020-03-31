@@ -1,3 +1,5 @@
 production.json
 production.py
 /staticfiles/com_privacy.txt
+/templates/adsense.html
+/templates/analytics.html
