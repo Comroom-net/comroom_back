@@ -126,7 +126,7 @@ nocookie | {{ block.super }}
         if (!given.startsWith("http")) {
             return false
         }
-        if (!given.include("you")) {
+        if (!given.includes("you")) {
             return false
         }
 
