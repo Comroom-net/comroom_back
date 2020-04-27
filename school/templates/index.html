@@ -1,33 +1,23 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block title %}
 컴룸닷넷 | {{ block.super }}
 {% endblock title %}
-{% block nav-home %} active {% endblock nav-home %} 
+{% block nav-home %} active {% endblock nav-home %}
 {% block contents %}
 <div class="row mt-5">
   <div class="col-12">
     <h2>Hello {{username|default:"Stranger"}}</h2>
     {% if username %}
     {% if is_active %}
-      <p>
+    <p>
       {{request.build_absolute_uri}}timetable?school={{school|urlencode}}&s_code={{s_code}}
     </p>
-    <a
-      href="{{request.build_absolute_uri}}timetable?school={{school|urlencode}}&s_code={{s_code}}"
-      class="btn btn-primary"
-      role="button"
-      >시간표</a
-    >
+    <a href="{{request.build_absolute_uri}}timetable?school={{school|urlencode}}&s_code={{s_code}}"
+      class="btn btn-primary" role="button">시간표</a>
     <button class="copy btn btn-primary">링크 복사</button>
     <div class="dropdown" style="display:inline-block;">
-      <button
-        class="btn btn-primary dropdown-toggle"
-        type="button"
-        id="dropdownMenuButton"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
+      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
         관리자 메뉴
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -38,20 +28,16 @@
     </div>
     <a href="school/logout/" class="btn btn-secondary" role="button">로그아웃</a>
     {% else %}
-      <p>이메일 인증을 완료해주세요.</p>
-      <a href="school/login/" class="btn btn-primary" role="button">관리자 로그인</a>
-      <a href="school/privacy_agreement/" class="btn btn-primary" role="button">관리자 등록</a>
-      <a href="school/ex_login/" class="btn btn-info" role="button">샘플계정 로그인</a>
+    <p>이메일 인증을 완료해주세요.</p>
+    <a href="school/login/" class="btn btn-primary" role="button">관리자 로그인</a>
+    <a href="school/privacy_agreement/" class="btn btn-primary" role="button">관리자 등록</a>
+    <a href="school/ex_login/" class="btn btn-info" role="button">샘플계정 로그인</a>
     {% endif %}
-    
+
 
     {% else %} {% if s_code %}
-    <a
-      href="{{request.build_absolute_uri}}timetable?school={{school|urlencode}}&s_code={{s_code}}"
-      class="btn btn-primary"
-      role="button"
-      >시간표</a
-    >
+    <a href="{{request.build_absolute_uri}}timetable?school={{school|urlencode}}&s_code={{s_code}}"
+      class="btn btn-primary" role="button">시간표</a>
     {% endif %}
     <a href="school/login/" class="btn btn-primary" role="button">관리자 로그인</a>
     <a href="school/privacy_agreement/" class="btn btn-primary" role="button">관리자 등록</a>
@@ -74,7 +60,7 @@
   </div>
 </div>
 <script>
-  document.querySelector(".copy").addEventListener("click", function() {
+  document.querySelector(".copy").addEventListener("click", function () {
     var tempElem = document.createElement("textarea");
     tempElem.value =
       "{{request.build_absolute_uri}}comroom?school={{school|urlencode}}&s_code={{s_code}}";
@@ -83,6 +69,7 @@
     tempElem.select();
     document.execCommand("copy");
     document.body.removeChild(tempElem);
+    document.getElementById('copied').style.display = "block"
   });
 </script>
 {% endblock contents %}

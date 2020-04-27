@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}
+Youtube_nocookie | {{ block.super }}
+{% endblock title %}
+
+{% block contents %}
+<div class="row mt-5">
+    <h5>링크입력</h5>
+</div>
+<input type="text" class="form-control" id='input_url' placeholder="복사한 링크를 붙여넣기 하세요">
+<a id="option_title" href="#" onclick="more_options()">옵션 보기</a>
+<div id="options" class="row mt-1" style="display: none;">
+    <p>업데이트 예정입니다.</p>
+</div>
+<div class="row">
+    <!-- <div class="col-12"> -->
+    <button class="btn btn-primary mx-auto" onclick="convert_url()"> 변환 </button>
+    <!-- </div> -->
+</div>
+<div class="row mt-3" id="converted_title" style="display: none;">
+    <h5>변환된 링크</h5>
+</div>
+<p id="result"></p>
+<div id="copied" class="alert alert-success mt-3" role="alert" style="display: none;">
+    클립보드에 복사되었습니다! :)
+</div>
+
+<script>
+    function convert_url() {
+        var origin = document.getElementById('input_url').value
+        var nocookie_prefix = "https://www.youtube-nocookie.com/embed/"
+        var temp = origin.split("/")
+        var temp = temp[temp.length - 1]
+        if (temp.startsWith("watch")) {
+            temp = temp.split("=")[1]
+            temp = temp.split("&")[0]
+            temp = temp.split("?")[0]
+        } else {
+            temp = temp.split("?")[0]
+        }
+        var video_id = temp
+        document.getElementById('result').innerText = nocookie_prefix + video_id
+
+        // copy url to clipboard
+        var tempElem = document.createElement("textarea");
+        tempElem.value = nocookie_prefix + video_id
+        document.body.appendChild(tempElem);
+
+        tempElem.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempElem);
+        document.getElementById('copied').style.display = "block"
+        document.getElementById('converted_title').style.display = "block"
+    }
+    function more_options() {
+        var x = document.getElementById("options")
+        var o_title = document.getElementById("option_title")
+        if (x.style.display == "none") {
+            x.style.display = "block"
+            o_title.innerText = "옵션 닫기"
+        } else {
+            x.style.display = "none"
+            o_title.innerText = "옵션 보기"
+        }
+
+    }
+</script>
+{% endblock contents %}
