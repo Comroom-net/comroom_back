@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-nocookie | {{ block.super }}
+nocookie | 컴룸닷넷
 {% endblock title %}
 
 {% block contents %}
@@ -85,8 +85,12 @@ nocookie | {{ block.super }}
             document.body.removeChild(tempElem);
             document.getElementById('copied').style.display = "block"
             document.getElementById('converted_title').style.display = "block"
+            document.getElementById('wrong_url').style.display = "none"
         } else {
             document.getElementById('wrong_url').style.display = "block"
+            document.getElementById('copied').style.display = "none"
+            document.getElementById('converted_title').style.display = "none"
+            document.getElementById('result').innerText = ''
         }
 
     }
