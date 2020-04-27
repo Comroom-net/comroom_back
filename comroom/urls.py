@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('school/', include('school.urls')),
+    path('etc/', include('etc.urls')),
     # path('make_room/', make_room),
     # path('assign_room/', assign_room),
     path('send_password_mail/', send_password_mail, name='send_password_mail'),

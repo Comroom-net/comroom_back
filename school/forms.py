@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.hashers import check_password
 from django.core.validators import MaxValueValidator
+
 from .models import School, AdminUser
 
 

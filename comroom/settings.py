@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'school.apps.SchoolConfig',
     'timetable',
+    'etc',
 ]
 
 MIDDLEWARE = [

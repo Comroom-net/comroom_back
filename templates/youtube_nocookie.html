@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}
+Youtube_nocookie | {{ block.super }}
+{% endblock title %}
+{% block contents %}
+<div class="row mt-5">
+<h5>링크입력</h5>
+</div>
+<input type="text" class="form-control" id = 'input_url' value="https://youtu.be/icNZXqG_1HU?t=19" placeholder="복사한 링크를 붙여넣기 하세요">
+<a href="#">옵션보기</a>
+<button class="btn btn-primary" onclick="convert_url()">변환</button>
+<p id="temp"></p>
+<p id="result"></p>
+
+<script>
+    function convert_url() {
+        var origin = document.getElementById('input_url').value
+        var nocookie_prefix = "https://www.youtube-nocookie.com/embed/"
+        var temp = origin.split("/")
+        var temp = temp[temp.length - 1]
+        if (temp.startsWith("watch")) {
+            temp = temp.split("=")[1]
+            temp = temp.split("&")[0]
+            temp = temp.split("?")[0]
+        } else {
+            temp = temp.split("?")[0]
+        }
+        var video_id = temp
+        document.getElementById('temp').innerText = "temp: " + temp
+        document.getElementById('result').innerText = nocookie_prefix + video_id
+    }
+</script>
+{% endblock contents %}
