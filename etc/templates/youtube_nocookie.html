@@ -53,34 +53,42 @@ nocookie | {{ block.super }}
 <div id="copied" class="alert alert-success mt-3" role="alert" style="display: none;">
     클립보드에 복사되었습니다! :)
 </div>
+<div id="wrong_url" class="alert alert-danger mt-3" role="alert" style="display: none;">
+    링크를 확인해주세요 😥
+</div>
 
 <script>
     function convert_url() {
         var origin = document.getElementById('input_url').value
-        var nocookie_prefix = "https://www.youtube-nocookie.com/embed/"
-        var temp = origin.split("/")
-        var temp = temp[temp.length - 1]
-        if (temp.startsWith("watch")) {
-            temp = temp.split("=")[1]
-            temp = temp.split("&")[0]
-            temp = temp.split("?")[0]
+        if (valid_url(origin)) {
+            var nocookie_prefix = "https://www.youtube-nocookie.com/embed/"
+            var temp = origin.split("/")
+            var temp = temp[temp.length - 1]
+            if (temp.startsWith("watch")) {
+                temp = temp.split("=")[1]
+                temp = temp.split("&")[0]
+                temp = temp.split("?")[0]
+            } else {
+                temp = temp.split("?")[0]
+            }
+            var video_id = temp
+            var result = nocookie_prefix + video_id + '?rel=0' + options()
+            document.getElementById('result').innerText = result
+
+            // copy url to clipboard
+            var tempElem = document.createElement("textarea");
+            tempElem.value = result
+            document.body.appendChild(tempElem);
+
+            tempElem.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempElem);
+            document.getElementById('copied').style.display = "block"
+            document.getElementById('converted_title').style.display = "block"
         } else {
-            temp = temp.split("?")[0]
+            document.getElementById('wrong_url').style.display = "block"
         }
-        var video_id = temp
-        var result = nocookie_prefix + video_id + '?rel=0' + options()
-        document.getElementById('result').innerText = result
 
-        // copy url to clipboard
-        var tempElem = document.createElement("textarea");
-        tempElem.value = result
-        document.body.appendChild(tempElem);
-
-        tempElem.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempElem);
-        document.getElementById('copied').style.display = "block"
-        document.getElementById('converted_title').style.display = "block"
     }
     function more_options() {
         var x = document.getElementById("options")
@@ -113,6 +121,16 @@ nocookie | {{ block.super }}
         }
 
         return url_suffix
+    }
+    function valid_url(given) {
+        if (!given.startsWith("http")) {
+            return false
+        }
+        if (!given.include("you")) {
+            return false
+        }
+
+        return true
     }
 </script>
 {% endblock contents %}
