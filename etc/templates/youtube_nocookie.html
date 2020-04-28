@@ -5,11 +5,16 @@ nocookie | 컴룸닷넷
 
 {% block contents %}
 <div class="row mt-5">
+    <div class="col-12 text-center">
+        <h3>유튜브 추천 영상 없는 링크 변환 - nocookie</h3>
+    </div>
+</div>
+<div class="row mt-5">
     <div class="col-12">
         <h5>링크입력</h5>
     </div>
 </div>
-<input type="text" class="form-control" id='input_url' placeholder="복사한 링크를 붙여넣기 하세요">
+<input type="text" class="form-control" id='input_url' placeholder="복사한 유튜브 링크를 붙여넣기 하세요">
 <a id="option_title" href="#" onclick="more_options()">옵션 보기</a>
 <div id="options" class="mt-1" style="display: none;">
     <div class="input-group mb-3">
@@ -56,8 +61,30 @@ nocookie | 컴룸닷넷
 <div id="wrong_url" class="alert alert-danger mt-3" role="alert" style="display: none;">
     링크를 확인해주세요 😥
 </div>
+<div class='row mt-3'>
+    <div class='col-12'>
+        <p class="text-muted">
+            embed를 허용하지 않은 영상은 링크변환 시 영상이 재생되지 않습니다 😭<br>
+            '일부공개' 옵션으로 게시한 영상은 embed가 허용되지 않아 마찬가지로 재생되지 않습니다 😢 <br>
+            변환된 링크에서 영상이 잘 재생되는지 확인해주세요.
+        </p>
+        <h6>&lt; embed를 허용하지 않은 채널 &gt;</h5>
+        <ul>
+            {% for ch in chs %}
+            <li>
+                {{ch.ch_name}}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
 <script>
+    String.prototype.startsWith = function (str) {
+        if (this.length < str.length) { return false; }
+        return this.indexOf(str) == 0;
+    }
+
     function convert_url() {
         var origin = document.getElementById('input_url').value
         if (valid_url(origin)) {
@@ -137,4 +164,9 @@ nocookie | 컴룸닷넷
         return true
     }
 </script>
+<ins class="kakao_ad_area" style="display:none;" 
+ data-ad-unit    = "DAN-trww52djon6s" 
+ data-ad-width   = "320" 
+ data-ad-height  = "50"></ins> 
+<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 {% endblock contents %}
