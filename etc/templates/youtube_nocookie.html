@@ -3,15 +3,16 @@
 nocookie | 컴룸닷넷
 {% endblock title %}
 {% block header %}
-  <style>
-      .convertor {
-          background-color: #e9f0ec;
-          padding: 3px 5px 3px 5px;
-      }
-      .alert {
-          margin-bottom: 0.3rem;
-      }
-  </style>
+<style>
+    .convertor {
+        background-color: #e9f0ec;
+        padding: 3px 5px 3px 5px;
+    }
+
+    .alert {
+        margin-bottom: 0.3rem;
+    }
+</style>
 {% endblock header %}
 {% block contents %}
 <div class="row mt-5">
@@ -20,58 +21,58 @@ nocookie | 컴룸닷넷
     </div>
 </div>
 <div class="convertor">
-<div class="row mt-2">
-    <div class="col-12">
-        <h5>링크입력</h5>
-    </div>
-</div>
-<input type="text" class="form-control" id='input_url' placeholder="복사한 유튜브 링크를 붙여넣기 하세요">
-<button id="option_title" class="btn btn-sm btn-outline-primary" onclick="more_options()">옵션 보기</button>
-<div id="options" class="mt-1" style="display: none;">
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text">시작지점</span>
-        </div>
-        <input type="number" class="form-control" aria-label="start point" id='start'>
-        <div class="input-group-append">
-            <span class="input-group-text">초</span>
+    <div class="row mt-2">
+        <div class="col-12">
+            <h5>링크입력</h5>
         </div>
     </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text">종료지점</span>
+    <input type="text" class="form-control" id='input_url' placeholder="복사한 유튜브 링크를 붙여넣기 하세요">
+    <button id="option_title" class="btn btn-sm btn-outline-primary" onclick="more_options()">옵션 보기</button>
+    <div id="options" class="mt-1" style="display: none;">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">시작지점</span>
+            </div>
+            <input type="number" class="form-control" aria-label="start point" id='start'>
+            <div class="input-group-append">
+                <span class="input-group-text">초</span>
+            </div>
         </div>
-        <input type="number" class="form-control" aria-label="end point" id='end'>
-        <div class="input-group-append">
-            <span class="input-group-text">초</span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">종료지점</span>
+            </div>
+            <input type="number" class="form-control" aria-label="end point" id='end'>
+            <div class="input-group-append">
+                <span class="input-group-text">초</span>
+            </div>
+        </div>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="disablekb">
+            <label class="custom-control-label" for="disablekb">키보드로 건너뛰기 금지</label>
+        </div>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="controls" checked>
+            <label class="custom-control-label" for="controls">타임라인 표시</label>
         </div>
     </div>
-    <div class="custom-control custom-switch">
-        <input type="checkbox" class="custom-control-input" id="disablekb">
-        <label class="custom-control-label" for="disablekb">키보드로 건너뛰기 금지</label>
+    <div class="row">
+        <!-- <div class="col-12"> -->
+        <button id='convert-btn' class="btn btn-primary mx-auto" onclick="convert_url()"> 변환 </button>
+        <!-- </div> -->
     </div>
-    <div class="custom-control custom-switch">
-        <input type="checkbox" class="custom-control-input" id="controls" checked>
-        <label class="custom-control-label" for="controls">타임라인 표시</label>
+    <div class="row mt-3" id="converted_title" style="display: none;">
+        <div class="col-12">
+            <h5>변환된 링크</h5>
+        </div>
     </div>
-</div>
-<div class="row">
-    <!-- <div class="col-12"> -->
-    <button class="btn btn-primary mx-auto" onclick="convert_url()"> 변환 </button>
-    <!-- </div> -->
-</div>
-<div class="row mt-3" id="converted_title" style="display: none;">
-    <div class="col-12">
-        <h5>변환된 링크</h5>
+    <p id="result"></p>
+    <div id="copied" class="alert alert-success mt-3" role="alert" style="display: none;">
+        클립보드에 복사되었습니다! :)
     </div>
-</div>
-<p id="result"></p>
-<div id="copied" class="alert alert-success mt-3" role="alert" style="display: none;">
-    클립보드에 복사되었습니다! :)
-</div>
-<div id="wrong_url" class="alert alert-danger mt-3" role="alert" style="display: none;">
-    링크를 확인해주세요 😥
-</div>
+    <div id="wrong_url" class="alert alert-danger mt-3" role="alert" style="display: none;">
+        링크를 확인해주세요 😥
+    </div>
 </div>
 <div class='row mt-3'>
     <div class='col-12'>
@@ -80,7 +81,7 @@ nocookie | 컴룸닷넷
             '일부공개' 옵션으로 게시한 영상은 embed가 허용되지 않아 마찬가지로 재생되지 않습니다 😢 <br>
             변환된 링크에서 영상이 잘 재생되는지 확인해주세요.
         </p>
-        
+
     </div>
     <div class="col-sm-4">
         <h6>&lt; embed를 허용하지 않은 채널 &gt;</h5>
@@ -97,12 +98,13 @@ nocookie | 컴룸닷넷
         검토 후 공지하겠습니다.
         <form action="" method="post">
             {% csrf_token %}
-        <div class="input-group mb-3">
-            <input name="new_ch" type="text" class="form-control" placeholder="채널명" aria-label="채널명" aria-describedby="button-addon2">
-            <div class="input-group-append">
-              <button class="btn btn-outline-info" type="submit" id="button-addon2">전송</button>
+            <div class="input-group mb-3">
+                <input name="new_ch" type="text" class="form-control" placeholder="채널명" aria-label="채널명"
+                    aria-describedby="button-addon2" required>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-info" type="submit" id="button-addon2">전송</button>
+                </div>
             </div>
-          </div>
         </form>
     </div>
 </div>
@@ -192,9 +194,7 @@ nocookie | 컴룸닷넷
         return true
     }
 </script>
-<ins class="kakao_ad_area" style="display:none;" 
- data-ad-unit    = "DAN-trww52djon6s" 
- data-ad-width   = "320" 
- data-ad-height  = "50"></ins> 
+<ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-trww52djon6s" data-ad-width="320"
+    data-ad-height="50"></ins>
 <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 {% endblock contents %}
