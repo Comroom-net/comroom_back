@@ -2,20 +2,31 @@
 {% block title %}
 nocookie | 컴룸닷넷
 {% endblock title %}
-
+{% block header %}
+  <style>
+      .convertor {
+          background-color: #e9f0ec;
+          padding: 3px 5px 3px 5px;
+      }
+      .alert {
+          margin-bottom: 0.3rem;
+      }
+  </style>
+{% endblock header %}
 {% block contents %}
 <div class="row mt-5">
     <div class="col-12 text-center">
         <h3>유튜브 추천 영상 없는 링크 변환 - nocookie</h3>
     </div>
 </div>
-<div class="row mt-5">
+<div class="convertor">
+<div class="row mt-2">
     <div class="col-12">
         <h5>링크입력</h5>
     </div>
 </div>
 <input type="text" class="form-control" id='input_url' placeholder="복사한 유튜브 링크를 붙여넣기 하세요">
-<a id="option_title" href="#" onclick="more_options()">옵션 보기</a>
+<button id="option_title" class="btn btn-sm btn-outline-primary" onclick="more_options()">옵션 보기</button>
 <div id="options" class="mt-1" style="display: none;">
     <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -61,6 +72,7 @@ nocookie | 컴룸닷넷
 <div id="wrong_url" class="alert alert-danger mt-3" role="alert" style="display: none;">
     링크를 확인해주세요 😥
 </div>
+</div>
 <div class='row mt-3'>
     <div class='col-12'>
         <p class="text-muted">
@@ -68,14 +80,30 @@ nocookie | 컴룸닷넷
             '일부공개' 옵션으로 게시한 영상은 embed가 허용되지 않아 마찬가지로 재생되지 않습니다 😢 <br>
             변환된 링크에서 영상이 잘 재생되는지 확인해주세요.
         </p>
+        
+    </div>
+    <div class="col-sm-4">
         <h6>&lt; embed를 허용하지 않은 채널 &gt;</h5>
-        <ul>
-            {% for ch in chs %}
-            <li>
-                {{ch.ch_name}}
-            </li>
-            {% endfor %}
-        </ul>
+            <ul>
+                {% for ch in chs %}
+                <li>
+                    {{ch.ch_name}}
+                </li>
+                {% endfor %}
+            </ul>
+    </div>
+    <div class="col-sm-8">
+        혹시 재생 안되는 영상이 있는 채널은 제보해주세요. <br>
+        검토 후 공지하겠습니다.
+        <form action="" method="post">
+            {% csrf_token %}
+        <div class="input-group mb-3">
+            <input name="new_ch" type="text" class="form-control" placeholder="채널명" aria-label="채널명" aria-describedby="button-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-outline-info" type="submit" id="button-addon2">전송</button>
+            </div>
+          </div>
+        </form>
     </div>
 </div>
 
