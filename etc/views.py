@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from .models import Disabled_ch
+from .models import Disabled_ch, Notice_nocookie
 
 # Create your views here.
 
@@ -9,11 +9,15 @@ from .models import Disabled_ch
 class Nocookie(TemplateView):
     template_name = "youtube_nocookie.html"
 
+
 def nocookie(request):
     template_name = "youtube_nocookie.html"
     context = {}
     chs = Disabled_ch.objects.filter(is_noticed=True)
     context['chs'] = chs
+    notice = Notice_nocookie.objects.all()
+    if notice:
+        context['notice'] = notice[0]
 
     if request.method == "POST":
         ch_val = request.POST.get('new_ch')
@@ -24,6 +28,5 @@ def nocookie(request):
         else:
             new_ch = Disabled_ch(ch_name=ch_val)
             new_ch.save()
-
 
     return render(request, template_name, context)
