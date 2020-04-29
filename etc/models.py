@@ -32,3 +32,14 @@ class Notice_nocookie(models.Model):
     class Meta:
         verbose_name = '공지사항'
         verbose_name_plural = '공지사항'
+
+class RollFile(models.Model):
+    title = models.TextField(verbose_name="파일명", default='학교')
+    roll_file = models.FileField(upload_to='rolls/%Y/%m/%d/')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = '명렬표 파일'
+        verbose_name_plural = '명렬표 파일'

@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from django.conf.urls.static import static
+from django.conf import settings
+
 from school.views import index, AboutView, ComroomAdminView, make_room, reset_password, \
     send_password_mail
 from timetable.views import assign_room
@@ -38,3 +41,7 @@ urlpatterns = [
     path('timetable/', include('timetable.urls', namespace='timetable')),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

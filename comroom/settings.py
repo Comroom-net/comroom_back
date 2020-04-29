@@ -148,6 +148,8 @@ STATICFILES_DIRS = (
 
 STATIC_ROOT = 'ssamko/staticfiles'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Email Backend
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
