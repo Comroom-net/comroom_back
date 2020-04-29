@@ -5,3 +5,4 @@ production.py
 /templates/analytics.html
 /media/
 .DS_Store
+/staticfiles/G-suite/

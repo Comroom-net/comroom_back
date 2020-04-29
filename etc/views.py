@@ -1,11 +1,14 @@
+import csv
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.files.storage import FileSystemStorage
 
 from .models import Disabled_ch, Notice_nocookie, RollFile
 
-# Create your views here.
 
+from .GsuiteUsers import GUser
+
+# Create your views here.
 
 
 def nocookie(request):
@@ -29,20 +32,44 @@ def nocookie(request):
 
     return render(request, template_name, context)
 
+
 def GsuiteConvertor(request):
     template_name = "g-suite_convertor.html"
     context = {}
 
     if request.method == 'POST':
         file = request.FILES['roll_file']
-        file_name = f'{request.POST.get("school")}_user.csv'
-        fs = FileSystemStorage()
-        filename = fs.save(file_name, file)
-        # roll_file = RollFile(title=file_name,
-        # roll_file=file)
-        # roll_file.save()
-        # context['result_url'] = roll_file
-        context['result_url'] = fs.url(filename)
+        school = request.POST.get("school")
+        s_info = valid_G(school, file)
+        if s_info:
+            grade = request.POST.get("grade")
+            classN = request.POST.get("classN")
+            file_name = f'{school}{grade}-{classN}_user.csv'
+            roll_file = RollFile(title=school,
+                                 roll_file=file)
+            roll_file.roll_file.name = file_name
+            roll_file.save()
 
-
+            guser = GUser(file, s_info, grade, classN)
+            context['result'] = guser.file_url
+        else:
+            context['errors'] = '학교명 혹은 파일이 올바르지 않습니다.'
     return render(request, template_name, context)
+
+
+def valid_G(school, file):
+    s_info = ''
+    with open('staticfiles/G-suite/cbe_school_info.csv', 'r', newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            if row[1] == school:
+                s_info = [row[0], school, row[2].split("@")[0]]
+                break
+
+    if s_info:
+        # Should change .csv to .xlsx when deploy
+        if file.size < 1000000 and '.xlsx' in file.name:
+            return s_info
+        print(f'{file.name}: {file.size}byte')
+
+    return False
