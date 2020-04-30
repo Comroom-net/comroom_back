@@ -45,7 +45,7 @@ def GsuiteConvertor(request):
             grade = request.POST.get("grade")
             classN = request.POST.get("classN")
             file_name = f'{school}{grade}-{classN}_user.csv'
-            roll_file = RollFile(title=school,
+            roll_file = RollFile(title=file_name,
                                  roll_file=file)
             roll_file.roll_file.name = file_name
 
@@ -68,7 +68,7 @@ def valid_G(school, file):
 
     if s_info:
         # Should change .csv to .xlsx when deploy
-        if file.size < 1000 and '.xlsx' in file.name:
+        if file.size < 100000 and '.xlsx' in file.name:
             return s_info
         print(f'{file.name}: {file.size}byte')
 
