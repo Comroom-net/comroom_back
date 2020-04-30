@@ -8,14 +8,15 @@ G-suite 변환 | 컴룸닷넷
         <h3>G-suite 유저 생성용 csv파일 생성기</h3>
     </div>
 </div>
-{% if error %}
+
 <div class="row mt-5">
     <div class="col-12">
-        {{ error }}
+        <p class="text-muted">충북 G-suite 관리자 계정으로 사용자 계정을 생성할 때 사용합니다.<br>
+            사용방법은 <a href="http://ssamko.tistory.com/17">(충북)G-suite 여러 사용자 계정 생성 쉽게 하기</a> 여기를 참고해주세요😉</p>
     </div>
 </div>
-{% endif %}
-<div class="row mt-5">
+
+<div class="row mt-2">
     <div class="col-12">
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -73,4 +74,8 @@ G-suite 변환 | 컴룸닷넷
 </div>
 
 {% endif %}
+<br>
+<ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-trww52djon6s" data-ad-width="320"
+    data-ad-height="50"></ins>
+<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 {% endblock contents %}

@@ -18,11 +18,17 @@ class GUser:
         # xlsx 파일에서 학생정보 가져오기
         wb = load_workbook(file)
         ws = wb[wb.sheetnames[0]]
-
+        for max_row, row in enumerate(ws, 1):
+            if all(c.value is None for c in row):
+                break
+        print('ws.max row:', ws.max_row)
+        max_row -= 1
+        print('max row:', max_row)
         self.students = []
-        for r in range(2, ws.max_row + 1):
+        for r in range(2, max_row + 1):
             self.students.append(ws.cell(row=r, column=2).value)
 
+        print(self.students)
         # Properties
         self.s_code, self.school, self.s_admin = s_info
         self.grade = grade
@@ -46,6 +52,7 @@ class GUser:
         temp = ['' for x in range(25)] + ['TRUE', '']
         for i, name in enumerate(self.students):
             s_num = i + 1
+            print(name)
             firstName = name[1:]
             lastName = name[0]
 

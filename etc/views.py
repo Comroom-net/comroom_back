@@ -48,9 +48,9 @@ def GsuiteConvertor(request):
             roll_file = RollFile(title=school,
                                  roll_file=file)
             roll_file.roll_file.name = file_name
-            roll_file.save()
 
             guser = GUser(file, s_info, grade, classN)
+            roll_file.save()
             context['result'] = guser.file_url
         else:
             context['errors'] = '학교명 혹은 파일이 올바르지 않습니다.'
@@ -68,7 +68,7 @@ def valid_G(school, file):
 
     if s_info:
         # Should change .csv to .xlsx when deploy
-        if file.size < 1000000 and '.xlsx' in file.name:
+        if file.size < 1000 and '.xlsx' in file.name:
             return s_info
         print(f'{file.name}: {file.size}byte')
 

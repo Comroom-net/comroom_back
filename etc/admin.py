@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Disabled_ch, Notice_nocookie
+from .models import Disabled_ch, Notice_nocookie, RollFile
 
 # Register your models here.
 
@@ -20,5 +20,10 @@ class Notice_nocookieAdmin(admin.ModelAdmin):
     list_display = ('date_kor',)
 
 
+class RollFileAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+
+
 admin.site.register(Disabled_ch, Disabled_chAdmin)
 admin.site.register(Notice_nocookie, Notice_nocookieAdmin)
+admin.site.register(RollFile, RollFileAdmin)
