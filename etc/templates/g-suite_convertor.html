@@ -55,14 +55,14 @@ G-suite 변환 | 컴룸닷넷
                     <label class="custom-file-label" for="roll_file">파일 업로드 (.xlsx)</label>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">변환</button>
+            <button type="submit" class="btn btn-primary" id='gs_convert'>변환</button>
         </form>
     </div>
 </div>
 {% if result %}
 <div class="row mt-5">
     <div class="col-12">
-        <a href="{{ result }}">파일 받기 {{ file_size }}</a>
+        <a href="{{ result }}" id='gs_download'>파일 받기 {{ file_size }}</a>
 
         <!-- <a href="{{ result_url }}">{{ result_url.title }}</a> -->
     </div>
