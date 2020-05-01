@@ -20,10 +20,14 @@ G-suite 변환 | 컴룸닷넷
     <div class="col-12">
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="school">학교명</label>
-            <input type="text" name="school" id="school" class="form-control" placeholder="학교명 전체를 입력해주세요. 예) 섭섭초등학교"
-                required><br>
-            <!-- <small class="form-text text-muted">학교명 전체를 입력해주세요. 예) 섭섭초등학교</small> -->
+            
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="school-span">학교명</span>
+                </div>
+                <input type="text" name="school" id="school" class="form-control" placeholder="학교명 전체를 입력해주세요. 예) 섭섭초등학교" aria-label="학교명" aria-describedby="school-span">
+            </div>
+            
             <div class="row">
                 <div class="col-6">
                     <div class="input-group mb-3">
