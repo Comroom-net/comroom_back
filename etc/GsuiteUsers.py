@@ -38,6 +38,8 @@ class GUser:
         self.yearCode = thisYear[2:]
 
         self.samplePW = f'{self.s_admin}{self.s_code}'
+        if len(self.samplePW) < 8:
+            self.samplePW += '!'
         self.orgPath = f'/{self.school}'
 
     def init_data(self):
