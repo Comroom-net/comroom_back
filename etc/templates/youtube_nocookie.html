@@ -12,6 +12,14 @@ nocookie | 컴룸닷넷
     .alert {
         margin-bottom: 0.3rem;
     }
+
+    div.buttons {
+        margin-top: 5px;
+    }
+
+    div.buttons .btn {
+        margin-right: 10px;
+    }
 </style>
 {% endblock header %}
 {% block contents %}
@@ -27,7 +35,11 @@ nocookie | 컴룸닷넷
         </div>
     </div>
     <input type="text" class="form-control" id='input_url' placeholder="복사한 유튜브 링크를 붙여넣기 하세요">
-    <button id="option_title" class="btn btn-sm btn-outline-primary" onclick="more_options()">옵션 보기</button>
+    <div class="buttons">
+        <button id="option_title" class="btn btn-sm btn-outline-primary" onclick="more_options()">옵션 보기</button>
+        <button id="option_reset_btn" class="btn btn-sm btn-outline-secondary" onclick="reset_options()" style="display: none;">옵션 초기화</button>
+    </div>
+    
     <div id="options" class="mt-1" style="display: none;">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -151,14 +163,27 @@ nocookie | 컴룸닷넷
     }
     function more_options() {
         var x = document.getElementById("options")
+        var reset_btn = document.getElementById("option_reset_btn")
         var o_title = document.getElementById("option_title")
         if (x.style.display == "none") {
             x.style.display = "block"
             o_title.innerText = "옵션 닫기"
+            reset_btn.style.display = 'inline'
         } else {
             x.style.display = "none"
             o_title.innerText = "옵션 보기"
+            reset_btn.style.display = 'none'
         }
+    }
+    function reset_options() {
+        var start = document.getElementById('start')
+        var end = document.getElementById('end')
+        var disablekb = document.getElementById('disablekb')
+        var contorls = document.getElementById('contorls')
+        start.value = NaN
+        end.value = NaN
+        disablekb.checked = false
+        controls.checked = 1
     }
     function options() {
         var start = document.getElementById('start')
