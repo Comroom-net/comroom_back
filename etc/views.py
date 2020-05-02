@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from .models import Disabled_ch, Notice_nocookie, RollFile
 
 
-from .GsuiteUsers import GUser
+from .GsuiteUsers import GUser, GUser_school
 
 # Create your views here.
 
@@ -48,8 +48,10 @@ def GsuiteConvertor(request):
             roll_file = RollFile(title=file_name,
                                  roll_file=file)
             roll_file.roll_file.name = file_name
-
-            guser = GUser(file, s_info, grade, classN)
+            if request.POST.get('whole_school'):
+                guser = GUser_school(file, s_info)
+            else:
+                guser = GUser(file, s_info, grade, classN)
             roll_file.save()
             context['result'] = guser.file_url
         else:

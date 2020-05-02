@@ -3,13 +3,13 @@
 G-suite 변환 | 컴룸닷넷
 {% endblock title %}
 {% block header %}
-  <style>
-      /* .hide {
+<style>
+    /* .hide {
           position: absolute !important;
           top: -9999px !important;
           left: -9999px !important;
       } */
-  </style>
+</style>
 {% endblock header %}
 {% block contents %}
 <div class="row mt-5">
@@ -21,7 +21,9 @@ G-suite 변환 | 컴룸닷넷
 <div class="row mt-5">
     <div class="col-12">
         <p class="text-muted">충북 G-suite 관리자 계정으로 사용자 계정을 생성할 때 사용합니다.<br>
-            사용방법은 <a href="http://ssamko.tistory.com/17">(충북)G-suite 여러 사용자 계정 생성 쉽게 하기</a> 여기를 참고해주세요😉</p>
+            사용방법은 <a href="http://ssamko.tistory.com/17">(반별)</a> / <a href="https://ssamko.tistory.com/20">(학교전체)</a>
+            를
+            참고해주세요😉</p>
     </div>
 </div>
 
@@ -29,22 +31,24 @@ G-suite 변환 | 컴룸닷넷
     <div class="col-12">
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            <input type="checkbox" name="whole_school" id="whole_school" hidden>
             <ul class="nav nav-pills nav-fill">
                 <li class="nav-item">
-                  <a class="nav-link active" href="#" id="tab_class" onclick="each_class()">반별</a>
+                    <a class="nav-link active" href="#" id="tab_class" onclick="each_class()">반별</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#" id="tab_school" onclick="whole_school()">학교전체</a>
+                    <a class="nav-link" href="#" id="tab_school" onclick="whole_school()">학교전체</a>
                 </li>
-                
-              </ul>
+
+            </ul>
             <div class="input-group mb-3 mt-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="school-span">학교명</span>
                 </div>
-                <input type="text" name="school" id="school" class="form-control" placeholder="학교명 전체를 입력해주세요. 예) 섭섭초등학교" aria-label="학교명" aria-describedby="school-span">
+                <input type="text" name="school" id="school" class="form-control"
+                    placeholder="학교명 전체를 입력해주세요. 예) 섭섭초등학교" aria-label="학교명" aria-describedby="school-span">
             </div>
-            
+
             <div id="each_class" class="row" style="display: flex;">
                 <div class="col-6">
                     <div class="input-group mb-3">
@@ -110,6 +114,9 @@ G-suite 변환 | 컴룸닷넷
         document.getElementById('input_classN').removeAttribute("required")
         document.getElementById('tab_class').classList.remove('active')
         document.getElementById('tab_school').classList.add('active')
+        document.getElementById('whole_school').checked = true;
+        for_school = true;
+        console.log(for_school)
     }
     function each_class() {
         document.getElementById('each_class').style.display = 'flex'
@@ -117,6 +124,9 @@ G-suite 변환 | 컴룸닷넷
         document.getElementById('input_classN').setAttribute("required", '')
         document.getElementById('tab_class').classList.add('active')
         document.getElementById('tab_school').classList.remove('active')
+        document.getElementById('whole_school').checked = false;
+        for_school = false;
+        console.log(for_school)
     }
     $tab_class.click(each_class())
 
