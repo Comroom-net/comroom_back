@@ -44,3 +44,15 @@ class RollFile(models.Model):
     class Meta:
         verbose_name = '명렬표 파일'
         verbose_name_plural = '명렬표 파일'
+
+
+class HTMLpage(models.Model):
+    title = models.CharField(max_length=64, verbose_name='페이지 이름')
+    page = models.TextField(verbose_name='페이지 내용')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'HTML Page'
+        verbose_name_plural = 'HTML Pages'

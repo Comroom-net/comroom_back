@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Disabled_ch, Notice_nocookie, RollFile
+from .models import Disabled_ch, Notice_nocookie, RollFile, HTMLpage
 
 # Register your models here.
 
@@ -24,6 +24,11 @@ class RollFileAdmin(admin.ModelAdmin):
     list_display = ('title',)
 
 
+class HTMLpageAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+
+
 admin.site.register(Disabled_ch, Disabled_chAdmin)
 admin.site.register(Notice_nocookie, Notice_nocookieAdmin)
 admin.site.register(RollFile, RollFileAdmin)
+admin.site.register(HTMLpage, HTMLpageAdmin)

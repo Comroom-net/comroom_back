@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.core.files.storage import FileSystemStorage
 
-from .models import Disabled_ch, Notice_nocookie, RollFile
+from .models import Disabled_ch, Notice_nocookie, RollFile, HTMLpage
 
 
 from .GsuiteUsers import GUser, GUser_school
@@ -75,3 +75,12 @@ def valid_G(school, file):
         print(f'{file.name}: {file.size}byte')
 
     return False
+
+
+def load_html(request, **kwargs):
+    template_name = "htmlpage.html"
+    context = {}
+    # context['page'] = HTMLpage.objects.get(title='구구단').page
+    context['page'] = HTMLpage.objects.get(id=kwargs['pk']).page
+
+    return render(request, template_name, context)
