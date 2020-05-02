@@ -22,8 +22,9 @@ G-suite 변환 | 컴룸닷넷
     <div class="col-12">
         <p class="text-muted">충북 G-suite 관리자 계정으로 사용자 계정을 생성할 때 사용합니다.<br>
             사용방법은 <a href="http://ssamko.tistory.com/17">(반별)</a> / <a href="https://ssamko.tistory.com/20">(학교전체)</a>
-            를
-            참고해주세요😉</p>
+            를 참고해주세요😉<br>
+            <!-- 해당 페이지는 데스크탑에서 정상 작동합니다. -->
+        </p>
     </div>
 </div>
 
@@ -34,10 +35,12 @@ G-suite 변환 | 컴룸닷넷
             <input type="checkbox" name="whole_school" id="whole_school" hidden>
             <ul class="nav nav-pills nav-fill">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#" id="tab_class" onclick="javascript:each_class()">반별</a>
+                    <a class="nav-link active" href="#" id="tab_class" onclick="javascript:each_class()"
+                        ontouchend="each_class()">반별</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" id="tab_school" onclick="javascript:whole_school()">학교전체</a>
+                    <a class="nav-link" href="#" id="tab_school" onclick="javascript:whole_school()"
+                        ontouchend="whole_school()">학교전체</a>
                 </li>
 
             </ul>
