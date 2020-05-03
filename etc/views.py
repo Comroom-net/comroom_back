@@ -87,9 +87,17 @@ def load_html(request, **kwargs):
 
 
 def load_last_html(request):
-    template_name = "htmlpage.html"
+    template_name = "pages.html"
     context = {}
-    # context['page'] = HTMLpage.objects.get(title='구구단').page
-    context['page'] = HTMLpage.objects.order_by('-id')[0].page
+
+    context['pages'] = HTMLpage.objects.order_by('-id')
 
     return render(request, template_name, context)
+
+# def load_last_html(request):
+#     template_name = "htmlpage.html"
+#     context = {}
+#     # context['page'] = HTMLpage.objects.get(title='구구단').page
+#     context['page'] = HTMLpage.objects.order_by('-id')[0].page
+
+#     return render(request, template_name, context)
