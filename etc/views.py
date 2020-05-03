@@ -84,3 +84,12 @@ def load_html(request, **kwargs):
     context['page'] = HTMLpage.objects.get(id=kwargs['pk']).page
 
     return render(request, template_name, context)
+
+
+def load_last_html(request):
+    template_name = "htmlpage.html"
+    context = {}
+    # context['page'] = HTMLpage.objects.get(title='구구단').page
+    context['page'] = HTMLpage.objects.all()[0].page
+
+    return render(request, template_name, context)
