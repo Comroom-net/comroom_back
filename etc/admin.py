@@ -25,7 +25,7 @@ class RollFileAdmin(admin.ModelAdmin):
 
 
 class HTMLpageAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('title', 'id', )
 
 
 admin.site.register(Disabled_ch, Disabled_chAdmin)
