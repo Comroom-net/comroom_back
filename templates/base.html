@@ -57,6 +57,10 @@
       .navbar-brand {
         font-family: "Sunflower", sans-serif;
       }
+
+      .kakao-ads {
+        max-width: 1140px;
+      }
     </style>
 
     {% block header %} {% endblock %}
@@ -108,6 +112,7 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/etc/nocookie">유튜브nocookie</a>
                 <a class="dropdown-item" href="/etc/g-suite">G-suite</a>
+                <a class="dropdown-item" href="/etc/page">Page</a>
               </div>
               
             </li>
@@ -119,8 +124,12 @@
     <main class="flex-shrink-0" role="main">
       <div class="container">
         {% block contents %} {% endblock %}
+    {% block ads %}
+    {% endblock ads %}
       </div>
     </main>
+    <div class='kakao-ads'>
+    </div>
     {% block footer %}
     <footer class="footer mt-auto py-3">
       <div class="container">

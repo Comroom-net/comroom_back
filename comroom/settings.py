@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'school.apps.SchoolConfig',
     'timetable',
     'etc',
+    'namu',
 ]
 
 MIDDLEWARE = [
