@@ -11,8 +11,9 @@ HTML 페이지 | 컴룸닷넷
 <ul>
     {% for page in pages %}
 
-    <li><a href="/etc/page/{{ page.id }}">{{ page.title }}</a></li>
+    <li><a href="/etc/page/{{ page.id }}" target="_blank">{{ page.title }}</a></li>
 
     {% endfor %}
 </ul>
+
 {% endblock contents %}

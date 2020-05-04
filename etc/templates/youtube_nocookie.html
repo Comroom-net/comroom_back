@@ -23,9 +23,10 @@ nocookie | 컴룸닷넷
 </style>
 {% endblock header %}
 {% block contents %}
+
 <div class="row mt-5">
     <div class="col-12 text-center">
-        <h3>유튜브 추천 영상 없는 링크 변환 - nocookie</h3>
+        <h3>유튜브 전체화면 링크 변환 - nocookie</h3>
     </div>
 </div>
 <div class="convertor">
@@ -217,7 +218,12 @@ nocookie | 컴룸닷넷
         return true
     }
 </script>
-<ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-trww52djon6s" data-ad-width="320"
-    data-ad-height="50"></ins>
-<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+
 {% endblock contents %}
+{% block ads %}
+<ins class="kakao_ad_area" style="display:none;" 
+ data-ad-unit    = "DAN-1h82khgzclbad" 
+ data-ad-width   = "320" 
+ data-ad-height  = "100"></ins> 
+<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+{% endblock ads %}
