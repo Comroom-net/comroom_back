@@ -1,0 +1,50 @@
+{% extends "namu_base.html" %}
+{% block title %}
+방명록 | 느린나무2호점
+{% endblock title %}
+{% block nav-visitor %}
+active
+{% endblock nav-visitor %}
+{% block header %}
+<style>
+    .container {
+        padding-top: 3.5em;
+    }
+</style>
+{% endblock header %}
+{% block contents %}
+<div class="row">
+    <div class="col-12 text-center">
+        <h3>방명록 쓰기</h3>
+    </div>
+</div>
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <!-- <label for="room">방을 선택해주세요.</label> -->
+        <select class="form-control" id="room" name='room'>
+            {% for room in rooms %}
+
+            <option>{{ room.room_name }}</option>
+            {% endfor %}
+
+        </select>
+    </div>
+    <input type="text" name="writer" id="writer" class="form-control" placeholder="이름(별명)" required>
+    <textarea name="context" id="context" cols="30" rows="10" class="form-control" placeholder="내용을 입력해주세요."
+        required></textarea>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupFileAddon01">사진</span>
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" name='visitor_image' id="visitor_image"
+                aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="visitor_image">사진을 올려주세요(선택사항)</label>
+        </div>
+    </div>
+    <input type="password" name="pw" id="pw" class="form-control" placeholder="비밀번호" required>
+    <small class="text-muted">수정, 삭제를 위해 필요합니다.</small><br>
+    <button type="submit" class="btn btn-primary">방명록 남기기</button>
+</form>
+{% endblock contents %}
