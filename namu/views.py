@@ -34,6 +34,6 @@ def write(request):
         new_post.save()
         return redirect('/namu/visitors')
     else:
-        context['rooms'] = Room.objects.all()
+        context['rooms'] = Room.objects.order_by('room_name')
 
     return render(request, template_name, context)
