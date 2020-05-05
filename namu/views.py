@@ -21,13 +21,16 @@ def write(request):
         room = request.POST.get('room')
         writer = request.POST.get('writer')
         text = request.POST.get('context')
-        # image = request.FILES['visitor_image']
+        try:
+            image = request.FILES['visitor_image']
+        except:
+            image = False
         # image resize required
         pw = request.POST.get('pw')
         new_post = Visitor(room=Room.objects.get(room_name=room), writer=writer,
                            visitor_text=text, visitor_pw=pw)
-        # if image:
-        #     new_post.visitor_image = image
+        if image:
+            new_post.visitor_image = image
         new_post.save()
         return redirect('/namu/visitors')
     else:
