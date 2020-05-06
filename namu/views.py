@@ -1,5 +1,9 @@
+from io import BytesIO
+
 from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponseRedirect
+
+from PIL import Image as pil
 
 from .models import Visitor, Room
 
@@ -26,6 +30,7 @@ def write(request):
         except:
             image = False
         # image resize required
+        image = rescale(image, 700)
         pw = request.POST.get('pw')
         new_post = Visitor(room=Room.objects.get(room_name=room), writer=writer,
                            visitor_text=text, visitor_pw=pw)
@@ -37,3 +42,23 @@ def write(request):
         context['rooms'] = Room.objects.order_by('room_name')
 
     return render(request, template_name, context)
+
+
+def rescale(image, width):
+    # input_file = BytesIO(image.read())
+    # img = pil.open(input_file)
+    img = pil.open(image)
+
+    src_width, src_height = img.size
+    src_ratio = float(src_height) / float(src_width)
+    dst_height = round(src_ratio * width)
+
+    img = img.resize((width, dst_height), pil.LANCZOS)
+    # image_file = BytesIO()
+    img.save(image.name, 'PNG')
+    # image.file = image_file
+    image.file = img
+    # 이게 없으면 에러 난다.
+    image.file.name = image.name
+
+    return image
