@@ -61,6 +61,10 @@ nocookie | 컴룸닷넷
             </div>
         </div>
         <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="autoplay">
+            <label class="custom-control-label" for="autoplay">자동실행(음소거)</label>
+        </div>
+        <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" id="disablekb">
             <label class="custom-control-label" for="disablekb">키보드로 건너뛰기 금지</label>
         </div>
@@ -181,22 +185,28 @@ nocookie | 컴룸닷넷
         var end = document.getElementById('end')
         var disablekb = document.getElementById('disablekb')
         var contorls = document.getElementById('contorls')
+        var autoplay = document.getElementById('autoplay')
         start.value = NaN
         end.value = NaN
         disablekb.checked = false
         controls.checked = 1
+        autoplay.checked = false
     }
     function options() {
         var start = document.getElementById('start')
         var end = document.getElementById('end')
         var disablekb = document.getElementById('disablekb')
         var controls = document.getElementById('controls')
+        var autoplay = document.getElementById('autoplay')
         var url_suffix = ''
         if (start.value) {
             url_suffix += '&start=' + start.value
         }
         if (end.value) {
             url_suffix += '&end=' + end.value
+        }
+        if (autoplay.checked) {
+            url_suffix += '&autoplay=1&mute=1'
         }
         if (disablekb.checked) {
             url_suffix += '&disablekb=1'

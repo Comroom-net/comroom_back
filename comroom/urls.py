@@ -28,6 +28,7 @@ urlpatterns = [
     path('', index, name='index'),
     path('school/', include('school.urls')),
     path('etc/', include('etc.urls')),
+    path('afterschool/', include('afterschool.urls')),
     path('namu/', include('namu.urls')),
     # path('make_room/', make_room),
     # path('assign_room/', assign_room),
