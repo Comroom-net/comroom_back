@@ -47,4 +47,11 @@ active
     <small class="text-muted">수정, 삭제를 위해 필요합니다.</small><br>
     <button type="submit" class="btn btn-primary">방명록 남기기</button>
 </form>
+<script>
+    document.querySelector('.custom-file-input').addEventListener('change',function(e){
+        var fileName = document.getElementById("visitor_image").files[0].name;
+        var nextSibling = e.target.nextElementSibling
+        nextSibling.innerText = fileName
+    })
+</script>
 {% endblock contents %}

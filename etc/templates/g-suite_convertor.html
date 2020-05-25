@@ -3,6 +3,7 @@
 G-suite 변환 | 컴룸닷넷
 {% endblock title %}
 {% block header %}
+
 <style>
     /* .hide {
           position: absolute !important;
@@ -130,7 +131,14 @@ G-suite 변환 | 컴룸닷넷
         console.log(for_school)
     }
     $tab_class.click(each_class())
-
+    
+</script>
+<script>
+    document.querySelector('.custom-file-input').addEventListener('change',function(e){
+  var fileName = document.getElementById("roll_file").files[0].name;
+  var nextSibling = e.target.nextElementSibling
+  nextSibling.innerText = fileName
+})
 </script>
 {% endblock contents %}
 {% block ads %}
