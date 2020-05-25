@@ -63,7 +63,7 @@
   document.querySelector(".copy").addEventListener("click", function () {
     var tempElem = document.createElement("textarea");
     tempElem.value =
-      "{{request.build_absolute_uri}}comroom?school={{school|urlencode}}&s_code={{s_code}}";
+      "{{request.build_absolute_uri}}timetable?school={{school|urlencode}}&s_code={{s_code}}";
     document.body.appendChild(tempElem);
 
     tempElem.select();
