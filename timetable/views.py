@@ -1,9 +1,15 @@
 from datetime import datetime, date
+
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, FormView, CreateView, View
+from rest_framework.renderers import JSONRenderer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+
 from .models import Timetable, FixedTimetable
 from .forms import BookingForm, FixTimeForm
 from .utils import TimetableCreate
@@ -174,6 +180,18 @@ class FixCreateView(CreateView):
         return redirect('/timetable/fix_time')
         # return super().form_valid(form)
 
+# 예약된 날짜 정보 modal로 가져올 때 api요청
+class BookedAPIView(APIView):
+    renderer_classes = (JSONRenderer, )
+
+    # 예약된 날짜 정보 가져오기
+    def get(self, request, school, room, date, time):
+        booked = get_object_or_404(Timetable, school=school, room=room, date=date, time=time)
+        content = {'grade': booked.grade,
+        'classNo': booked.classNo,
+        'teacher': booked.teacher}
+        return Response(content)
+
 
 def time_admin(request):
     template_name = "time_admin.html"
@@ -206,3 +224,5 @@ def del_fixed_time(request, **kwargs):
     Fixedtimetables[kwargs['i']].delete()
 
     return redirect('/timetable/fix_time/')
+
+
