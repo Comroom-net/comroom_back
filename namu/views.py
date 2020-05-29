@@ -1,18 +1,42 @@
+import os
+import json
 from io import BytesIO
 
 from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponseRedirect
+from django.core.exceptions import ImproperlyConfigured
 
 from PIL import Image as pil
+import telegram
 
 from .models import Visitor, Room
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Secret File Control
+telegram_file = os.path.join(BASE_DIR, 'bot_info.json')
+
+with open(telegram_file) as f:
+    secrets = json.loads(f.read())
+
+
+def get_secret(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        erro_msg = f"Set the {setting} environment variable"
+        raise ImproperlyConfigured(erro_msg)
+
 # Create your views here.
+
+
 def order(request):
     template_name = 'order_page.html'
     context = {}
 
     return render(request, template_name, context)
+
 
 def visitors(request):
     template_name = 'visitors.html'
@@ -74,3 +98,13 @@ def rescale(image, width):
         image.file.name = image.name
 
     return image
+
+
+def msg_test(request):
+    test_token = get_secret("demo_token")
+    test_bot = telegram.Bot(token=test_token)
+    test_room = get_secret("demo_id")
+    msg = 'test'
+    test_bot.sendMessage(chat_id=test_room, text=msg)
+
+    return redirect('/namu/order')

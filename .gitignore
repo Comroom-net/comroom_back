@@ -6,3 +6,4 @@ production.py
 /media/
 .DS_Store
 /staticfiles/G-suite/
+bot_info.json
