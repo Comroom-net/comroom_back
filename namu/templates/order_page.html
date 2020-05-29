@@ -1,0 +1,111 @@
+{% extends 'namu_base.html' %}
+{% block title %}
+주문하기 | {{ block.super }}
+{% endblock title %}
+{% block header %}
+<style>
+    h4, td.title, .selected {
+        text-align: center;
+    }
+    table {
+        margin: auto;
+    }
+    .selected {
+        margin-top: 15px;
+    }
+    
+    input.ea {
+        width: 50px;
+    }
+    #kart {
+        text-align: left;
+    }
+</style>
+{% endblock header %}
+{% block contents %}
+<h4>MENU</h4>
+<table>
+    <tr>
+        <td colspan="2" class="title">Coffee</td>
+    </tr>
+    <tr>
+        <td>아메리카노</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary btn-sm add" id='americano_ice'>ICE</button>
+            <button type="button" class="btn btn-outline-danger btn-sm add" id='americano_hot'>HOT</button>
+        </td>
+    </tr>
+    <tr>
+        <td>바닐라 라떼</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary btn-sm add" id='banila_latte_ice'>ICE</button>
+            <button type="button" class="btn btn-outline-danger btn-sm add" id='banila_latte_hot'>HOT</button>
+        </td>
+    </tr>
+    <tr>
+        <td>카페라떼</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary btn-sm add" id='cafelatte_ice'>ICE</button>
+            <button type="button" class="btn btn-outline-danger btn-sm add" id='cafelatte_hot'>HOT</button>
+        </td>
+    </tr>
+    <tr>
+        <td>카페모카</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary btn-sm add" id='cafe_mocca_ice'>ICE</button>
+            <button type="button" class="btn btn-outline-danger btn-sm add" id='cafe_mocca_hot'>HOT</button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="title">Latte</td>
+    </tr>
+    <tr>
+        <td>초코라떼</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary btn-sm add" id='choco_latte_ice'>ICE</button>
+            <button type="button" class="btn btn-outline-danger btn-sm add" id='choco_latte_hot'>HOT</button>
+        </td>
+    </tr>
+    <tr>
+        <td>녹차라떼</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary btn-sm add" id='greentea_latte_ice'>ICE</button>
+            <button type="button" class="btn btn-outline-danger btn-sm add" id='greentea_latte_hot'>HOT</button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="title">ADE</td>
+    </tr>
+    <tr>
+        <td>복숭아 아이스티</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary btn-sm add" id='ice_tea'>추가</button>
+        </td>
+    </tr>
+</table>
+<hr>
+<div class="selected">
+    <h4>주문목록</h4>
+    <ul id="kart">
+    </ul>
+    <button class="btn btn-outline-info" id="order">주문</button>
+</div>
+
+<script>
+    $('.add').click(function() {
+        console.log('btn clicked')
+        let menu = $(this).closest("td").prev().text()
+        // let menu = $(this).parents("tr").children()[0]
+        // menu = menu.prev()
+        let order_option = $(this).text()
+        console.log(order_option)
+        if(!order_option.includes("추가")) {
+            menu += " " + order_option
+        }
+        menu = "<li>" + menu + "</li>"
+        console.log(menu)
+        $('#kart').append(menu)
+    })
+</script>
+
+{% endblock contents %}

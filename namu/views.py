@@ -8,7 +8,11 @@ from PIL import Image as pil
 from .models import Visitor, Room
 
 # Create your views here.
+def order(request):
+    template_name = 'order_page.html'
+    context = {}
 
+    return render(request, template_name, context)
 
 def visitors(request):
     template_name = 'visitors.html'
@@ -27,15 +31,17 @@ def write(request):
         text = request.POST.get('context')
         try:
             image = request.FILES['visitor_image']
+            image = rescale(image, 700)  # 이게 없으면 모든 사진이 다 잘됨.
+
         except:
             image = False
-        # image resize required
-        image = rescale(image, 700)
         pw = request.POST.get('pw')
         new_post = Visitor(room=Room.objects.get(room_name=room), writer=writer,
                            visitor_text=text, visitor_pw=pw)
+        # image resize required
         if image:
             new_post.visitor_image = image
+
         new_post.save()
         return redirect('/namu/visitors')
     else:
@@ -47,18 +53,24 @@ def write(request):
 def rescale(image, width):
     # input_file = BytesIO(image.read())
     # img = pil.open(input_file)
-    img = pil.open(image)
 
-    src_width, src_height = img.size
-    src_ratio = float(src_height) / float(src_width)
-    dst_height = round(src_ratio * width)
+    with pil.open(image) as img:
+        # img = image
 
-    img = img.resize((width, dst_height), pil.LANCZOS)
-    # image_file = BytesIO()
-    img.save(image.name, 'PNG')
-    # image.file = image_file
-    image.file = img
-    # 이게 없으면 에러 난다.
-    image.file.name = image.name
+        src_width, src_height = img.size
+        print(f'src_width:{src_width}, src_height:{src_height}')
+        src_ratio = float(src_height) / float(src_width)
+        dst_height = round(src_ratio * width)
+
+        # img = img.resize((width, dst_height), pil.LANCZOS)
+        img = img.resize((width, dst_height))
+        print(f'dst_width:{width}, dst_height:{dst_height}')
+        # image_file = BytesIO()
+        img.save(image.name)  # 여기까지는 다 문제 없음.
+
+        # image.file = image_file
+        image.file = img
+        # 이게 없으면 에러 난다.
+        image.file.name = image.name
 
     return image
