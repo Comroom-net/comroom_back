@@ -20,7 +20,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
 
-    {% comment %} <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> {% endcomment %}
+    {% comment %}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> {% endcomment %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
@@ -30,10 +31,9 @@
         crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Sunflower:300&display=swap" rel="stylesheet" />
     <style>
-    
-    .container {
-        padding-top: 3.5em;
-    }
+        .container {
+            padding-top: 3.5em;
+        }
     </style>
 
     {% block header %} {% endblock %}
@@ -58,7 +58,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item {% block nav-order %}{% endblock %} ">
-                            <a class="nav-link" href="">주문하기</a>
+                            <a class="nav-link" href="{% url 'namu:order_page' %}">주문하기</a>
                         </li>
                         <li class="nav-item {% block nav-visitor %}{% endblock %} ">
                             <a class="nav-link" href="{% url 'namu:visitors' %}">방명록</a>
