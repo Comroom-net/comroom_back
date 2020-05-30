@@ -4,19 +4,24 @@
 {% endblock title %}
 {% block header %}
 <style>
-    h4, td.title, .selected {
+    h4,
+    td.title,
+    .selected {
         text-align: center;
     }
+
     table {
         margin: auto;
     }
+
     .selected {
         margin-top: 15px;
     }
-    
+
     input.ea {
         width: 50px;
     }
+
     #kart {
         text-align: left;
     }
@@ -86,25 +91,59 @@
 <hr>
 <div class="selected">
     <h4>주문목록</h4>
+    <div class="alert alert-primary" role="alert" id='order_success' style="display: none;">
+        주문처리 중 잠시만 기다려주세요 :)
+    </div>
     <ul id="kart">
     </ul>
+    <h4>요청사항</h4>
+    <textarea name="request" id="request" cols="40" rows="4" placeholder="다른 필요한게 있으면 적어주세요 :)"></textarea><br>
     <button class="btn btn-outline-info" id="order">주문</button>
 </div>
+<form action="/namu/order_msg" method="post" style="display: none;" id="order_form">
+    {% csrf_token %}
+
+<textarea name="order_list" id="order_list" cols="30" rows="10"></textarea>
+</form>
 
 <script>
-    $('.add').click(function() {
+    $('.add').click(function () {
         console.log('btn clicked')
         let menu = $(this).closest("td").prev().text()
         // let menu = $(this).parents("tr").children()[0]
         // menu = menu.prev()
         let order_option = $(this).text()
         console.log(order_option)
-        if(!order_option.includes("추가")) {
+        if (!order_option.includes("추가")) {
             menu += " " + order_option
         }
         menu = "<li>" + menu + "</li>"
         console.log(menu)
         $('#kart').append(menu)
+    })
+    $('#order').click(function () {
+        console.log('send order msg')
+        let kart = $('#kart').children("li")
+        let order_list = []
+        jQuery.each(kart, function (i, val) {
+            console.log(val.innerHTML)
+            order_list.push(val.innerHTML)
+        })
+        console.log(order_list)
+        let msg = order_list.join('\n')
+        console.log(msg)
+        let extra = $('#request').val()
+        if (extra != '') {
+            extra_msg = '\n추가)\n' + extra
+            msg += extra_msg
+        }
+        // send post to telegram api
+        $('#order_list').val(msg)
+        $('#order_success').show()
+        $('#kart').empty()
+        $('#order_form').submit()
+
+        // redirect to complete page
     })
 </script>
 

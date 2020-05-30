@@ -5,6 +5,7 @@ from io import BytesIO
 from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ImproperlyConfigured
+from django.views.generic import TemplateView
 
 from PIL import Image as pil
 import telegram
@@ -32,10 +33,15 @@ def get_secret(setting, secrets=secrets):
 
 
 def order(request):
+    if request.session['room'] == '':
+        return redirect('/namu/order_success')
     template_name = 'order_page.html'
     context = {}
 
     return render(request, template_name, context)
+
+class order_success(TemplateView):
+    template_name = 'order_success.html'
 
 
 def visitors(request):
@@ -100,11 +106,36 @@ def rescale(image, width):
     return image
 
 
-def msg_test(request):
+def msg_test(request, *args, **kwargs):
     test_token = get_secret("demo_token")
     test_bot = telegram.Bot(token=test_token)
     test_room = get_secret("demo_id")
     msg = 'test'
-    test_bot.sendMessage(chat_id=test_room, text=msg)
+    if request.method == "POST":
+        msg = request.POST.get('order_list')
+        test_bot.sendMessage(chat_id=test_room, text=msg)
+    else:
+        test_bot.sendMessage(chat_id=test_room, text=msg)
 
+    return redirect('/namu/order')
+
+def order_msg(request, *args, **kwargs):
+    test_token = get_secret("demo_token")
+    test_bot = telegram.Bot(token=test_token)
+    test_room = get_secret("demo_id")
+    msg = 'test'
+    if request.method == "POST":
+        msg = request.POST.get('order_list')
+        room = f"{request.session['room']}방) \n"
+        msg = room + msg
+        test_bot.sendMessage(chat_id=test_room, text=msg)
+    else:
+        test_bot.sendMessage(chat_id=test_room, text=msg)
+    request.session['room'] = ''
+
+    return redirect('/namu/order_success')
+
+def room_auth(request, *args, **kwargs):
+    request.session['room'] = kwargs['room']
+    
     return redirect('/namu/order')
