@@ -14,6 +14,10 @@
         margin: auto;
     }
 
+    textarea {
+        width: 100%;
+    }
+
     .selected {
         margin-top: 15px;
     }
@@ -97,13 +101,13 @@
     <ul id="kart">
     </ul>
     <h4>요청사항</h4>
-    <textarea name="request" id="request" cols="40" rows="4" placeholder="다른 필요한게 있으면 적어주세요 :)"></textarea><br>
+    <textarea name="request" id="request" cols="30" rows="4" placeholder="다른 필요한게 있으면 적어주세요 :)"></textarea><br>
     <button class="btn btn-outline-info" id="order">주문</button>
 </div>
 <form action="/namu/order_msg" method="post" style="display: none;" id="order_form">
     {% csrf_token %}
 
-<textarea name="order_list" id="order_list" cols="30" rows="10"></textarea>
+    <textarea name="order_list" id="order_list" cols="30" rows="10"></textarea>
 </form>
 
 <script>
