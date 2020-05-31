@@ -98,6 +98,9 @@
     <div class="alert alert-primary" role="alert" id='order_success' style="display: none;">
         주문처리 중 잠시만 기다려주세요 :)
     </div>
+    <div class="alert alert-danger" role="alert" id='order_fail' style="display: none;">
+        주문이나 요청사항을 입력해주세요 :)
+    </div>
     <ul id="kart">
     </ul>
     <h4>요청사항</h4>
@@ -112,7 +115,8 @@
 
 <script>
     $('.add').click(function () {
-        console.log('btn clicked')
+        console.log('add btn clicked')
+        $('#order_fail').hide()
         let menu = $(this).closest("td").prev().text()
         let order_option = $(this).text()
         console.log(order_option)
@@ -125,7 +129,6 @@
             <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z"/>\
           </svg></span>'
         menu = "<li>" + menu + delete_icon + "</li>"
-        console.log(menu)
         $('#kart').append(menu)
     })
     $(document).on('click', 'span.cancel', function () {
@@ -133,33 +136,48 @@
         let item = $(this).parent("li")
         item.remove()
     })
-
+    $('#request').click(function () {
+        $('#order_fail').hide()
+    })
 
     $('#order').click(function () {
-        console.log('send order msg')
-        let kart = $('#kart').children("li")
-        let order_list = []
-        jQuery.each(kart, function (i, val) {
-            let menu = val.innerHTML.split("<")[0]
-            console.log(menu)
-            order_list.push(menu)
-        })
-        console.log(order_list)
-        let msg = order_list.join('\n')
-        console.log(msg)
-        let extra = $('#request').val()
-        if (extra != '') {
-            extra_msg = '\n추가)\n' + extra
-            msg += extra_msg
-        }
-        // send post to telegram api
-        $('#order_list').val(msg)
-        $('#order_success').show()
-        $('#kart').empty()
-        $('#order_form').submit()
+        if (valid_order()) {
+            console.log('send order msg')
+            let kart = $('#kart').children("li")
+            let order_list = []
+            jQuery.each(kart, function (i, val) {
+                let menu = val.innerHTML.split("<")[0]
+                console.log(menu)
+                order_list.push(menu)
+            })
+            console.log(order_list)
+            let msg = order_list.join('\n')
+            console.log(msg)
+            let extra = $('#request').val()
+            if (extra != '') {
+                extra_msg = '\n추가)\n' + extra
+                msg += extra_msg
+            }
+            // send post to telegram api
+            $('#order_list').val(msg)
+            $('#order_success').show()
+            $('#kart').empty()
+            $('#order_form').submit()
 
-        // redirect to complete page
+        }
+
     })
+    function valid_order() {
+        let kart = $('#kart').text()
+        kart = $.trim(kart)
+        let extra = $('#request').val()
+        if (kart == '' & extra == '') {
+            console.log('empty')
+            $('#order_fail').show()
+            return false
+        }
+        return true
+    }
 </script>
 
 {% endblock contents %}
