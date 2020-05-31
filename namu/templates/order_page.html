@@ -140,8 +140,9 @@
         let kart = $('#kart').children("li")
         let order_list = []
         jQuery.each(kart, function (i, val) {
-            console.log(val.innerHTML)
-            order_list.push(val.innerHTML)
+            let menu = val.innerHTML.split("<")[0]
+            console.log(menu)
+            order_list.push(menu)
         })
         console.log(order_list)
         let msg = order_list.join('\n')
