@@ -34,7 +34,7 @@ def get_secret(setting, secrets=secrets):
 
 def order(request):
     if request.session['room'] == '':
-        return redirect('/namu/order_success')
+        return render(request, "order_fail.html", {})
     template_name = 'order_page.html'
     context = {}
 
@@ -130,7 +130,7 @@ def order_msg(request, *args, **kwargs):
         msg = request.POST.get('order_list')
         room = request.session['room']
         if room != '':
-            room = f"{room}방) \n"
+            room = f"{room}) \n"
         else:
             # order fail page here
             return render(request, "order_fail.html", {})
