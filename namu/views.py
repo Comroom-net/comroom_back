@@ -40,6 +40,7 @@ def order(request):
 
     return render(request, template_name, context)
 
+
 class order_success(TemplateView):
     template_name = 'order_success.html'
 
@@ -119,6 +120,7 @@ def msg_test(request, *args, **kwargs):
 
     return redirect('/namu/order')
 
+
 def order_msg(request, *args, **kwargs):
     test_token = get_secret("demo_token")
     test_bot = telegram.Bot(token=test_token)
@@ -126,16 +128,23 @@ def order_msg(request, *args, **kwargs):
     msg = 'test'
     if request.method == "POST":
         msg = request.POST.get('order_list')
-        room = f"{request.session['room']}방) \n"
+        room = request.session['room']
+        if room != '':
+            room = f"{room}방) \n"
+        else:
+            # order fail page here
+            return render(request, "order_fail.html", {})
         msg = room + msg
         test_bot.sendMessage(chat_id=test_room, text=msg)
     else:
-        test_bot.sendMessage(chat_id=test_room, text=msg)
+        # order fail page here
+        return render(request, "order_fail.html", {})
     request.session['room'] = ''
 
     return redirect('/namu/order_success')
 
+
 def room_auth(request, *args, **kwargs):
     request.session['room'] = kwargs['room']
-    
+
     return redirect('/namu/order')
