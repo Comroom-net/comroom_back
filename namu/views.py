@@ -45,6 +45,10 @@ class order_success(TemplateView):
     template_name = 'order_success.html'
 
 
+class Namu_intro(TemplateView):
+    template_name = 'namu_intro.html'
+
+
 def visitors(request):
     template_name = 'visitors.html'
     context = {}

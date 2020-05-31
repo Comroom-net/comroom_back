@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import visitors, write, order, msg_test, order_msg, order_success, room_auth
+from .views import visitors, write, order, msg_test, order_msg, order_success, room_auth, Namu_intro
 
 app_name = 'namu'
 urlpatterns = [
@@ -11,6 +11,7 @@ urlpatterns = [
     path('order_msg', order_msg, name='order_msg'),
     path('order_success', order_success.as_view(), name='order_success'),
     path('room/<str:room>', room_auth, name='room_auth'),
+    path('intro', Namu_intro.as_view(), name='introduction'),
 
 
 
