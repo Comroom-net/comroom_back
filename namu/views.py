@@ -126,9 +126,11 @@ def msg_test(request, *args, **kwargs):
 
 
 def order_msg(request, *args, **kwargs):
-    test_token = get_secret("demo_token")
+    test_token = get_secret("namu_token")
+    # test_token = get_secret("demo_token")
     test_bot = telegram.Bot(token=test_token)
-    test_room = get_secret("demo_id")
+    test_room = get_secret("namu_id")
+    # test_room = get_secret("demo_id")
     msg = 'test'
     if request.method == "POST":
         msg = request.POST.get('order_list')
