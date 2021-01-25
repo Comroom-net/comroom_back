@@ -226,3 +226,10 @@ def del_fixed_time(request, **kwargs):
     return redirect('/timetable/fix_time/')
 
 
+class TimetalbeREST(View):
+    def post(self, request, *args, **kwargs):
+        return HttpResponse("ok")
+    
+    def get(self, request, *args, **kwargs):
+        """시간표 정보 response"""
+        return HttpResponse("ok")
