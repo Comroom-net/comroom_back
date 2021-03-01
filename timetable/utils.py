@@ -91,10 +91,10 @@ class TimetableCreate(HTMLCalendar):
         if day != 0:
             date = f'{self.year}-{self.month}-{day}'
             date = parse_date(date)
-            for time in range(1, 7):
+            for time in range(1, 8):
                 d += self.formattime(day, time, weekday)
 
-            return f"<td><span class='date'>{day}</span><div class='row row-cols-3 no-gutter'> {d} </div></td>"
+            return f"<td><span class='date'>{day}</span><div class='row row-cols-4 no-gutter'> {d} </div></td>"
         return '<td></td>'
 
     # formats a week as a tr
