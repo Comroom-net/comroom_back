@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html lang="ko" class="h-100">
-  <head>
-      <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-P6GNHK6');</script>
+
+<head>
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-P6GNHK6');
+    </script>
     <!-- End Google Tag Manager -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     {% include "analytics.html" %}
@@ -14,137 +26,103 @@
     <!-- google adsense -->
     {% include "adsense.html" %}
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0 shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no" />
     <title>{% block title %}컴퓨터실 예약{% endblock %}</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" /> {% comment %}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> {% endcomment %}
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Sunflower:300&display=swap" rel="stylesheet" />
 
-    {% comment %} <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> {% endcomment %}
-    <script
-    src="https://code.jquery.com/jquery-3.5.1.js"
-    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      href="https://fonts.googleapis.com/css?family=Sunflower:300&display=swap"
-      rel="stylesheet"
-    />
-    
 
     <style>
-      #footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 2.5rem;
-      }
-      body {
-        padding-top: 3rem;
+        #footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 2.5rem;
+        }
         
-      }
-      .navbar-brand {
-        font-family: "Sunflower", sans-serif;
-      }
-
-      .kakao-ads {
-        max-width: 1140px;
-      }
+        body {
+            padding-top: 3rem;
+        }
+        
+        .navbar-brand {
+            font-family: "Sunflower", sans-serif;
+        }
+        
+        .kakao-ads {
+            max-width: 1140px;
+        }
     </style>
 
     {% block header %} {% endblock %}
-  </head>
-  <body class="d-flex flex-column h-100">
-      <!-- Google Tag Manager (noscript) -->
+</head>
+
+<body class="d-flex flex-column h-100">
+    <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P6GNHK6"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <header>
-      <nav
-        class="navbar navbar-expand-md navbar-dark fixed-top"
-        style="background-color: #36802d"
-      >
-        <a class="navbar-brand" href="/">컴룸닷넷</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #36802d">
+            <a class="navbar-brand" href="/">컴룸닷넷</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item {% block nav-home %}{% endblock %} ">
-              <a class="nav-link" href="/">HOME</a>
-            </li>
-            <li class="nav-item {% block nav-about %}{% endblock %} ">
-              <a class="nav-link" href="{% url 'about' %}">Made by </a>
-            </li>
-            <li class="nav-item {% block nav-whatis %}{% endblock %}">
-              <a class="nav-link" href="/whatis">What is?</a>
-            </li>
-            <li class="nav-item {% block nav-howto %}{% endblock %}">
-              <a class="nav-link" href="/howto">How to</a>
-            </li>
-            <li class="nav-item {% block nav-faq %}{% endblock %}">
-              <a class="nav-link" href="/FAQ">FAQ</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% block nav-home %}{% endblock %} ">
+                        <a class="nav-link" href="/">HOME</a>
+                    </li>
+                    <li class="nav-item {% block nav-about %}{% endblock %} ">
+                        <a class="nav-link" href="{% url 'about' %}">Made by </a>
+                    </li>
+                    <li class="nav-item {% block nav-whatis %}{% endblock %}">
+                        <a class="nav-link" href="/whatis">What is?</a>
+                    </li>
+                    <li class="nav-item {% block nav-howto %}{% endblock %}">
+                        <a class="nav-link" href="/howto">How to</a>
+                    </li>
+                    <li class="nav-item {% block nav-faq %}{% endblock %}">
+                        <a class="nav-link" href="/FAQ">FAQ</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 ETC
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/etc/nocookie">유튜브nocookie</a>
-                <a class="dropdown-item" href="/etc/g-suite">G-suite</a>
-                <a class="dropdown-item" href="/etc/page">Page</a>
-              </div>
-              
-            </li>
-          </ul>
-        </div>
-      </nav>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/etc/nocookie">유튜브nocookie</a>
+                            <a class="dropdown-item" href="/etc/g-suite">G-suite</a>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </header>
 
     <main class="flex-shrink-0" role="main">
-      <div class="container">
-        {% block contents %} {% endblock %}
-    {% block ads %}
-    {% endblock ads %}
-      </div>
+        <div class="container">
+            {% block contents %} {% endblock %} {% block ads %} {% endblock ads %}
+        </div>
     </main>
     <div class='kakao-ads'>
     </div>
     {% block footer %}
     <footer class="footer mt-auto py-3">
-      <div class="container">
-        <h5>
-          <a href="mailto:teacher.ssamko@gmail.com">
-            <i>teacher.ssamko@gmail.com</i>
-          </a>
-        </h5>
-        <p>Copyright &#9400; <em>이은섭</em> 2020. All Rights Reserved.</p>
-      </div>
+        <div class="container">
+            <h5>
+                <a href="mailto:teacher.ssamko@gmail.com">
+                    <i>teacher.ssamko@gmail.com</i>
+                </a>
+            </h5>
+            <p>Copyright &#9400; <em>이은섭</em> 2020. All Rights Reserved.</p>
+        </div>
     </footer>
     {% endblock footer %}
-  </body>
+</body>
+
 </html>
