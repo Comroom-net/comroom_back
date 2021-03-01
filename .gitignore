@@ -7,3 +7,4 @@ production.py
 .DS_Store
 /staticfiles/G-suite/
 bot_info.json
+venv/
