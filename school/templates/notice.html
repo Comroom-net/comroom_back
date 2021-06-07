@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}
+  안내 | {{ block.super }}
+{% endblock title %}
+{% block contents %}
+  <div class="row mt-5">
+      <div class="col-12">
+          {{ message | safe }}
+      </div>
+  </div>
+{% endblock contents %}

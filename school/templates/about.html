@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% load static %} {% block title %} 사이트 제작자 - {{ block.super }} {% endblock title %} {% block nav-about %} active {% endblock nav-about %} {% block contents %}
+<div class="row mt-5">
+    <div class="col-lg-4 mx-auto text-center">
+        <img src="{% static 'profile_persona.jpg' %}" alt="SSAMKO" class="rounded-circle" height="240px" width="240px" />
+
+        <div class="row mt-5">
+            <p class="mx-auto">
+                <a class="about_link" href="http://instagram.com/ssam_ko">
+                    <img src="{% static 'insta_logo.png' %}" height="35px" alt="Instagram" /> @ssam_ko </a><br /><br />
+                <a class="about_link" href="http://youtube.com/c/schoolswat">
+                    <img src="{% static 'youtube_logo.png' %}" height="35px" alt="Youtube" /> 섭섭미디어
+                </a>
+                <br /><br />
+                <a class="about_link" href="http://ssamko.tistory.com">
+                    <img src="{% static 'tistory_logo.png' %}" height="35px" alt="tistory" /> 블로그(티스토리)
+                </a>
+                <br /><br />
+                <a class="about_link" href="http://qr.kakao.com/talk/koNBb4lY2cSYZ2jkMeAI.ir1KO0-">
+                    <img src="{% static 'kakao_logo.png' %}" height="35px" alt="kakaotalk" /> ssamko
+                </a>
+                <br /><br />
+                <span class="h4">(충북)삼양초등학교 ~2020.5.25.</span>
+
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock contents %} {% block ads %}
+<ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-1h82khgzclbad" data-ad-width="320" data-ad-height="100"></ins>
+<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+{% endblock ads %}

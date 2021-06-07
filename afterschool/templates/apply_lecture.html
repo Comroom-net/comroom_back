@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}
+방과후학교 신청 | 컴룸닷넷
+{% endblock title %}
+{% block header %}
+<style>
+
+    form > div {
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock header %}
+{% block contents %}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <a href="" class="btn btn-outline-info" type='button'>방과후 안내장 보기</a>
+    </div>
+</div>
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="lectures">
+        <h3>수강 희망 강좌</h3>
+        <div class="row">
+            <div class="col">
+                <input type="checkbox" name="life_science_A" id="life_science_A">
+                <label for="life_science_A">생명과학A</label><br>
+                <input type="checkbox" name="life_science_B" id="life_science_B">
+                <label for="life_science_B">생명과학B</label><br>
+                <input type="checkbox" name="life_science_C" id="life_science_C">
+                <label for="life_science_C">생명과학C</label><br>
+            </div>
+            <div class="col">
+                <input type="checkbox" name="yoga_A" id="yoga_A">
+                <label for="yoga_A">요가A</label><br>
+                <input type="checkbox" name="yoga_B" id="yoga_B">
+                <label for="yoga_B">요가B</label><br>
+            </div>
+        </div>
+    </div>
+    <div class="student_info">
+        <h3>학생 정보</h3>
+        
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon3">이름</span>
+            </div>
+            <input type="text" class="form-control" id="student_name" name="student_name" aria-describedby="basic-addon3" placeholder="학생 이름" required>
+        
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="input-group">
+                    <select class="custom-select" name="grade" id="grade" aria-label="Example select with button addon">
+                        <option selected>학년</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                    <div class="input-group-append">
+                      <!-- <button class="btn btn-outline-secondary" type="button">학년</button> -->
+                      <span class="input-group-text" id="basic-addon2">학년</span>
+                    </div>
+                  </div>
+                
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <select class="custom-select" name="classN" id="classN" aria-label="Example select with button addon">
+                        <option selected>반</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                    <div class="input-group-append">
+                      <!-- <button class="btn btn-outline-secondary" type="button">반</button> -->
+                      <span class="input-group-text" id="basic-addon2">반</span>
+                    </div>
+                  </div>
+                
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" placeholder="번호" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="basic-addon2">번</span>
+                    </div>
+                  </div>
+                
+            </div>
+        </div>
+        
+        
+        
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon3">연락처</span>
+            </div>
+            <input type="number" class="form-control" id="student_phone" name="student_phone" aria-describedby="basic-addon3" placeholder="학생 연락처" required>
+        
+        </div>
+        <small class="text-muted">'-' 제외한 숫자만 적어주세요. (없으면 보호자 연락처)</small>
+    </div>
+    <div class="parent_info">
+        <h3>보호자 정보</h3>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon3">이름</span>
+            </div>
+            <input type="text" class="form-control" id="parent_name" name="parent_name" aria-describedby="basic-addon3" placeholder="보호자 이름" required>
+        
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon3">연락처</span>
+            </div>
+            <input type="number" class="form-control" id="parent_phone" name="parent_phone" aria-describedby="basic-addon3" placeholder="보호자 연락처" required>
+        
+          </div>
+        <small class="text-muted">'-' 제외한 숫자만 적어주세요. </small>
+    </div>
+    <div class="privacy">
+        <h3>개인정보제공 동의</h3>
+        <textarea name="privacy_agree" id="privacy_agree" cols="30" rows="4" class="form-control">
+{% include "privacy_agreement.txt" %}
+        </textarea>
+        <input type="checkbox" name="privacy_agreement" id="privacy_agreement" class="">
+        <label for="privacy_agreement"> 개인정보 제공에 동의합니다.</label> <br>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg">신청</button>
+</form>
+
+{% endblock contents %}
+{% block ads %}
+{% endblock ads %}

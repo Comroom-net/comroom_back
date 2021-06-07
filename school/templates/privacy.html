@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}
+  개인정보제공동의 | {{ block.super }}
+{% endblock title %}
+{% block header %}
+<style>
+.form-control[readonly] {
+    background-color: white;
+}
+</style>
+
+{% endblock header %}
+{% block contents %}
+<div class = 'row mt-5'>
+  <div class="col-12 text-center">
+    <textarea class="form-control" rows="10" readonly>{{privacy}}</textarea>
+    <br>
+  </div>
+</div>
+<div class='row'>
+    <div class='col-6'>
+    <a href="/" role="button" class="btn btn-outline-secondary btn-block">취소</a>
+    </div>
+    <div class='col-6'>
+    <a href="/school/agree_priv" role="button" class="btn btn-outline-primary btn-block">동의</a>
+    </div>
+</div>
+
+
+  
+{% endblock contents %}
