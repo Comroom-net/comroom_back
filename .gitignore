@@ -5,11 +5,10 @@ db.sqlite3
 
 
 production.py
-/staticfiles/
-/templates/adsense.html
-/templates/analytics.html
-/media/
-/staticfiles/G-suite/
+
+staticfiles/admin/*
+
+
 venv/
 
 production.json
