@@ -11,6 +11,7 @@ Django==3.2.4
 django-bootstrap-datepicker-plus==3.0.5
 django-bootstrap4==3.0.1
 django-jquery==3.1.0
+django-smtp-ssl==1.0
 djangorestframework==3.12.4
 et-xmlfile==1.1.0
 mypy-extensions==0.4.3
