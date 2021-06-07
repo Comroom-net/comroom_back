@@ -1,5 +1,7 @@
 {
     "prettier.endOfLine": "lf",
     "python.linting.enabled": true,
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "python.pythonPath": "venv/bin/python",
+    "python.formatting.provider": "black",
 }
