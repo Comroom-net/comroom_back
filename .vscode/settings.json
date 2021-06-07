@@ -1,5 +1,0 @@
-{
-    "prettier.endOfLine": "lf",
-    "python.linting.enabled": true,
-    "liveServer.settings.port": 5501
-}
