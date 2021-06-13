@@ -4,8 +4,6 @@
 db.sqlite3
 
 
-production.py
-
 staticfiles/admin/*
 
 
