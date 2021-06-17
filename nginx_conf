@@ -1,0 +1,9 @@
+server {
+        listen 8000;
+        server_name 13.209.96.123;
+
+        location / {
+                include proxy_params;
+                proxy_pass http://unix:/home/ubuntu/comroom/run/gunicorn.sock;
+        }
+}
