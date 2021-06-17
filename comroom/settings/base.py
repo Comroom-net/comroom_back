@@ -20,11 +20,11 @@ def get_secret(setting, secrets=secrets):
         raise ImproperlyConfigured(erro_msg)
 
 
-SECRET_KEY = get_secret("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = get_secret("DEBUG_VALUE")
+DEBUG = True
 
-ALLOWED_HOSTS = [get_secret("ALLOWED_HOSTS_VALUE")]
+ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
