@@ -1,9 +1,11 @@
 import os
 import json
+from pathlib import Path
+
 from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Secret File Control
 secret_file = os.path.join(BASE_DIR, "production.json")
@@ -20,7 +22,7 @@ def get_secret(setting, secrets=secrets):
         raise ImproperlyConfigured(erro_msg)
 
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("COMROOM_SECRET_KEY")
 
 DEBUG = True
 
@@ -38,6 +40,8 @@ INSTALLED_APPS = [
     "bootstrap_datepicker_plus",
     "bootstrap4",
     "rest_framework",
+    "django_filters",
+    "drf_spectacular",
     "school.apps.SchoolConfig",
 ]
 
@@ -147,4 +151,21 @@ EMAIL_USE_TLS = True
 # for using bootstrap app
 BOOTSTRAP4 = {
     "include_jquery": True,
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_FILTER_CLASS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "COMROOM API",
+    "DESCRIPTION": "COMROOM API",
+    "VERSION": "1.0.0",
+    "SERVERS": [
+        {"url": "http://127.0.0.1:8000"},
+    ],
+    "SORT_OPERATIONS": False,
 }
