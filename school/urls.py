@@ -3,8 +3,9 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from .views import (
-    LoginView,
+    login,
     logout,
+    forgot_password,
     privacy_agree,
     agree_pirv,
     RegisterView,
@@ -12,15 +13,23 @@ from .views import (
     ex_login,
     MultipleFormsLoginView,
     SchoolViewSet,
+    ComroomViewSet,
+    AdminUserViewSet,
+    NoticeViewSet,
 )
 
 app_name = "school"
 
 router = DefaultRouter()
-router.register(r"api", SchoolViewSet)
+router.register(r"comroom", ComroomViewSet)
+router.register(r"admin-user", AdminUserViewSet)
+router.register(r"notice", NoticeViewSet)
+router.register(r"", SchoolViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("api/login/", login),
+    path("api/forgot-password/", forgot_password),
     path("login/", MultipleFormsLoginView.as_view()),
     path("ex_login/", ex_login),
     path("logout/", logout, name="logout"),

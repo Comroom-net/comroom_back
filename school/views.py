@@ -7,13 +7,15 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, TemplateView
 from django.views import View
 from django.db import transaction
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.staticfiles import finders
 from django.core.mail import EmailMessage, send_mail
 from django.forms import formset_factory
 from django.template.loader import render_to_string
 
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from .forms import (
     RegisterForm,
@@ -24,7 +26,12 @@ from .forms import (
     LoginForm_multi,
 )
 from .models import School, AdminUser, Notice, Comroom, IPs
-from .serializers import SchoolSerializer
+from .serializers import (
+    SchoolSerializer,
+    ComroomSerializer,
+    AdminUserSerializer,
+    NoticeSerializer,
+)
 
 from .multiforms import MultiFormsView
 
@@ -32,6 +39,21 @@ from .multiforms import MultiFormsView
 class SchoolViewSet(viewsets.ModelViewSet):
     queryset = School.objects.all()
     serializer_class = SchoolSerializer
+
+
+class ComroomViewSet(viewsets.ModelViewSet):
+    queryset = Comroom.objects.all()
+    serializer_class = ComroomSerializer
+
+
+class AdminUserViewSet(viewsets.ModelViewSet):
+    queryset = AdminUser.objects.all()
+    serializer_class = AdminUserSerializer
+
+
+class NoticeViewSet(viewsets.ModelViewSet):
+    queryset = Notice.objects.all()
+    serializer_class = NoticeSerializer
 
 
 def privacy_agree(request):
@@ -118,19 +140,56 @@ class RegisterView(FormView):
         # return super().form_valid(form)
 
 
-class LoginView(FormView):
-    template_name = "login.html"
-    form_class = LoginForm
-    success_url = "/"
+@api_view(["POST"])
+def login(request):
+    user = request.data.get("user")
+    if not user:
+        return Response("no id input", status=status.HTTP_404_NOT_FOUND)
 
-    def form_valid(self, form):
-        user = form.data.get("user")
-        user = AdminUser.objects.get(user=user)
-        self.request.session["username"] = user.realname
-        self.request.session["user_id"] = user.user
-        self.request.session["school"] = user.school.id
+    password = request.data.get("password")
+    if not password:
+        return Response("no password input", status=status.HTTP_404_NOT_FOUND)
 
-        return super().form_valid(form)
+    try:
+        # username 으로 indexing
+        admin_user = AdminUser.objects.get(user=user)
+    except AdminUser.DoesNotExist:
+        return Response("incorrect id", status=status.HTTP_404_NOT_FOUND)
+
+    if not check_password(password, admin_user.password):
+        return Response("wrong password", status=status.HTTP_404_NOT_FOUND)
+
+    request.session["username"] = admin_user.realname
+    request.session["user_id"] = admin_user.user
+    request.session["school"] = admin_user.school.id
+
+    print("login good")
+
+    return Response("good", status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+def forgot_password(request):
+    email = request.data.get("email")
+    if not email:
+        return Response("no email input", status=status.HTTP_404_NOT_FOUND)
+
+    teacher_name = request.data.get("teacher_name")
+    if not teacher_name:
+        return Response("no name input", status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        # indexing by email and realname
+        admin_user = AdminUser.objects.get(email=email, realname=teacher_name)
+    except AdminUser.DoesNotExist:
+        return Response("wrong input info", status=status.HTTP_404_NOT_FOUND)
+
+    request.session["adminUser_pk"] = admin_user.pk
+
+    print("forgot password good")
+    # send_password_mail(request)
+
+    return Response("good", status=status.HTTP_200_OK)
 
 
 class MultipleFormsLoginView(MultiFormsView):
@@ -145,17 +204,20 @@ class MultipleFormsLoginView(MultiFormsView):
         "get_admin": reverse_lazy("send_password_mail"),
     }
 
+    # actual login
     def login_form_valid(self, form):
         user = form.cleaned_data.get("user")
         password = form.cleaned_data.get("password")
         form_name = form.cleaned_data.get("action")
         print(user)
         user = AdminUser.objects.get(user=user)
+        # set session value
         self.request.session["username"] = user.realname
         self.request.session["user_id"] = user.user
         self.request.session["school"] = user.school.id
         return HttpResponseRedirect(self.get_success_url(form_name))
 
+    # reset password
     def get_admin_form_valid(self, form):
         print("form valid")
         email = form.cleaned_data.get("email")
@@ -383,6 +445,7 @@ def reset_password(request, token):
     return render(request, "reset_password.html", {"teacher_name": adminUser.realname})
 
 
+# TODO: request 말고, 그냥 adminUser_pk만 받아서 실행하도록. return도 변경.
 def send_password_mail(request):
     adminUser_pk = request.session["adminUser_pk"]
     adminUser = AdminUser.objects.get(pk=adminUser_pk)
