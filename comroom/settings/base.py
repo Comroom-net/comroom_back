@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "drf_spectacular",
-    "school.apps.SchoolConfig",
 ]
 
 INSTALLED_APPS += [
+    "school",
     "timetable",
     "etc",
     "afterschool",
