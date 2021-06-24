@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView, TemplateView
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.staticfiles import finders
@@ -168,6 +169,8 @@ def login(request):
     return Response("good", status=status.HTTP_200_OK)
 
 
+# TODO: csrf token handling API
+@csrf_exempt
 @api_view(["POST"])
 def forgot_password(request):
     email = request.data.get("email")
