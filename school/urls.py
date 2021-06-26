@@ -27,7 +27,6 @@ router.register(r"notice", NoticeViewSet)
 router.register(r"", SchoolViewSet)
 
 urlpatterns = [
-    path("", include(router.urls)),
     path("api/login/", login),
     path("api/forgot-password/", forgot_password),
     path("login/", MultipleFormsLoginView.as_view()),
@@ -37,4 +36,5 @@ urlpatterns = [
     path("agree_priv/", agree_pirv),
     path("register/", RegisterView.as_view()),
     path("active/<token>", user_active, name="user_active"),
+    path("", include(router.urls)),
 ]
