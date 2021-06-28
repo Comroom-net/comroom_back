@@ -9,6 +9,8 @@ from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+import django_filters
+from django_filters import rest_framework as filters
 
 
 from .models import Timetable, FixedTimetable
@@ -21,9 +23,20 @@ from school.models import School
 # from school.views import ip_getter
 
 
+class TimetableFilter(django_filters.FilterSet):
+    month = django_filters.NumberFilter(field_name="date", lookup_expr="month")
+    year = django_filters.NumberFilter(field_name="date", lookup_expr="year")
+
+    class Meta:
+        model = Timetable
+        fields = "__all__"
+
+
 class TimetableViewSet(viewsets.ModelViewSet):
     queryset = Timetable.objects.all()
     serializer_class = TimetableSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = TimetableFilter
 
 
 class FixedTimetableViewSet(viewsets.ModelViewSet):
