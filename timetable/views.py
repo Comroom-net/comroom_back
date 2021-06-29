@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, FormView, CreateView, View
+from django.db.models import Q
+
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
@@ -40,12 +42,20 @@ class TimetableViewSet(viewsets.ModelViewSet):
 
 
 class FixedTimetableFilter(django_filters.FilterSet):
-    fixed_from = django_filters.DateFromToRangeFilter()
-    fixed_until = django_filters.DateFromToRangeFilter()
+    ym = django_filters.CharFilter(method="fixed_YM", label="year-month")
 
     class Meta:
         model = FixedTimetable
-        fields = ["fixed_from", "fixed_until"]
+        fields = ["comroom", "school"]
+
+    def fixed_YM(self, queryset, name, value):
+        year, month = map(int, value.split("-"))
+        return FixedTimetable.objects.filter(
+            Q(fixed_from__month__lte=month)
+            & Q(fixed_until__month__gte=month)
+            & Q(fixed_from__year__lte=year)
+            & Q(fixed_until__year__gte=year)
+        )
 
 
 class FixedTimetableViewSet(viewsets.ModelViewSet):
