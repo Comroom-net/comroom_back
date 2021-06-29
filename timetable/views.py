@@ -39,9 +39,20 @@ class TimetableViewSet(viewsets.ModelViewSet):
     filterset_class = TimetableFilter
 
 
+class FixedTimetableFilter(django_filters.FilterSet):
+    fixed_from = django_filters.DateFromToRangeFilter()
+    fixed_until = django_filters.DateFromToRangeFilter()
+
+    class Meta:
+        model = FixedTimetable
+        fields = ["fixed_from", "fixed_until"]
+
+
 class FixedTimetableViewSet(viewsets.ModelViewSet):
     queryset = FixedTimetable.objects.all()
     serializer_class = FixedTimetableSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = FixedTimetableFilter
 
 
 class TimetableView(DetailView):
