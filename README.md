@@ -12,3 +12,13 @@ http://comroom.net
 - [회원가입 페이지 - Django에서 하나의 폼으로 여러 테이블에 데이터 작성하기 | transaction.atomic](https://ssamko.tistory.com/5)
 
 
+## API
+### login
+- 
+### find password
+- 
+### 시간표
+- `GET /timetable/api/time/?year=2021&month=3&school=79&room=185`
+
+### 고정시간표
+- `GET /timetable/api/fixed/?comroom=&school=&ym=2021-02`
