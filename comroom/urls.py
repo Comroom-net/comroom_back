@@ -18,6 +18,7 @@ from timetable.views import assign_room
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
     path("", index, name="index"),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("school/", include("school.urls")),

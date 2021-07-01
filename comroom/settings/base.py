@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "jquery",
     "bootstrap_datepicker_plus",
     "bootstrap4",
@@ -43,6 +44,11 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_spectacular",
     "corsheaders",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.kakao",
 ]
 
 INSTALLED_APPS += [
@@ -111,6 +117,33 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Auth - django-allauth
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": "480648197974-nbh21s3q24p0hkef3glj7cf2ipvkbl5d.apps.googleusercontent.com",
+            "secret": "Gq8VGv64wsvsvmLryyAA1L7l",
+            "key": "",
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+    }
+}
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+SITE_ID = 1
 
 # Internationalization
 
