@@ -17,6 +17,8 @@ from django.template.loader import render_to_string
 from rest_framework import viewsets, generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import django_filters
+from django_filters import rest_framework as filters
 
 from .forms import (
     RegisterForm,
@@ -53,7 +55,7 @@ class AdminUserViewSet(viewsets.ModelViewSet):
 
 
 class NoticeViewSet(viewsets.ModelViewSet):
-    queryset = Notice.objects.all()
+    queryset = Notice.objects.filter(isshow=True)
     serializer_class = NoticeSerializer
 
 
