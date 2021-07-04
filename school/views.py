@@ -9,6 +9,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
 from django.core.mail import EmailMessage, send_mail
 from django.forms import formset_factory
@@ -17,6 +18,8 @@ from django.template.loader import render_to_string
 from rest_framework import viewsets, generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+
 import django_filters
 from django_filters import rest_framework as filters
 from google.oauth2 import id_token
@@ -85,6 +88,10 @@ def token_signin(request):
             userid = idinfo["sub"]
             print(userid)
             print(idinfo)
+            user = User.objects.get_by_natural_key("ssamko")
+            refresh = RefreshToken.for_user(user)
+            print(f"refresh: {str(refresh)}")
+            print(f"access: {str(refresh.access_token)}")
             return JsonResponse(status=status.HTTP_200_OK, data={"good": "success"})
         except ValueError:
             # Invalid token
