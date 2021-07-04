@@ -13,10 +13,12 @@ from school.views import (
     make_room,
     reset_password,
     send_password_mail,
+    token_signin,
 )
 from timetable.views import assign_room
 
 urlpatterns = [
+    path("tokensignin", token_signin),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("", index, name="index"),
