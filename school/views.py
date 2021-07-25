@@ -64,6 +64,17 @@ class NoticeViewSet(viewsets.ModelViewSet):
     serializer_class = NoticeSerializer
 
 
+@api_view(["GET"])
+def ex_login_api(request):
+    data = {
+        "username": "박새로이",
+        "user_id": "icic",
+        "school": AdminUser.objects.get(user="icic").school.id,
+    }
+
+    return JsonResponse(data=data)
+
+
 # TODO: remove csrf_exempt
 @csrf_exempt
 def token_signin(request):
