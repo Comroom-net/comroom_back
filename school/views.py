@@ -66,10 +66,12 @@ class NoticeViewSet(viewsets.ModelViewSet):
 
 @api_view(["GET"])
 def ex_login_api(request):
+    user = AdminUser.objects.get(user="icic")
     data = {
         "username": "박새로이",
         "user_id": "icic",
-        "school": AdminUser.objects.get(user="icic").school.id,
+        "school": user.school.id,
+        "is_active": user.is_active,
     }
 
     return JsonResponse(data=data)
