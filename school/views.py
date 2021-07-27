@@ -19,6 +19,7 @@ from rest_framework import viewsets, generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.views import APIView
 
 import django_filters
 from django_filters import rest_framework as filters
@@ -62,6 +63,60 @@ class AdminUserViewSet(viewsets.ModelViewSet):
 class NoticeViewSet(viewsets.ModelViewSet):
     queryset = Notice.objects.filter(isshow=True)
     serializer_class = NoticeSerializer
+
+
+class SchoolView(APIView):
+    def post(self, request):
+        with transaction.atomic():
+
+            school = School(
+                province=request.data.get("province"),
+                name=request.data.get("schoolName") + "초등학교",
+                ea=request.data.get("ea"),
+                s_code=random.randint(1000, 9999),
+            )
+            school.save()
+            adminUser = AdminUser(
+                school=school,
+                user=request.data.get("user"),
+                password=make_password(request.data.get("password")),
+                realname=request.data.get("realname"),
+                email=request.data.get("email"),
+                auth_key=randstr(50),
+                is_active=False,
+            )
+            # TODO: handle follow 2 lines
+            self.request.session["username"] = adminUser.realname
+            self.request.session["user_id"] = adminUser.user
+
+            adminUser.save()
+            for i in range(int(request.data.get("ea"))):
+                comroom = Comroom(
+                    school=school,
+                    roomNo=i + 1,
+                    name=f"컴{i+1}실",
+                    caption="위치, 교실 이용방법, 이용시 주의사항 등",
+                )
+                comroom.save()
+            mail_title = "컴룸닷컴 가입 인증메일"
+            mail_args = {
+                "name": adminUser.realname,
+                "mail_link": adminUser.auth_key,
+                "api_host": request.build_absolute_uri("/"),
+            }
+            mail_context = "컴룸닷컴 가입 인증메일"
+            mail_html = render_to_string("mail_template.html", mail_args)
+            send_mail(
+                mail_title,
+                mail_context,
+                "ssamko@kakao.com",
+                [adminUser.email],
+                html_message=mail_html,
+            )
+            message = f"{adminUser.realname} 선생님께서 입력하신 메일({adminUser.email})로 인증 링크를 발송했습니다. \
+                <a href='/FAQ/' role='button' class='btn btn-info'>이메일 인증을 하는 이유</a>"
+
+        return Response(status=status.HTTP_201_CREATED)
 
 
 @api_view(["GET"])

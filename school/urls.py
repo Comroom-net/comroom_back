@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from .views import (
+    SchoolView,
     ex_login_api,
     login,
     logout,
@@ -31,6 +32,7 @@ urlpatterns = [
     path("api/login/", login),
     path("api/forgot-password/", forgot_password),
     path("api/ex_login/", ex_login_api),
+    path("api/register/", SchoolView.as_view()),
     path("login/", MultipleFormsLoginView.as_view()),
     path("ex_login/", ex_login),
     path("logout/", logout, name="logout"),
