@@ -70,7 +70,8 @@ def ex_login_api(request):
     data = {
         "username": "박새로이",
         "user_id": "icic",
-        "school": user.school.id,
+        "school": user.school.name,
+        "s_code": user.school.s_code,
         "is_active": user.is_active,
     }
 
