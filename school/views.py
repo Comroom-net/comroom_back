@@ -12,8 +12,10 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
 from django.core.mail import EmailMessage, send_mail
+from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
 from django.template.loader import render_to_string
+from django.conf import settings
 
 from rest_framework import viewsets, generics, status
 from rest_framework.decorators import api_view
@@ -102,7 +104,7 @@ class SchoolView(APIView):
             mail_args = {
                 "name": adminUser.realname,
                 "mail_link": adminUser.auth_key,
-                "api_host": request.build_absolute_uri("/"),
+                "web_url": settings.WEB_URL,
             }
             mail_context = "컴룸닷컴 가입 인증메일"
             mail_html = render_to_string("mail_template.html", mail_args)
@@ -131,6 +133,30 @@ def ex_login_api(request):
     }
 
     return JsonResponse(data=data)
+
+
+@api_view(["GET"])
+def user_active_api(request, token):
+    # adminUser = get_object_or_404(AdminUser, auth_key=token)
+    try:
+        adminUser = AdminUser.objects.get(auth_key=token)
+    except ObjectDoesNotExist:
+        return JsonResponse(
+            data={"message": "wrong access"}, status=status.HTTP_400_BAD_REQUEST
+        )
+    if adminUser.reg_date < datetime.datetime.now() - datetime.timedelta(hours=3):
+        deleted_school = adminUser.school.delete()
+        print(f"[deleted school]{deleted_school}")
+        message = "만료된 링크입니다. 다시 가입을 신청하세요"
+        return JsonResponse(
+            data={"message": message}, status=status.HTTP_501_NOT_IMPLEMENTED
+        )
+    else:
+        adminUser.is_active = True
+        adminUser.auth_key = ""
+        adminUser.save()
+        message = "인증되었습니다. 불편한 사항은 언제든 말씀해주세요 ^^"
+    return JsonResponse(data={"message": message}, status=status.HTTP_200_OK)
 
 
 # TODO: remove csrf_exempt
