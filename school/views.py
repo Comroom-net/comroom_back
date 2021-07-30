@@ -155,8 +155,14 @@ def user_active_api(request, token):
         adminUser.is_active = True
         adminUser.auth_key = ""
         adminUser.save()
-        message = "인증되었습니다. 불편한 사항은 언제든 말씀해주세요 ^^"
-    return JsonResponse(data={"message": message}, status=status.HTTP_200_OK)
+        user_data = {
+            "username": adminUser.realname,
+            "user_id": adminUser.user,
+            "school": adminUser.school.name,
+            "s_code": adminUser.school.s_code,
+            "is_active": adminUser.is_active,
+        }
+    return JsonResponse(data=user_data, status=status.HTTP_200_OK)
 
 
 # TODO: remove csrf_exempt
