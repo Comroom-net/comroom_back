@@ -6,7 +6,7 @@ from .views import (
     SchoolView,
     ex_login_api,
     user_active_api,
-    login,
+    login_api,
     logout,
     forgot_password,
     privacy_agree,
@@ -30,7 +30,7 @@ router.register(r"notice", NoticeViewSet)
 router.register(r"", SchoolViewSet)
 
 urlpatterns = [
-    path("api/login/", login),
+    path("api/login/", login_api),
     path("api/forgot-password/", forgot_password),
     path("api/ex_login/", ex_login_api),
     path("api/register/", SchoolView.as_view()),
