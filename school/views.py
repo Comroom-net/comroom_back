@@ -1,9 +1,10 @@
 import datetime
 import random
+import logging
 
-from django.shortcuts import render, redirect, resolve_url, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect, JsonResponse
+from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -11,19 +12,17 @@ from django.db import transaction
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
-from django.core.mail import EmailMessage, send_mail
+from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms import formset_factory
 from django.template.loader import render_to_string
 from django.conf import settings
 
-from rest_framework import viewsets, generics, status
+from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 
-import django_filters
 from django_filters import rest_framework as filters
 from google.oauth2 import id_token
 from google.auth.transport import requests
@@ -46,6 +45,8 @@ from .serializers import (
 
 from .multiforms import MultiFormsView
 
+
+logger = logging.getLogger(__name__)
 
 class SchoolViewSet(viewsets.ModelViewSet):
     queryset = School.objects.all()
@@ -174,7 +175,7 @@ def user_active_api(request, token):
         )
     if adminUser.reg_date < datetime.datetime.now() - datetime.timedelta(hours=3):
         deleted_school = adminUser.school.delete()
-        print(f"[deleted school]{deleted_school}")
+        logger.debug(f"[deleted school]{deleted_school}")
         message = "만료된 링크입니다. 다시 가입을 신청하세요"
         return JsonResponse(
             data={"message": message}, status=status.HTTP_501_NOT_IMPLEMENTED
@@ -215,16 +216,16 @@ def token_signin(request):
 
             # ID token is valid. Get the user's Google Account ID from the decoded token.
             userid = idinfo["sub"]
-            print(userid)
-            print(idinfo)
+            logger.debug(userid)
+            logger.debug(idinfo)
             user = User.objects.get_by_natural_key("ssamko")
             refresh = RefreshToken.for_user(user)
-            print(f"refresh: {str(refresh)}")
-            print(f"access: {str(refresh.access_token)}")
+            logger.debug(f"refresh: {str(refresh)}")
+            logger.debug(f"access: {str(refresh.access_token)}")
             return JsonResponse(status=status.HTTP_200_OK, data={"good": "success"})
         except ValueError:
             # Invalid token
-            print("invalid token")
+            logger.debug("invalid token")
             pass
     else:
         return JsonResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -257,7 +258,7 @@ class RegisterView(FormView):
         try:
             privacy = request.session["privacy"]
         except:
-            print("No privacy session")
+            logger.debug("No privacy session")
             return redirect("/")
         else:
             if not privacy:
@@ -321,7 +322,7 @@ class RegisterView(FormView):
 def forgot_password(request):
     email = request.data.get("email")
     if not email:
-        print("no email input")
+        logger.debug("no email input")
         return Response("no email input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
     teacher_name = request.data.get("teacher_name")
@@ -336,7 +337,7 @@ def forgot_password(request):
 
     request.session["adminUser_pk"] = admin_user.pk
 
-    print("forgot password good")
+    logger.debug("forgot password good")
     # send_password_mail(request)
 
     return Response("good", status=status.HTTP_200_OK)
@@ -359,7 +360,7 @@ class MultipleFormsLoginView(MultiFormsView):
         user = form.cleaned_data.get("user")
         password = form.cleaned_data.get("password")
         form_name = form.cleaned_data.get("action")
-        print(user)
+        logger.debug(user)
         user = AdminUser.objects.get(user=user)
         # set session value
         self.request.session["username"] = user.realname
@@ -369,13 +370,13 @@ class MultipleFormsLoginView(MultiFormsView):
 
     # reset password
     def get_admin_form_valid(self, form):
-        print("form valid")
+        logger.debug("form valid")
         email = form.cleaned_data.get("email")
         teacher_name = form.cleaned_data.get("teacher_name")
         adminUser = AdminUser.objects.get(email=email, realname=teacher_name)
         form_name = form.cleaned_data.get("action")
         self.request.session["adminUser_pk"] = adminUser.pk
-        print(adminUser)
+        logger.debug(adminUser)
 
         return HttpResponseRedirect(self.get_success_url(form_name))
 
@@ -399,7 +400,7 @@ def ip_getter(request):
     try:
         ip_addr = request.META["REMOTE_ADDR"]
     except:
-        print("localhost")
+        logger.debug("localhost")
     else:
 
         try:
@@ -490,8 +491,8 @@ class ComroomAdminView(View):
 
             # bind form with instance
             form = school.comroom_set.get(roomNo=i + 1)
-            print(form)
-            print(request.POST)
+            logger.debug(form)
+            logger.debug(request.POST)
             form.name = request.POST["room_name" + str(i + 1)]
             form.caption = request.POST["room_caption" + str(i + 1)]
             form.save()
