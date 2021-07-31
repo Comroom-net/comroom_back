@@ -11,3 +11,5 @@ venv/
 
 production.json
 bot_info.json
+
+*.log
