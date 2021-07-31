@@ -120,6 +120,34 @@ class SchoolView(APIView):
 
         return Response(status=status.HTTP_201_CREATED)
 
+@api_view(["POST"])
+def login_api(request):
+    user = request.data.get("user")
+    if not user:
+        return Response("no id input", status=status.HTTP_404_NOT_FOUND)
+
+    password = request.data.get("password")
+    if not password:
+        return Response("no password input", status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        # username 으로 indexing
+        admin_user = AdminUser.objects.get(user=user)
+    except AdminUser.DoesNotExist:
+        return Response("incorrect id", status=status.HTTP_404_NOT_FOUND)
+
+    if not check_password(password, admin_user.password):
+        return Response("wrong password", status=status.HTTP_404_NOT_FOUND)
+
+    user_data = {
+            "username": admin_user.realname,
+            "user_id": admin_user.user,
+            "school": admin_user.school.name,
+            "s_code": admin_user.school.s_code,
+            "is_active": admin_user.is_active,
+        }
+
+    return Response(data=user_data, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 def ex_login_api(request):
@@ -286,33 +314,6 @@ class RegisterView(FormView):
         # return super().form_valid(form)
 
 
-@api_view(["POST"])
-def login(request):
-    user = request.data.get("user")
-    if not user:
-        return Response("no id input", status=status.HTTP_404_NOT_FOUND)
-
-    password = request.data.get("password")
-    if not password:
-        return Response("no password input", status=status.HTTP_404_NOT_FOUND)
-
-    try:
-        # username 으로 indexing
-        admin_user = AdminUser.objects.get(user=user)
-    except AdminUser.DoesNotExist:
-        return Response("incorrect id", status=status.HTTP_404_NOT_FOUND)
-
-    if not check_password(password, admin_user.password):
-        return Response("wrong password", status=status.HTTP_404_NOT_FOUND)
-
-    request.session["username"] = admin_user.realname
-    request.session["user_id"] = admin_user.user
-    request.session["school"] = admin_user.school.id
-
-    print("login good")
-
-    return Response("good", status=status.HTTP_200_OK)
-
 
 # TODO: csrf token handling API
 @csrf_exempt
@@ -320,17 +321,18 @@ def login(request):
 def forgot_password(request):
     email = request.data.get("email")
     if not email:
-        return Response("no email input", status=status.HTTP_404_NOT_FOUND)
+        print("no email input")
+        return Response("no email input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
     teacher_name = request.data.get("teacher_name")
     if not teacher_name:
-        return Response("no name input", status=status.HTTP_404_NOT_FOUND)
+        return Response("no name input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
     try:
         # indexing by email and realname
         admin_user = AdminUser.objects.get(email=email, realname=teacher_name)
     except AdminUser.DoesNotExist:
-        return Response("wrong input info", status=status.HTTP_404_NOT_FOUND)
+        return Response("wrong input info", status=status.HTTP_400_BAD_REQUEST)
 
     request.session["adminUser_pk"] = admin_user.pk
 
