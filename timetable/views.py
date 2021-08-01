@@ -35,6 +35,7 @@ class TimetableFilter(django_filters.FilterSet):
 
 
 class TimetableViewSet(viewsets.ModelViewSet):
+    page_size = 300
     queryset = Timetable.objects.all()
     serializer_class = TimetableSerializer
     filter_backends = (filters.DjangoFilterBackend,)
