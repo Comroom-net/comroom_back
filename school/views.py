@@ -48,6 +48,7 @@ from .multiforms import MultiFormsView
 
 logger = logging.getLogger(__name__)
 
+
 class SchoolViewSet(viewsets.ModelViewSet):
     queryset = School.objects.all()
     serializer_class = SchoolSerializer
@@ -121,6 +122,20 @@ class SchoolView(APIView):
 
         return Response(status=status.HTTP_201_CREATED)
 
+
+def _login_data(admin_user: AdminUser) -> dict:
+    user_data = {
+        "username": admin_user.realname,
+        "user_id": admin_user.user,
+        "school": admin_user.school.name,
+        "school_id": admin_user.school.id,
+        "s_code": admin_user.school.s_code,
+        "is_active": admin_user.is_active,
+    }
+
+    return user_data
+
+
 @api_view(["POST"])
 def login_api(request):
     user = request.data.get("user")
@@ -140,28 +155,17 @@ def login_api(request):
     if not check_password(password, admin_user.password):
         return Response("wrong password", status=status.HTTP_404_NOT_FOUND)
 
-    user_data = {
-            "username": admin_user.realname,
-            "user_id": admin_user.user,
-            "school": admin_user.school.name,
-            "s_code": admin_user.school.s_code,
-            "is_active": admin_user.is_active,
-        }
+    user_data = _login_data(admin_user)
 
     return Response(data=user_data, status=status.HTTP_200_OK)
 
+
 @api_view(["GET"])
 def ex_login_api(request):
-    user = AdminUser.objects.get(user="icic")
-    data = {
-        "username": "박새로이",
-        "user_id": "icic",
-        "school": user.school.name,
-        "s_code": user.school.s_code,
-        "is_active": user.is_active,
-    }
+    admin_user = AdminUser.objects.get(user="icic")
+    user_data = _login_data(admin_user)
 
-    return JsonResponse(data=data)
+    return JsonResponse(data=user_data)
 
 
 @api_view(["GET"])
@@ -184,13 +188,7 @@ def user_active_api(request, token):
         adminUser.is_active = True
         adminUser.auth_key = ""
         adminUser.save()
-        user_data = {
-            "username": adminUser.realname,
-            "user_id": adminUser.user,
-            "school": adminUser.school.name,
-            "s_code": adminUser.school.s_code,
-            "is_active": adminUser.is_active,
-        }
+        user_data = _login_data(admin_user)
     return JsonResponse(data=user_data, status=status.HTTP_200_OK)
 
 
@@ -315,7 +313,6 @@ class RegisterView(FormView):
         # return super().form_valid(form)
 
 
-
 # TODO: csrf token handling API
 @csrf_exempt
 @api_view(["POST"])
@@ -323,11 +320,15 @@ def forgot_password(request):
     email = request.data.get("email")
     if not email:
         logger.debug("no email input")
-        return Response("no email input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
+        return Response(
+            "no email input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION
+        )
 
     teacher_name = request.data.get("teacher_name")
     if not teacher_name:
-        return Response("no name input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
+        return Response(
+            "no name input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION
+        )
 
     try:
         # indexing by email and realname
