@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime, date
 
 from django.shortcuts import render, redirect, reverse, get_object_or_404
@@ -6,11 +7,13 @@ from django.utils.safestring import mark_safe
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, FormView, CreateView, View
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 import django_filters
 from django_filters import rest_framework as filters
 
@@ -23,6 +26,9 @@ from .serializers import TimetableSerializer, FixedTimetableSerializer
 from school.models import School
 
 # from school.views import ip_getter
+
+
+logger = logging.getLogger(__name__)
 
 
 class TimetableFilter(django_filters.FilterSet):
@@ -64,6 +70,32 @@ class FixedTimetableViewSet(viewsets.ModelViewSet):
     serializer_class = FixedTimetableSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = FixedTimetableFilter
+
+
+@api_view(["GET"])
+def valid_scode_api(request):
+    school = request.GET.get("school")
+    if not "학교" in school:
+        # school = school.encode('EUC-KR')
+        school = school.encode("UTF-8")
+
+    s_code = request.GET.get("s_code")
+
+    try:
+        school_obj = School.objects.get(name__startswith=school, s_code=s_code)
+    except ObjectDoesNotExist:
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={"BAD ACCESS"})
+    else:
+        date = datetime.now().strftime("%Y-%m")
+
+        context = {}
+
+        context["school"] = school_obj.name
+        context["s_code"] = school_obj.s_code
+        context["school_id"] = school_obj.id
+        context["date"] = date
+        context["roomNo"] = 1
+        return Response(status=status.HTTP_200_OK, data=context)
 
 
 class TimetableView(DetailView):
