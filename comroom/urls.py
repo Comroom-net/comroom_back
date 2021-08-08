@@ -5,10 +5,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+
+# from rest_framework_simplejwt.views import (
+#     TokenObtainPairView,
+#     TokenRefreshView,
+# )
 
 
 from school.views import (
@@ -25,9 +26,9 @@ from timetable.views import assign_room
 urlpatterns = [
     path("tokensignin", token_signin),
     path("admin/", admin.site.urls),
-    path("accounts/", include("allauth.urls")),
+    # path("accounts/", include("allauth.urls")),
     path("", index, name="index"),
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("school/", include("school.urls")),
     path("etc/", include("etc.urls")),
     path("afterschool/", include("afterschool.urls")),
@@ -49,8 +50,8 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    # path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    # path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
 
 if settings.DEBUG:
