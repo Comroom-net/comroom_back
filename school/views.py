@@ -198,7 +198,7 @@ def get_school_comroom(request, school_id):
     comrooms = Comroom.objects.filter(school=school)
     res_data = []
     for room in comrooms:
-        res_data.append({"id": room.id, "name": room.name})
+        res_data.append({"id": room.id, "name": room.name, "description": room.caption})
     return Response(data=res_data, status=status.HTTP_200_OK)
 
 
