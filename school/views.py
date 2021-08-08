@@ -192,6 +192,16 @@ def user_active_api(request, token):
     return JsonResponse(data=user_data, status=status.HTTP_200_OK)
 
 
+@api_view(["GET"])
+def get_school_comroom(request, school_id):
+    school = School.objects.get(pk=school_id)
+    comrooms = Comroom.objects.filter(school=school)
+    res_data = []
+    for room in comrooms:
+        res_data.append({"id": room.id, "name": room.name})
+    return Response(data=res_data, status=status.HTTP_200_OK)
+
+
 # TODO: remove csrf_exempt
 @csrf_exempt
 def token_signin(request):
