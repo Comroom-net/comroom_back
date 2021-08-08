@@ -47,6 +47,20 @@ class TimetableViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = TimetableFilter
 
+    def create(self, request):
+        school = School.objects.get(pk=request.data["school"])
+        booking = Timetable(
+            school=school,
+            grade=request.data["grade"],
+            classNo=request.data["classNo"],
+            teacher=request.data["teacher"],
+            date=datetime.strptime(request.data["date"], "%Y-%m-%d"),
+            time=request.data["time"],
+            room=school.comroom_set.get(roomNo=request.data["roomNo"]),
+        )
+        booking.save()
+        return Response(data={}, status=status.HTTP_201_CREATED)
+
 
 class FixedTimetableFilter(django_filters.FilterSet):
     ym = django_filters.CharFilter(method="fixed_YM", label="year-month")
