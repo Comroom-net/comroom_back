@@ -10,6 +10,8 @@ class TimetableSerializer(serializers.ModelSerializer):
 
 
 class FixedTimetableSerializer(serializers.ModelSerializer):
+    comroom = serializers.StringRelatedField()
+
     class Meta:
         model = FixedTimetable
         fields = "__all__"
