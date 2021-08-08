@@ -18,7 +18,7 @@ import django_filters
 from django_filters import rest_framework as filters
 
 
-from .models import Timetable, FixedTimetable
+from .models import Timetable, FixedTimetable, TimeMap
 from .forms import BookingForm, FixTimeForm
 from .utils import TimetableCreate
 from .decorators import method_dectect
@@ -122,6 +122,29 @@ def valid_scode_api(request):
         context["date"] = date
         context["roomNo"] = 1
         return Response(status=status.HTTP_200_OK, data=context)
+
+
+class TimeMapHelper(APIView):
+    def get(self, request, *args, **kwargs):
+        school = School.objects.get(pk=request.query_params["school_id"])
+        start_t = TimeMap.objects.filter(school=school)
+        res_data = None
+        if start_t:
+            res_data = {"start_time": start_t.first().first_start}
+        return Response(data=res_data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        school = School.objects.get(pk=request.data.get("school_id"))
+        req_time = request.data.get("start_time")
+        start_t = TimeMap.objects.filter(school=school)
+        if start_t:
+            start = start_t.first()
+            start.first_start = req_time
+            start.save()
+        else:
+            start = TimeMap.objects.create(school=school, first_start=req_time)
+            start.save()
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class TimetableView(DetailView):

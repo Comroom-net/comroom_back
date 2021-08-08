@@ -13,6 +13,7 @@ from .views import (
     del_fixed_time,
     TimetableViewSet,
     FixedTimetableViewSet,
+    TimeMapHelper,
 )
 
 router = DefaultRouter()
@@ -23,6 +24,7 @@ router.register(r"fixed", FixedTimetableViewSet)
 app_name = "timetable"
 urlpatterns = [
     path("api/", valid_scode_api),
+    path("api/map/", TimeMapHelper.as_view()),
     path("api/", include(router.urls)),
     path("time_admin/", time_admin),
     path("fix_time/", FixCreateView.as_view()),
