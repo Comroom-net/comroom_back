@@ -1,6 +1,7 @@
 import datetime
 import random
 import logging
+import json
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse
@@ -200,6 +201,29 @@ def get_school_comroom(request, school_id):
     for room in comrooms:
         res_data.append({"id": room.id, "name": room.name, "description": room.caption})
     return Response(data=res_data, status=status.HTTP_200_OK)
+
+
+@api_view()
+def get_all_timetable(request, school_id):
+    school = School.objects.get(pk=school_id)
+    timetables = school.timetable_set.all().order_by("-date")
+
+    times = []
+
+    for time in timetables:
+        times.append(
+            {
+                "date": time.date,
+                "time": time.time,
+                "grade": time.grade,
+                "classNo": time.classNo,
+                "room": time.room.name,
+                "teacher": time.teacher,
+                "reg_date": time.reg_date,
+            }
+        )
+
+    return Response(data=times, status=status.HTTP_200_OK)
 
 
 # TODO: remove csrf_exempt

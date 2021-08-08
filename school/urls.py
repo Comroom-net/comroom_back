@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     SchoolView,
     get_school_comroom,
+    get_all_timetable,
     ex_login_api,
     user_active_api,
     login_api,
@@ -37,6 +38,7 @@ urlpatterns = [
     path("api/register/", SchoolView.as_view()),
     path("api/active/<token>", user_active_api),
     path("api/comrooms/<school_id>", get_school_comroom),
+    path("api/get-all-timetable/<school_id>", get_all_timetable),
     path("login/", MultipleFormsLoginView.as_view()),
     path("ex_login/", ex_login),
     path("logout/", logout, name="logout"),
