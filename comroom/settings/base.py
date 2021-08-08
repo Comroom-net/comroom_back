@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sites",
+    # "django.contrib.sites",
     "jquery",
     "bootstrap_datepicker_plus",
     "bootstrap4",
@@ -45,11 +45,11 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_spectacular",
     "corsheaders",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
-    "allauth.socialaccount.providers.kakao",
+    # "allauth",
+    # "allauth.account",
+    # "allauth.socialaccount",
+    # "allauth.socialaccount.providers.google",
+    # "allauth.socialaccount.providers.kakao",
 ]
 
 INSTALLED_APPS += [
@@ -141,7 +141,7 @@ AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
+    # "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 SITE_ID = 1
@@ -159,78 +159,78 @@ USE_L10N = True
 USE_TZ = False
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
         },
-        'django_file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'when': 'D',
-            'interval': 7,
-            'backupCount': 50,
-            'filename': 'comroom/logs/django.log',
+        "django_file": {
+            "level": "DEBUG",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "when": "D",
+            "interval": 7,
+            "backupCount": 50,
+            "filename": "comroom/logs/django.log",
         },
-        'school_file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'when': 'D',
-            'interval': 7,
-            'backupCount': 50,
-            'filename': 'comroom/logs/school.log',
+        "school_file": {
+            "level": "DEBUG",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "when": "D",
+            "interval": 7,
+            "backupCount": 50,
+            "filename": "comroom/logs/school.log",
         },
-        'etc_file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'when': 'D',
-            'interval': 7,
-            'backupCount': 50,
-            'filename': 'comroom/logs/etc.log',
+        "etc_file": {
+            "level": "DEBUG",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "when": "D",
+            "interval": 7,
+            "backupCount": 50,
+            "filename": "comroom/logs/etc.log",
         },
-        'namu_file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'when': 'D',
-            'interval': 7,
-            'backupCount': 50,
-            'filename': 'comroom/logs/namu.log',
+        "namu_file": {
+            "level": "DEBUG",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "when": "D",
+            "interval": 7,
+            "backupCount": 50,
+            "filename": "comroom/logs/namu.log",
         },
-        'timetable_file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'when': 'D',
-            'interval': 7,
-            'backupCount': 50,
-            'filename': 'comroom/logs/timetable.log',
+        "timetable_file": {
+            "level": "DEBUG",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "when": "D",
+            "interval": 7,
+            "backupCount": 50,
+            "filename": "comroom/logs/timetable.log",
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console', "django_file"],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': False,
+    "loggers": {
+        "django": {
+            "handlers": ["console", "django_file"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": False,
         },
-        'school': {
-            'handlers': ['school_file'],
-            'level': 'DEBUG',
+        "school": {
+            "handlers": ["school_file"],
+            "level": "DEBUG",
         },
-        'etc': {
-            'handlers': ['etc_file'],
-            'level': 'DEBUG',
+        "etc": {
+            "handlers": ["etc_file"],
+            "level": "DEBUG",
         },
-        'namu': {
-            'handlers': ['namu_file'],
-            'level': 'DEBUG',
+        "namu": {
+            "handlers": ["namu_file"],
+            "level": "DEBUG",
         },
-        'timetable': {
-            'handlers': ['timetable_file'],
-            'level': 'DEBUG',
+        "timetable": {
+            "handlers": ["timetable_file"],
+            "level": "DEBUG",
         },
     },
 }
