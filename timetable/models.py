@@ -87,3 +87,20 @@ class FixedTimetable(models.Model):
     # default = next Feb.
     fixed_until = models.DateField(verbose_name="종료일", default=til_next_feb)
     reg_date = models.DateTimeField(verbose_name="등록일시", auto_now_add=True)
+
+
+class TimeMap(models.Model):
+    start_times = [
+        ("08:40", "08:40"),
+        ("08:50", "08:50"),
+        ("09:00", "09:00"),
+        ("09:10", "09:10"),
+    ]
+    first_start = models.CharField(
+        max_length=10, verbose_name="1교시 시작시간", choices=start_times, default="09:00"
+    )
+    school = models.ForeignKey(School, on_delete=models.CASCADE, verbose_name="학교")
+
+    class Meta:
+        verbose_name = "일과시작시간"
+        verbose_name_plural = "일과시작시간"
