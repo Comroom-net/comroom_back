@@ -213,6 +213,7 @@ def get_all_timetable(request, school_id):
     for time in timetables:
         times.append(
             {
+                "id": time.id,
                 "date": time.date,
                 "time": time.time,
                 "grade": time.grade,
