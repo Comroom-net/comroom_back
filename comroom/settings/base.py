@@ -281,7 +281,10 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "COMROOM API",
     "VERSION": "1.0.0",
     "SERVERS": [
+        {"url": "http://localhost:8000"},
         {"url": "http://127.0.0.1:8000"},
     ],
     "SORT_OPERATIONS": False,
 }
+
+DATE_INPUT_FORMATS = ["%Y-%m-%d"]
