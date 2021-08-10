@@ -78,6 +78,7 @@ class FixedTimetable(models.Model):
             (4, "4교시"),
             (5, "5교시"),
             (6, "6교시"),
+            (7, "7교시"),
         ),
         default=1,
     )
