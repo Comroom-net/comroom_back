@@ -63,7 +63,7 @@ class TimetableViewSet(viewsets.ModelViewSet):
 
 
 class FixedTimetableFilter(django_filters.FilterSet):
-    yms = django_filters.CharFilter(method="fixed_YM_S", label="year-month-school")
+    ymc = django_filters.CharFilter(method="fixed_YM_C", label="year-month-comroom")
     ys = django_filters.CharFilter(method="fixed_year_S", label="year-school")
     school = django_filters.CharFilter(method="fixed_school", label="school")
 
@@ -71,11 +71,10 @@ class FixedTimetableFilter(django_filters.FilterSet):
         model = FixedTimetable
         fields = ["comroom"]
 
-    def fixed_YM_S(self, queryset, name, value):
-        year, month, school_id = map(int, value.split("-"))
-        print(year, month, school_id)
+    def fixed_YM_C(self, queryset, name, value):
+        year, month, comroom_id = map(int, value.split("-"))
         return FixedTimetable.objects.filter(
-            Q(school=school_id)
+            Q(comroom=comroom_id)
             & Q(fixed_from__month__lte=month)
             & Q(fixed_until__month__gte=month)
             & Q(fixed_from__year__lte=year)
