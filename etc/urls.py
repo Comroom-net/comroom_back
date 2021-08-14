@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     NoticeNocookieViewSet,
+    DisabledChannelViewSet,
     nocookie,
     GsuiteConvertor,
     load_html,
@@ -14,6 +15,7 @@ app_name = "etc"
 
 router = DefaultRouter()
 router.register(r"nocookie", NoticeNocookieViewSet)
+router.register(r"disabled-ch", DisabledChannelViewSet)
 
 urlpatterns = [
     path("nocookie", nocookie, name="nocookie"),

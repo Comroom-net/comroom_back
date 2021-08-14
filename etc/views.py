@@ -8,9 +8,10 @@ from django.core.files.storage import FileSystemStorage
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django_filters import rest_framework as filters
 
 from .models import Disabled_ch, Notice_nocookie, RollFile, HTMLpage
-from .serializers import NoticeNocookieSerializer
+from .serializers import NoticeNocookieSerializer, DisabledChannelSerializer
 from .GsuiteUsers import GUser, GUser_school
 
 
@@ -20,6 +21,16 @@ logger = logging.getLogger(__name__)
 class NoticeNocookieViewSet(viewsets.ModelViewSet):
     queryset = Notice_nocookie.objects.all()
     serializer_class = NoticeNocookieSerializer
+
+
+class DisabledChannelViewSet(viewsets.ModelViewSet):
+    queryset = Disabled_ch.objects.all()
+    serializer_class = DisabledChannelSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+
+    def get_queryset(self):
+        queryset = Disabled_ch.objects.filter(is_noticed=True)
+        return queryset
 
 
 def nocookie(request):
