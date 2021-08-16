@@ -48,10 +48,16 @@ def msg_test_api(request, *args, **kwargs):
 
 @api_view(["POST"])
 def order_msg_api(request, *args, **kwargs):
-    namu_token = get_secret("namu_token")
-    namu_bot = telegram.Bot(token=namu_token)
-    chat_id = get_secret("namu_id")
-    room = f"{request.data.get('room')}방)\n"
+    room_name = request.data.get("room")
+    if room_name == "나무":  # test case
+        token = get_secret("demo_token")
+        namu_bot = telegram.Bot(token=token)
+        chat_id = get_secret("demo_id")
+    else:
+        namu_token = get_secret("namu_token")
+        namu_bot = telegram.Bot(token=namu_token)
+        chat_id = get_secret("namu_id")
+    room = f"{room_name}방)\n"
     msg = room + request.data.get("order_list")
     namu_bot.sendMessage(chat_id=chat_id, text=msg)
 
