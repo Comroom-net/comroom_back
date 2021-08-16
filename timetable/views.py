@@ -73,13 +73,15 @@ class FixedTimetableFilter(django_filters.FilterSet):
 
     def fixed_YM_C(self, queryset, name, value):
         year, month, comroom_id = map(int, value.split("-"))
-        return FixedTimetable.objects.filter(
-            Q(comroom=comroom_id)
-            & Q(fixed_from__month__lte=month)
-            & Q(fixed_until__month__gte=month)
-            & Q(fixed_from__year__lte=year)
-            & Q(fixed_until__year__gte=year)
-        )
+        return FixedTimetable.objects.filter(comroom=comroom_id)
+        # TODO: 현재 연월로 필터링
+        # return FixedTimetable.objects.filter(
+        #     Q(comroom=comroom_id)
+        #     & Q(fixed_from__month__lte=month)
+        #     & Q(fixed_until__month__gte=month)
+        #     & Q(fixed_from__year__lte=year)
+        #     & Q(fixed_until__year__gte=year)
+        # )
 
     def fixed_year_S(self, queryset, name, value):
         year, school_id = map(int, value.split("-"))
