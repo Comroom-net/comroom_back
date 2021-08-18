@@ -161,9 +161,23 @@ USE_TZ = False
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
         },
         "django_file": {
             "level": "DEBUG",
@@ -171,6 +185,7 @@ LOGGING = {
             "when": "D",
             "interval": 7,
             "backupCount": 50,
+            "formatter": "verbose",
             "filename": "comroom/logs/django.log",
         },
         "school_file": {
@@ -179,6 +194,7 @@ LOGGING = {
             "when": "D",
             "interval": 7,
             "backupCount": 50,
+            "formatter": "verbose",
             "filename": "comroom/logs/school.log",
         },
         "etc_file": {
@@ -187,6 +203,7 @@ LOGGING = {
             "when": "D",
             "interval": 7,
             "backupCount": 50,
+            "formatter": "verbose",
             "filename": "comroom/logs/etc.log",
         },
         "namu_file": {
@@ -195,6 +212,7 @@ LOGGING = {
             "when": "D",
             "interval": 7,
             "backupCount": 50,
+            "formatter": "verbose",
             "filename": "comroom/logs/namu.log",
         },
         "timetable_file": {
@@ -203,6 +221,7 @@ LOGGING = {
             "when": "D",
             "interval": 7,
             "backupCount": 50,
+            "formatter": "verbose",
             "filename": "comroom/logs/timetable.log",
         },
     },
@@ -241,7 +260,7 @@ LOGGING = {
 
 STATIC_URL = "/staticfiles/"
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles"),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 STATIC_ROOT = "ssamko/staticfiles"
 
