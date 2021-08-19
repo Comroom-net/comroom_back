@@ -39,7 +39,7 @@ def msg_test_api(request, *args, **kwargs):
     test_token = get_secret("demo_token")
     test_bot = telegram.Bot(token=test_token)
     test_room = get_secret("demo_id")
-    room = f"{request.data.get('room')}방)\n"
+    room = f"{request.data.get('room')})\n"
     msg = room + request.data.get("order_list")
     test_bot.sendMessage(chat_id=test_room, text=msg)
 
@@ -57,7 +57,7 @@ def order_msg_api(request, *args, **kwargs):
         namu_token = get_secret("namu_token")
         namu_bot = telegram.Bot(token=namu_token)
         chat_id = get_secret("namu_id")
-    room = f"{room_name}방)\n"
+    room = f"{room_name})\n"
     msg = room + request.data.get("order_list")
     namu_bot.sendMessage(chat_id=chat_id, text=msg)
 
