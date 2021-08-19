@@ -29,6 +29,7 @@ urlpatterns = [
     # path("accounts/", include("allauth.urls")),
     path("", index, name="index"),
     # path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api/", include("common.urls")),
     path("school/", include("school.urls")),
     path("etc/", include("etc.urls")),
     path("afterschool/", include("afterschool.urls")),

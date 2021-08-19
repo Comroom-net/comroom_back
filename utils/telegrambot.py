@@ -1,4 +1,5 @@
 import os
+import json
 
 import telegram
 
@@ -21,5 +22,5 @@ def send_msg(msg):
     test_token = get_secret("demo_token")
     test_bot = telegram.Bot(token=test_token)
     test_room = get_secret("demo_id")
-    
+
     test_bot.sendMessage(chat_id=test_room, text=msg)
