@@ -260,7 +260,7 @@ LOGGING = {
 
 STATIC_URL = "/staticfiles/"
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles"),)
 
 STATIC_ROOT = "ssamko/staticfiles"
 
