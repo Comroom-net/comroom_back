@@ -9,7 +9,7 @@ from django.views.generic import DetailView, FormView, CreateView, View
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, pagination
 from rest_framework.renderers import JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -41,7 +41,7 @@ class TimetableFilter(django_filters.FilterSet):
 
 
 class TimetableViewSet(viewsets.ModelViewSet):
-    page_size = 300
+    pagination.PageNumberPagination.page_size = 150
     queryset = Timetable.objects.all()
     serializer_class = TimetableSerializer
     filter_backends = (filters.DjangoFilterBackend,)
@@ -95,9 +95,8 @@ class FixedTimetableFilter(django_filters.FilterSet):
         school = School.objects.get(pk=value)
         return FixedTimetable.objects.filter(school=school)
 
-
 class FixedTimetableViewSet(viewsets.ModelViewSet):
-    page_size = 30
+    pagination.PageNumberPagination.page_size = 30
     queryset = FixedTimetable.objects.all()
     serializer_class = FixedTimetableSerializer
     filter_backends = (filters.DjangoFilterBackend,)
