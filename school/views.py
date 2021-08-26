@@ -72,8 +72,14 @@ class NoticeViewSet(viewsets.ModelViewSet):
 
 class SchoolView(APIView):
     def post(self, request):
-        with transaction.atomic():
+        # email validation
+        if AdminUser.objects.filter(email=request.data.get("email")):
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={"message": "이미 가입된 메일입니다."},
+            )
 
+        with transaction.atomic():
             school = School(
                 province=request.data.get("province"),
                 name=request.data.get("schoolName") + "초등학교",
