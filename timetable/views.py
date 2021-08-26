@@ -97,6 +97,7 @@ class FixedTimetableFilter(django_filters.FilterSet):
 
 
 class FixedTimetableViewSet(viewsets.ModelViewSet):
+    page_size = 30
     queryset = FixedTimetable.objects.all()
     serializer_class = FixedTimetableSerializer
     filter_backends = (filters.DjangoFilterBackend,)
