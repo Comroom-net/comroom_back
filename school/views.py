@@ -175,6 +175,12 @@ def user_active_api(request, token):
     try:
         adminUser = AdminUser.objects.get(auth_key=token)
     except ObjectDoesNotExist:
+        logger.info(f"\nuser_active_api: ObjectDoesNotExist\n{token}")
+        return JsonResponse(
+            data={"message": "no user"}, status=status.HTTP_400_BAD_REQUEST
+        )
+    except Exception as e:
+        logger.error(e)
         return JsonResponse(
             data={"message": "wrong access"}, status=status.HTTP_400_BAD_REQUEST
         )
