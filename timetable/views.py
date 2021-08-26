@@ -39,6 +39,8 @@ class TimetableFilter(django_filters.FilterSet):
         model = Timetable
         fields = "__all__"
 
+class TimetablePagination(pagination.PageNumberPagination):
+    page_size = 150
 
 class TimetableViewSet(viewsets.ModelViewSet):
     pagination.PageNumberPagination.page_size = 150
@@ -95,8 +97,12 @@ class FixedTimetableFilter(django_filters.FilterSet):
         school = School.objects.get(pk=value)
         return FixedTimetable.objects.filter(school=school)
 
+class FixedPagination(pagination.PageNumberPagination):
+    page_size = 30
+
 class FixedTimetableViewSet(viewsets.ModelViewSet):
-    pagination.PageNumberPagination.page_size = 30
+    # pagination_class = FixedPagination
+    pagination.LimitOffsetPagination.default_limit = 30
     queryset = FixedTimetable.objects.all()
     serializer_class = FixedTimetableSerializer
     filter_backends = (filters.DjangoFilterBackend,)
