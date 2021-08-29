@@ -144,6 +144,84 @@ def _login_data(admin_user: AdminUser) -> dict:
 
 
 @api_view(["POST"])
+def forgot_password(request):
+    email = request.data.get("email")
+    if not email:
+        return Response(
+            "no email input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION
+        )
+
+    teacher_name = request.data.get("realname")
+    if not teacher_name:
+        return Response(
+            "no name input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION
+        )
+
+    try:
+        # indexing by email and realname
+        admin_user = AdminUser.objects.get(email=email, realname=teacher_name)
+    except AdminUser.DoesNotExist:
+        return Response("wrong input info", status=status.HTTP_400_BAD_REQUEST)
+
+    logger.info(f"\nforgot password: {teacher_name} {email}")
+    _send_password_mail(admin_user)
+
+    return Response("good", status=status.HTTP_200_OK)
+
+
+@api_view
+def reset_password(request, token):
+    adminUser = get_object_or_404(AdminUser, auth_key=token)
+
+    if request.method == "GET":
+        reset_form = PasswordResetForm()
+        return render(
+            request,
+            "reset_password.html",
+            {"teacher_name": adminUser.realname, "form": reset_form},
+        )
+    else:
+        reset_form = PasswordResetForm(request.POST)
+        if reset_form.is_valid():
+            adminUser.password = make_password(reset_form.cleaned_data.get("password"))
+            adminUser.auth_key = ""
+            adminUser.save()
+            request.session["user_id"] = adminUser.user
+            request.session["username"] = adminUser.realname
+            request.session["school"] = adminUser.school.id
+            return redirect("/")
+
+    return render(request, "reset_password.html", {"teacher_name": adminUser.realname})
+
+
+# TODO: request 말고, 그냥 adminUser_pk만 받아서 실행하도록. return도 변경.
+def _send_password_mail(adminUser):
+    while True:
+        auth_key = randstr(50)
+        if not AdminUser.objects.filter(auth_key=auth_key):
+            break
+
+    adminUser.auth_key = auth_key
+    adminUser.save()
+
+    mail_title = "컴룸닷컴 비밀번호 재설정"
+    mail_args = {"teacher_name": adminUser.realname, "token": adminUser.auth_key}
+    mail_context = "컴룸닷컴 비밀번호 재설정"
+    mail_html = render_to_string("password_mail.html", mail_args)
+    send_mail(
+        mail_title,
+        mail_context,
+        "ssamko@kakao.com",
+        [adminUser.email],
+        html_message=mail_html,
+    )
+    message = f"{adminUser.realname} 선생님께서 입력하신 메일({adminUser.email})로\
+        비밀번호 재설정 메일을 보내드렸습니다. 8시간 안에 재설정해주세요."
+
+    return JsonResponse(data={"message": message})
+
+
+@api_view(["POST"])
 def login_api(request):
     user = request.data.get("user")
     if not user:
@@ -358,37 +436,6 @@ class RegisterView(FormView):
         self.request.session["privacy"] = False
         return render(self.request, "notice.html", {"message": message})
         # return super().form_valid(form)
-
-
-# TODO: csrf token handling API
-@csrf_exempt
-@api_view(["POST"])
-def forgot_password(request):
-    email = request.data.get("email")
-    if not email:
-        logger.debug("no email input")
-        return Response(
-            "no email input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION
-        )
-
-    teacher_name = request.data.get("teacher_name")
-    if not teacher_name:
-        return Response(
-            "no name input", status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION
-        )
-
-    try:
-        # indexing by email and realname
-        admin_user = AdminUser.objects.get(email=email, realname=teacher_name)
-    except AdminUser.DoesNotExist:
-        return Response("wrong input info", status=status.HTTP_400_BAD_REQUEST)
-
-    request.session["adminUser_pk"] = admin_user.pk
-
-    logger.debug("forgot password good")
-    # send_password_mail(request)
-
-    return Response("good", status=status.HTTP_200_OK)
 
 
 class MultipleFormsLoginView(MultiFormsView):
@@ -617,57 +664,4 @@ def user_active(request, token):
         adminUser.auth_key = ""
         adminUser.save()
         message = "인증되었습니다. 불편한 사항은 언제든 말씀해주세요 ^^"
-    return render(request, "notice.html", {"message": message})
-
-
-def reset_password(request, token):
-    adminUser = get_object_or_404(AdminUser, auth_key=token)
-
-    if request.method == "GET":
-        reset_form = PasswordResetForm()
-        return render(
-            request,
-            "reset_password.html",
-            {"teacher_name": adminUser.realname, "form": reset_form},
-        )
-    else:
-        reset_form = PasswordResetForm(request.POST)
-        if reset_form.is_valid():
-            adminUser.password = make_password(reset_form.cleaned_data.get("password"))
-            adminUser.auth_key = ""
-            adminUser.save()
-            request.session["user_id"] = adminUser.user
-            request.session["username"] = adminUser.realname
-            request.session["school"] = adminUser.school.id
-            return redirect("/")
-
-    return render(request, "reset_password.html", {"teacher_name": adminUser.realname})
-
-
-# TODO: request 말고, 그냥 adminUser_pk만 받아서 실행하도록. return도 변경.
-def send_password_mail(request):
-    adminUser_pk = request.session["adminUser_pk"]
-    adminUser = AdminUser.objects.get(pk=adminUser_pk)
-
-    while True:
-        auth_key = randstr(50)
-        if not AdminUser.objects.filter(auth_key=auth_key):
-            break
-
-    adminUser.auth_key = auth_key
-    adminUser.save()
-
-    mail_title = "컴룸닷컴 비밀번호 재설정"
-    mail_args = {"teacher_name": adminUser.realname, "token": adminUser.auth_key}
-    mail_context = "컴룸닷컴 비밀번호 재설정"
-    mail_html = render_to_string("password_mail.html", mail_args)
-    send_mail(
-        mail_title,
-        mail_context,
-        "ssamko@kakao.com",
-        [adminUser.email],
-        html_message=mail_html,
-    )
-    message = f"{adminUser.realname} 선생님께서 입력하신 메일({adminUser.email})로\
-        비밀번호 재설정 메일을 보내드렸습니다. 8시간 안에 재설정해주세요."
     return render(request, "notice.html", {"message": message})
