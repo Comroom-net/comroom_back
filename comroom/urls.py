@@ -18,7 +18,7 @@ from school.views import (
     ComroomAdminView,
     make_room,
     reset_password,
-    send_password_mail,
+    # send_password_mail,
     token_signin,
 )
 from timetable.views import assign_room
@@ -36,7 +36,7 @@ urlpatterns = [
     path("namu/", include("namu.urls")),
     # path('make_room/', make_room),
     # path('assign_room/', assign_room),
-    path("send_password_mail/", send_password_mail, name="send_password_mail"),
+    # path("send_password_mail/", send_password_mail, name="send_password_mail"),
     path("reset_password/<str:token>/", reset_password),
     path("comroom_admin/", ComroomAdminView.as_view()),
     path("ssam_ko/", AboutView.as_view(), name="about"),
