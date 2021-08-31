@@ -169,32 +169,19 @@ def forgot_password(request):
     return Response("good", status=status.HTTP_200_OK)
 
 
-@api_view
-def reset_password(request, token):
-    adminUser = get_object_or_404(AdminUser, auth_key=token)
+@api_view(["POST"])
+def reset_password(request):
+    new_password = request.data.get("newPassword")
+    token = request.data.get("token")
 
-    if request.method == "GET":
-        reset_form = PasswordResetForm()
-        return render(
-            request,
-            "reset_password.html",
-            {"teacher_name": adminUser.realname, "form": reset_form},
-        )
-    else:
-        reset_form = PasswordResetForm(request.POST)
-        if reset_form.is_valid():
-            adminUser.password = make_password(reset_form.cleaned_data.get("password"))
-            adminUser.auth_key = ""
-            adminUser.save()
-            request.session["user_id"] = adminUser.user
-            request.session["username"] = adminUser.realname
-            request.session["school"] = adminUser.school.id
-            return redirect("/")
+    admin_user = get_object_or_404(AdminUser, auth_key=token)
+    admin_user.password = make_password(new_password)
+    admin_user.auth_key = ""
+    admin_user.save()
 
-    return render(request, "reset_password.html", {"teacher_name": adminUser.realname})
+    return JsonResponse(status=status.HTTP_200_OK, data={})
+    
 
-
-# TODO: request 말고, 그냥 adminUser_pk만 받아서 실행하도록. return도 변경.
 def _send_password_mail(adminUser):
     while True:
         auth_key = randstr(50)

@@ -11,6 +11,7 @@ from .views import (
     login_api,
     logout,
     forgot_password,
+    reset_password,
     privacy_agree,
     agree_pirv,
     RegisterView,
@@ -34,6 +35,7 @@ router.register(r"", SchoolViewSet)
 urlpatterns = [
     path("api/login/", login_api),
     path("api/forgot-password/", forgot_password),
+    path("api/reset-password/", reset_password),
     path("api/ex_login/", ex_login_api),
     path("api/register/", SchoolView.as_view()),
     path("api/active/<token>", user_active_api),
