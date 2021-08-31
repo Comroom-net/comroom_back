@@ -192,7 +192,7 @@ def _send_password_mail(adminUser):
     adminUser.save()
 
     mail_title = "컴룸닷컴 비밀번호 재설정"
-    mail_args = {"teacher_name": adminUser.realname, "token": adminUser.auth_key}
+    mail_args = {"teacher_name": adminUser.realname, "token": adminUser.auth_key, "web_url": settings.WEB_URL}
     mail_context = "컴룸닷컴 비밀번호 재설정"
     mail_html = render_to_string("password_mail.html", mail_args)
     send_mail(
