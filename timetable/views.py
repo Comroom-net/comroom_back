@@ -95,7 +95,7 @@ class FixedTimetableFilter(django_filters.FilterSet):
         return FixedTimetable.objects.filter(school=school)
 
 class FixedTimetableViewSet(viewsets.ModelViewSet):
-    pagination.LimitOffsetPagination.default_limit = 30
+    pagination.LimitOffsetPagination.default_limit = 70
     queryset = FixedTimetable.objects.all()
     serializer_class = FixedTimetableSerializer
     filter_backends = (filters.DjangoFilterBackend,)
