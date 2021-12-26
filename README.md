@@ -1,9 +1,10 @@
 # 컴룸닷넷
+
 > 학교 컴퓨터실(특별실) 예약관리 사이트
 
 http://comroom.net  
 
-컴퓨터실 사용 예약을 할 수 있는 사이트입니다. 
+컴퓨터실(특별실) 사용 예약을 할 수 있는 사이트입니다. 
 
 ## 개발 일지
 
@@ -13,12 +14,5 @@ http://comroom.net
 
 
 ## API
-### login
-- 
-### find password
-- 
-### 시간표
-- `GET /timetable/api/time/?year=2021&month=3&school=79&room=185`
 
-### 고정시간표
-- `GET /timetable/api/fixed/?comroom=&school=&ym=2021-02`
+[api apecification](http://api.comroom.net/api/schema/swagger-ui)
