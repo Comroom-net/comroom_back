@@ -28,6 +28,7 @@ class Timetable(models.Model):
         "school.Comroom", on_delete=models.CASCADE, verbose_name="교실", null=True
     )
     teacher = models.CharField(max_length=16, verbose_name="선생님")
+    password = models.CharField(max_length=16, verbose_name="비밀번호", default="1111")
     reg_date = models.DateTimeField(auto_now_add=True, verbose_name="예약등록시간")
 
     class Meta:
