@@ -39,6 +39,7 @@ class TimetableFilter(django_filters.FilterSet):
         model = Timetable
         fields = "__all__"
 
+
 class TimetableViewSet(viewsets.ModelViewSet):
     pagination.LimitOffsetPagination.default_limit = 150
     queryset = Timetable.objects.all()
@@ -55,10 +56,16 @@ class TimetableViewSet(viewsets.ModelViewSet):
             teacher=request.data["teacher"],
             date=datetime.strptime(request.data["date"], "%Y-%m-%d"),
             time=request.data["time"],
+            password=request.data.get("password"),
             room=school.comroom_set.get(roomNo=request.data["roomNo"]),
         )
         booking.save()
         return Response(data={}, status=status.HTTP_201_CREATED)
+
+    def destroy(self, request, *args, **kwargs):
+        password = kwargs.get("password", "1111")
+        logger.debug(f"[Timetable]password: {password}")
+        return super().destroy(request, *args, **kwargs)
 
 
 class FixedTimetableFilter(django_filters.FilterSet):
@@ -93,6 +100,7 @@ class FixedTimetableFilter(django_filters.FilterSet):
     def fixed_school(self, queryset, name, value):
         school = School.objects.get(pk=value)
         return FixedTimetable.objects.filter(school=school)
+
 
 class FixedTimetableViewSet(viewsets.ModelViewSet):
     pagination.LimitOffsetPagination.default_limit = 70
