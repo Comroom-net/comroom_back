@@ -32,7 +32,7 @@
 }
 ```
 
-### Table: `Timetalbe`
+### Table: `Timetable`
 
 ```json
 {
