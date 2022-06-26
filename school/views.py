@@ -309,9 +309,7 @@ def get_all_timetable(request, school_id):
 def token_signin(request):
     if request.method == "POST":
         token = request.POST.get("idtoken")
-        CLIENT_ID = (
-            "480648197974-nbh21s3q24p0hkef3glj7cf2ipvkbl5d.apps.googleusercontent.com"
-        )
+        CLIENT_ID = settings.OAUTH_CLIENT_ID
         try:
             idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
 

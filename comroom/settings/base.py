@@ -24,6 +24,8 @@ def get_secret(setting, secrets=secrets):
 
 SECRET_KEY = os.getenv("COMROOM_SECRET_KEY")
 
+OAUTH_CLIENT_ID = os.getenv("OAUTH_CLIENT_ID")
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
