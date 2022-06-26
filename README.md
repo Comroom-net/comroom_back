@@ -22,3 +22,20 @@ http://comroom.net
 ## API
 
 [api apecification](http://api.comroom.net/api/schema/swagger-ui)
+
+## Project structure
+
+- afterschool(개발중)
+    - 방과후신청을 위한 APP. 
+- common
+    - 다양한, 일반적인 용도로 사용되는 APP
+- dev
+    - 컴룸닷넷 개발과 관련된 내용들을 보여주기 위한 APP
+- etc
+    - 기타 컴룸닷넷에 포함된 간단한 앱들
+- school
+    - 학교와 관련된 것들을 다루는 APP
+    - 가입, 관리자 화면 등
+    - TODO: 과거에 사용했던 페이지 렌더링을 위한 view함수들 정리
+- timetable
+    - 시간표와 관련된 것들을 다루는 APP
